@@ -1,0 +1,27 @@
+{
+	"name": "biesvm",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Maquina virtual biesVM en Node.js",
+	"main": "index.js",
+	"bin": {
+		"biesvm": "../bin/biesvm.js"
+	},
+	"scripts": {
+		"antlr4": "java -jar ./tools/antlr-4.13.2-complete.jar -no-listener -visitor -Dlanguage=JavaScript -o ./parser/grammar ./grammar/biesASM.g4",
+		"test": "jest",
+		"start": "node ./biesvm.js",
+		"jsdoc": "jsdoc -c jsdoc.json"
+	},
+	"dependencies": {
+		"antlr4": "^4.13.1-patch-1",
+		"biesvm": "file:",
+		"commander": "^10.0.0",
+		"readline-sync": "^1.4.10"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"jsdoc": "^4.0.3"
+	}
+}

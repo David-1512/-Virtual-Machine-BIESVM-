@@ -1,0 +1,32 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+; Descripción: Este programa recibe dos números y retorna el mayor de ellos.
+
+
+$FUN $0 args:1 parent:$0
+    LDV 4    
+    LDV 5    
+    LDF $1 ; Arma la balija 
+    BST 0 0
+    BLD 0 0   
+    APP 2;   
+    PRN
+    HLT
+$END $0
+
+$FUN $1 args:2 parent:$0 
+    BLD 0 0 ; y = -5
+    BLD 0 1 ; x = 4
+    GT ; y > x
+    BF 3 ; if x > y 
+    BLD 0 0 ; x
+    RET ; return
+    BLD 0 1 ; y    
+    RET ; return
+$END $1
+
+INI $0

@@ -1,0 +1,47 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+; Descripción: Este programa recibe un número y retorna su factorial (recursivamente).
+
+$FUN $1 args:1 parent:$0 ;factorial
+    BLD 0 0
+    LDV 1
+    EQ
+    BT 9
+    BLD 0 0
+    LDV 1
+    SUB
+    BLD 1 0
+    APP 1
+    BLD 0 0
+    MUL
+    RET           ; Retornar resultado    
+    LDV 1         ; Cargar 1
+    RET           ; Retornar 1
+$END $1
+
+
+$FUN $0 args:1 parent:$0 ;main
+    LDV "factorial(5) = "
+    PRN
+    LDV 5         ; Cargar el valor 5 (n)
+    LDF $1; Cargar la función factorial
+    BST 0 0       ; factorial(0)
+    BLD 0 0       ; Cargar el resultado
+    APP 1         ; Aplicar la función con un argumento (n=5)
+    PRN           ; Imprimir el resultado de factorial(5)
+
+    LDV "factorial(10) = "
+    PRN
+    LDV 10         ; Cargar el valor 0 (n)    
+    BLD 0 0       ; Cargar el resultado
+    APP 1         ; Aplicar la función con un argumento (n=0)
+    PRN           ; Imprimir el resultado de factorial(0)
+    HLT           ; Terminar ejecución
+$END $0
+
+INI $0        ; Iniciar el programa desde main
+

@@ -1,0 +1,30 @@
+;Autores:
+;Leandro Mora Corrales
+;David Serrano Medrano
+;Xiara Suárez Alpízar
+;Bryan Hernandéz Hernandéz
+
+;Descripción: Este programa muestra el uso de casting en el lenguaje basm
+
+
+$FUN $0 args:0 parent:$0
+    LDV 4
+    CST number
+    LDV "test"
+    CST string
+    LDV [1, 2, 3]
+    CST list
+    LDV 4
+    CST string
+    INO string
+    PRN
+    LDV "test"
+    INO string
+    PRN
+    LDV [1, 2, 3]
+    INO list
+    PRN
+    HLT
+$END $0
+
+INI $0

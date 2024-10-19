@@ -1,0 +1,80 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+; Descripción: Este programa recibe una lista y retorna 1 si es un palíndrome, 0 si no lo es.
+
+$FUN $2 args:3 parent:$1 ; largo de una lista
+    LDV 0
+    BST 0 1; c = 0  
+    BLD 0 1; c             
+    BLD 0 0; h             
+    LTK               
+    BST 0 2; l = 'caracter'  
+    BLD 0 2; l 
+    LDV ""
+    EQ
+    BT 6  
+    BLD 0 1; c
+    LDV 1
+    ADD
+    BST 0 1
+    BR -12
+    BLD 0 1    
+    RET                    
+
+$END $2  
+
+$FUN $1 args:3 parent:$0 ; palindrome
+    LDV 0
+    BST 0 1; l = 0 
+    BLD 0 1; l
+    BLD 0 0; h
+    LDF $2
+    APP 1
+    LDV 1
+    SUB
+    BST 0 2; r = largolista - 1 
+
+    BLD 0 1; l
+    BLD 0 2; r
+    LT ; l < r
+    BF 20 ; if not l < r
+    BLD 0 1; l
+    BLD 0 0; h
+    LTK ; h[l]
+    BLD 0 2; r
+    BLD 0 0; h
+    LTK ; h[r]
+    EQ; h[l] == h[r]
+    BT 3
+    LDV 0
+    RET
+
+    BLD 0 1; l
+    LDV 1
+    ADD
+    BST 0 1; l = l + 1
+    BLD 0 2; r
+    LDV 1
+    SUB
+    BST 0 2; r = r - 1
+    BR -22
+    LDV 1
+    RET
+
+$END $1                   
+
+$FUN $0 args:1 parent:$0 ; main                  
+    LDV [1, 2, 3, 3, 2, 1]        
+    LDF $1            
+    BST 0 0
+    BLD 0 0  
+    APP 1                   
+    PRN                     
+    HLT                    
+$END $0  
+
+INI $0        

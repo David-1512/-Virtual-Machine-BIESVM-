@@ -1,0 +1,89 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+; Descripción: Este programa recibe los coeficientes de una ecuación cuadrática y retorna sus raíces.
+
+$FUN $2 args:3 parent:$1
+
+    BLD 0 0 ; Cargar n
+    BST 0 1 ; r = n
+    LDV 0 ; Cargar 0
+    BST 0 2 ; t = 0
+    BLD 0 1 ; Cargar r
+    BLD 0 2 ; Cargar t
+    EQ ; r === t
+    BT 12 ; Si es verdadero, saltar a la salida
+    BLD 0 1 ; Cargar r
+    BST 0 2 ; t = r
+    BLD 0 0 ; Cargar n
+    BLD 0 2 ; Cargar t
+    DIV ; n / t
+    BLD 0 2 ; Cargar t
+    ADD ; t + n / t
+    LDV 2 ; Cargar 2
+    DIV ; (t + n / t) / 2
+    BST 0 1 ; r = (t + n / t) / 2
+    BR -14 ; Volver al inicio
+    BLD 0 1 ; Cargar r
+    RET ; return
+
+$END $2
+
+$FUN $1 args:6 parent:$0
+    BLD 0 1      ; b
+    BLD 0 1      ; b
+    MUL          ; b * b
+    LDV 4        ; 4
+    BLD 0 0      ; a
+    MUL          ; 4 * a
+    BLD 0 2      ; c
+    MUL          ; 4 * a * c
+    SUB          ; b * b - 4 * a * c
+    LDF $2       ; sqrt(b * b - 4 * a * c)
+    APP          ; Aplicar la función con un argumento
+    BST 0 3      ; Guardar d en el ambiente (d = sqrt(b^2 - 4ac))
+
+    BLD 0 1      ; -b
+    NEG          ; Negar b
+    BLD 0 3      ; d
+    ADD          ; -b + d
+    LDV 2        ; 2
+    BLD 0 0      ; a
+    MUL          ; 2 * a
+    DIV          ; (-b + d) / (2 * a)
+    BST 0 4      ; Guardar el primer resultado en el ambiente
+
+    BLD 0 1      ; -b
+    NEG          ; Negar b
+    BLD 0 3      ; d
+    SUB          ; -b - d
+    LDV 2        ; 2
+    BLD 0 0      ; a
+    MUL          ; 2 * a
+    DIV          ; (-b - d) / (2 * a)
+    BST 0 5      ; Guardar el segundo resultado en el ambiente
+
+    BLD 0 4      ; Cargar el primer resultado
+    PRN          ; Imprimir el primer resultado ESTO ES PARA VERLO EN PANTALLA
+    BLD 0 5      ; Cargar el segundo resultado
+    RET          ; Retornar los resultados (primer y segundo)
+
+$END $1
+
+$FUN $0 args:1 parent:$0
+    LDV 1    
+    LDV -5    
+    LDV 6     
+    LDF $1  ; Cargar la función cuadratica
+    BST 0 0
+    BLD 0 0
+    APP 3        ; Aplicar la función con 3 parámetros
+    PRN          ; Imprimir el resultado
+    HLT          ; Terminar ejecución
+
+$END $0 
+
+INI $0        ; Iniciar en el main

@@ -1,0 +1,62 @@
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+; Descripción: Este programa muestra el uso de clausuras en un contador.
+
+; Proporcioado por ChatGPT.
+
+$FUN $2 args:0 parent:$1 ; incrementar
+    BLD 1 0      ; Cargar el valor de 'contador' desde el entorno léxico actual
+    LDV 1        ; Cargar el valor 1
+    ADD          ; Incrementar 'contador' en 1
+    BST 1 0      ; Guardar el nuevo valor en 'contador'
+    BLD 1 0      ; Cargar el valor actualizado de 'contador'
+    RET          ; Retornar el valor de 'contador'
+
+$END $2
+
+$FUN $1 args:1 parent:$0 ; crearContador
+    LDV 0        ; Cargar el valor 0
+    BST 0 0      ; Guardar 'contador' con el valor inicial 0 en el entorno léxico actual
+    LDF $2       ; Cargar la clausura de la función 'incrementar'
+    RET          ; Retornar la clausura de 'incrementar'
+
+$END $1
+
+; Código de inicialización y ejecución del programa principal
+$FUN $0 args:3 parent:$0
+    LDF $1       ; Cargar la función 'crearContador'
+    BST 0 0      ; Guardar la función 'crearContador' en la variable 0 (por ejemplo, main[0] = crearContador)
+
+    BLD 0 0      ; Cargar la función 'crearContador' desde la variable 0
+    APP 0        ; Llamar a 'crearContador' para crear un nuevo contador
+    BST 0 1      ; Guardar el resultado (la clausura) en la variable 'contador'
+
+    BLD 0 1      ; Cargar la clausura 'contador'
+    APP 0        ; Llamar a 'contador()' (incrementar el contador)
+    PRN          ; Imprimir el resultado (1)
+
+    BLD 0 1      ; Cargar la clausura 'contador'
+    APP 0        ; Llamar a 'contador()' (incrementar el contador)
+    PRN          ; Imprimir el resultado (2)
+
+    BLD 0 0      ; Cargar la función 'crearContador' desde la variable 0
+    APP 0        ; Llamar a 'crearContador' para crear 'otroContador'
+    BST 0 2      ; Guardar la clausura en 'otroContador'     
+
+    BLD 0 2      ; Cargar la clausura 'otroContador'
+    APP 0        ; Llamar a 'otroContador()' (incrementar el nuevo contador)
+    PRN          ; Imprimir el resultado (1)
+
+    BLD 0 1      ; Cargar la clausura 'contador'
+    APP 0        ; Llamar a 'contador()' (incrementar el primer contador)
+    PRN          ; Imprimir el resultado (3)
+
+    HLT          ; Finalizar la ejecución
+
+$END $0
+
+
+INI $0 ; Iniciar la ejecución desde 'main'

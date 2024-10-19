@@ -1,0 +1,42 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+$FUN $0 args:1 parent:$0
+    LDV 42         ; Valor a insertar
+    LDV [1,1,2,3,4]         ; Cargar una lista vacía 
+    BST 0 0       
+    BLD 0 0       
+
+    LNT            ; Test de nulidad
+    PRN            ; Imprimir resultado (debe ser 1)
+    BLD 0 0        ; Cargar la lista
+    
+    LIN            ; Insertar al inicio de la lista
+    PRN            ; Imprimir lista actualizada
+    
+    LDV 99         ; Otro valor a insertar
+    BLD 0 0
+    LIN            ; Insertar al inicio de la lista
+    PRN            ; Imprimir lista actualizada
+    
+    LDV 1          ; Índice para tomar el k-ésimo elemento
+    BLD 0 0
+    LTK            ; Tomar el 1er elemento de la lista
+    PRN            ; Imprimir el elemento tomado
+    
+    LDV 2          ; Índice para tomar el resto después del k-ésimo
+    BLD 0 0
+    LRK            ; Tomar el resto de la lista después del 2do elemento
+    PRN            ; Imprimir el resto de la lista
+    
+    LDV "Hello"    ; Cadena de texto a convertir en lista
+    TOL            ; Convertir cadena a lista
+    PRN            ; Imprimir lista convertida
+    
+    HLT            ; Terminar ejecución
+$END $0
+
+INI $0

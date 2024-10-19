@@ -1,0 +1,39 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+$FUN $0 args:1 parent:$0
+    LDV ""         ; Cargar una cadena vacía
+    BST 0 0        ; Cargar la cadena en el ambiente
+    BLD 0 0        ; Cargar la cadena
+    SNT            ; Test de nulidad de string
+    PRN            ; Imprimir resultado (debe ser 1)
+    
+    LDV "Hello"    ; Valor para concatenar
+    LDV "World"    ; Otro valor para concatenar
+    CAT            ; Concatenar las dos cadenas
+    BST 0 0        
+    BLD 0 0        
+    PRN            ; Imprimir la cadena concatenada     
+    
+    LDV 3          ; Índice para tomar el k-ésimo carácter
+    BLD 0 0        ; Cargar la cadena concatenada en el ambiente
+    STK            ; Tomar el 4to carácter (índice 3)
+    
+    PRN            ; Imprimir el carácter tomado
+    
+    LDV 5          ; Índice para tomar el resto después del k-ésimo
+    BLD 0 0        ; Cargar la cadena concatenada en el ambiente
+    SRK            ; Tomar el resto de la cadena después del 5to carácter
+    PRN            ; Imprimir el resto de la cadena
+    
+    LDV 12345      ; Número a convertir en string
+    TOS            ; Convertir el número a string
+    PRN            ; Imprimir el string convertido
+    
+    HLT            ; Terminar ejecución
+$END $0
+
+INI $0

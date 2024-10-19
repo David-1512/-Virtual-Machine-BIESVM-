@@ -1,0 +1,18 @@
+
+;Autores:
+;Leandro Mora Corrales
+;David Serrano Medrano
+;Xiara Suárez Alpízar
+;Bryan Hernandéz Hernandéz
+
+;Descripción: Imprimir un mensaje obtenido por input del usuario
+
+$FUN $0 args:0 parent:$0
+    LDV "Digite un mensaje: "
+    PRN
+    INP
+    PRN
+    HLT
+$END $0 
+
+INI $0

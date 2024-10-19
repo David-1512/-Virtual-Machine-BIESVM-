@@ -1,0 +1,11 @@
+{
+  "name": "biesc",
+  "version": "1.0.0",
+  "description": "Compilador virtual biesVM en Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC"
+}

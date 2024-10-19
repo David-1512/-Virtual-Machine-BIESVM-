@@ -1,0 +1,57 @@
+; Autores:
+; Leandro Mora Corrales
+; David Serrano Medrano
+; Xiara Suárez Alpízar
+; Bryan Hernandéz Hernandéz
+
+; Descripción: Este programa recibe un número n y retorna el n-ésimo número de la serie de Fibonacci (recursivamente).
+
+$FUN $1 args:1 parent:$0 ; Función fibonacci(n)
+    BLD 0 0       ; Cargar n (primer parámetro)
+    LDV 0         ; Cargar 0
+    EQ            ; Comparar n == 0
+    BT 19        ; Si es verdadero, saltar a la salida para n = 0
+    BLD 0 0
+    LDV 1         ; Cargar 1
+    EQ            ; Comparar n == 1
+    BT 13        ; Si es verdadero, saltar a la salida para n = 1
+    
+    BLD 0 0       ; Cargar n
+    LDV 1         ; Cargar 1
+    SUB           ; Calcular n - 1
+    BLD 1 0       ; Llamar recursivamente a fibonacci(n-1)
+    APP 1         ; Aplicar la función con un argumento
+
+    BLD 0 0       ; Cargar n
+    LDV 2         ; Cargar 2
+    SUB           ; Calcular n - 2
+    BLD 1 0       ; Llamar recursivamente a fibonacci(n-2)
+    APP 1         ; Aplicar la función con un argumento
+    
+    ADD           ; Sumar fibonacci(n-1) + fibonacci(n-2)
+    RET           ; Retornar el resultado
+
+    ; Caso base: si n == 1, retornar 1
+    LDV 1         ; Cargar 1
+    RET           ; Retornar 1
+
+    ; Caso base: si n == 0, retornar 0
+    LDV 0         ; Cargar 0
+    RET           ; Retornar 0
+$END $1
+
+$FUN $0 args:1 parent:$0 ; Función main
+    LDV "Ingrese un valor para fibonacci: "
+    PRN
+    INP           ; Cargar el valor 5 (n)
+    LDF $1        ; Cargar la función fibonacci
+    BST 0 0
+    BLD 0 0
+    APP 1         ; Aplicar la función con un argumento (n=5)
+    PRN           ; Imprimir el resultado de fibonacci(5)
+    HLT           ; Terminar ejecución
+$END $0
+
+INI $0        ; Iniciar el programa desde main
+
+
