@@ -1,13 +1,24 @@
 grammar biesC;
 
-program: statement+ ;
+INT: [-]?[0-9]+;
+FLOAT: [-]?[0-9]+ '.' [0-9]+; 
+SCI: [-]?[0-9]+ ('.' [0-9]+)? [eE] [+-]? [0-9]+;
+STRING: '"' ( ~["\\] | '\\' . )* '"';
+WS: [ \t\r\n]+ -> skip;
+LC: '//' ~[\r\n]* -> skip;
+BC: '/*' .*? '*/' -> skip;
+ID: [a-zA-Z_][a-zA-Z0-9_]*;
+
+NUMBER: INT | FLOAT | SCI; 
+
+program: statement+ EOF;
 
 statement
-  : 'let' variable '=' expression
-  | 'const' variable '=' expression
+  : declaration
   | 'fun' variable '(' (variable (',' variable)*)? ')' '=>' block
   | 'if' '(' expression ')' 'then' block 'else' block
   | 'let' '{' declaration* '}' 'in' block
+  | 'print' '(' expression+ ')'  // Ajuste para permitir expresiones dentro de print
   | block
   ;
 
@@ -42,14 +53,6 @@ block: '{' statement* '}' ;
 
 variable: ID;
 
-ID: [a-zA-Z_][a-zA-Z0-9_]*;
 
-NUMBER: [0-9]+;
 
-STRING: '"' ( ~["\\] | '\\' . )* '"';
 
-WS: [ \t\r\n]+ -> skip;
-
-// Comentarios
-LINE_COMMENT: '//' ~[\r\n]* -> skip;
-BLOCK_COMMENT: '/*' .*? '*/' -> skip;
