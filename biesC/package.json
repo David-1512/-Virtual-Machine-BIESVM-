@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Compilador virtual biesVM en Node.js",
   "main": "index.js",
-   "type": "module",
+  "type": "module",
   "scripts": {
     "antlr4": "java -jar ./tools/antlr-4.13.2-complete.jar -no-listener -visitor -Dlanguage=JavaScript -o ./parser/grammar ./grammar/biesC.g4",
     "test": "jest"

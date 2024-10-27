@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';  // Usar promesas para la lectura de archivos
-import Loader from './src/loader.js';
+import Loader from './src/loader/loader.js';
 
 const DEFAULT_FILENAME = './basm/version1.bies';
 
@@ -24,8 +24,8 @@ const readFileAsync = async (filename) => {
 
 
 const executeCode = (data) => {
-    const loader = new Loader(data);
-    console.log(loader);
+    const loader = new Loader();
+    const code = loader.load(data);
 };
 
 
