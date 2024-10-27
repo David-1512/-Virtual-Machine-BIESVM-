@@ -1,2 +1,2 @@
-print(1+5)
-print("Hello World!") 
+let casco = true
+let dolar = null
