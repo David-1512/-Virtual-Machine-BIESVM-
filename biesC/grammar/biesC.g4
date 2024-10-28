@@ -20,7 +20,7 @@ statement
   | 'fun' variable '(' (variable (',' variable)*)? ')' '=>' block
   | 'if' '(' expression ')' 'then' block 'else' block
   | 'let' '{' declaration* '}' 'in' block
-  | 'print' '(' expression+ ')'  // Ajuste para permitir expresiones dentro de print
+  | 'print' '(' expression+ ')'  
   | block
   ;
 
@@ -30,6 +30,7 @@ declaration
 
 expression
   : expression ('+' | '-') expression
+  | 'print' '(' expression+ ')'
   | expression ('*' | '/') expression
   | expression ('==' | '!=' | '>' | '>=' | '<' | '<=') expression
   | '(' expression ')'

@@ -1,44 +1,27 @@
 class Code {
     constructor() {
-        this.statements = [];
-        this.asigments  = new Map();
+        this.blocks = [];
     }
 
-    addAsigments(variable, valor){
-        this.asigments.set(variable, valor);
+    getBlock(){
+        return this.blocks.pop();
     }
 
-    getValorAsigment(variable){
-        return this.asigments.get(variable);
-    }
-
-    existAsigment(variable){
-        return this.asigments.has(variable)
-    } 
-
-    addStatement(statement) {
-        this.statements.push(statement);
-    }
-
-    getStatement() {
-        return this.statements.pop();
+    addBlock(block){
+       this.blocks.push(block);
     }
 
     toString() {
-        /*let str = '';
-        for (const key in this.statements) {
-            if (this.statements.hasOwnProperty(key)) {
-                const statement = this.statements[key];
-                str += `${statement.toString()}\n`;
-            }
-        }
-        return str;*/
         let str = '';
-        for (const [key, value] of this.asigments) {
-           str += `Clave: ${key}, Valor: ${value} \n`;
+        for (const key in this.blocks) {
+            if (this.blocks.hasOwnProperty(key)) {
+                const block = this.blocks[key];
+                str += `${block.toString()}`;
+            }
         }
         return str;
     }
 }
 
 export default Code;
+            
