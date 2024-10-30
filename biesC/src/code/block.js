@@ -1,7 +1,14 @@
 class Block {
-    constructor(id) {
+    constructor(id,parent,argument) {
         this.id = id;
+        this.parent = parent;
+        this.argument = argument;
         this.instruccions = [];
+        this.variables = new Map();
+    }
+
+    getId(){
+        return this.id;
     }
 
     getInstruccion(){
@@ -11,6 +18,23 @@ class Block {
     addInstruccion(instruccion){
        this.instruccions.push(instruccion);
     }
+
+    addVariable(valor){
+        this.variables.set(variables.size, valor);
+    }
+
+    getVariable(variable){
+        return this.variables.get(variable);
+    }
+
+    getKeyByValue(value) {
+        for (let [key, val] of this.variables.entries()) {
+            if (val === value) {
+                return key; 
+            }
+       }
+   }
+  
 
     toString() {
         let str = '';

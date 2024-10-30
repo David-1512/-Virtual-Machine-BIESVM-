@@ -20,9 +20,14 @@ statement
   | 'fun' variable '(' (variable (',' variable)*)? ')' '=>' block
   | 'if' '(' expression ')' 'then' block 'else' block
   | 'let' '{' declaration* '}' 'in' block
-  | 'print' '(' expression+ ')'  
+  | print 
   | block
+  | variable  '(' (expression (',' expression)*)? ')'
   ;
+
+print: 
+'print' '(' expression+ ')' 
+;
 
 declaration
   : 'let' variable '=' expression
@@ -30,7 +35,6 @@ declaration
 
 expression
   : expression ('+' | '-') expression
-  | 'print' '(' expression+ ')'
   | expression ('*' | '/') expression
   | expression ('==' | '!=' | '>' | '>=' | '<' | '<=') expression
   | '(' expression ')'
@@ -45,7 +49,7 @@ expression
   ;
 
 lambda
-  : '(' (variable (',' variable)*)? ')' '=>' block
+  : '(' (variable (',' variable)*)? ')' '=>' statement
   ;
 
 list

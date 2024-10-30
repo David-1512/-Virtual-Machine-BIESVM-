@@ -1,15 +1,15 @@
 class Instruccion {
-    constructor(mnemonic,valor) {
+    constructor(mnemonic,values) {
         this.mnemonic = mnemonic;
-        this.valor = valor;
+        this.values = values;
     }
 
     toString() {
         let str = `${this.mnemonic}`;
-        if (this.valor !== undefined) {
-            str += ` ${this.valor}`;
+        if (this.values && this.values.length > 0) { 
+            str += ` ${this.values.join(', ')}`; 
         }
-        return str += '\n';
+        return str + '\n'; 
     }
 }
 

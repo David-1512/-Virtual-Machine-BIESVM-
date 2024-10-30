@@ -11,6 +11,10 @@ class Code {
        this.blocks.push(block);
     }
 
+    getCantBlocks(){
+        return this.blocks.length;
+    }
+
     toString() {
         let str = '';
         for (const key in this.blocks) {

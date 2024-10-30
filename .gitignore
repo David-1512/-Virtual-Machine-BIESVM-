@@ -1,2 +1,6 @@
 biesC/grammar/.antlr/biesCParser.java
 biesC/grammar/.antlr/biesC.interp
+biesC/grammar/.antlr/biesCParser.java
+biesC/parser/grammar/biesCParser.js
+biesC/parser/grammar/biesCVisitor.js
+biesC/grammar/.antlr/biesC.interp
