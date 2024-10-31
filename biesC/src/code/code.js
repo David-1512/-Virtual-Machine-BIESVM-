@@ -3,12 +3,12 @@ class Code {
         this.blocks = [];
     }
 
+    addBlock(block){
+        this.blocks.push(block);
+     }
+
     getBlock(){
         return this.blocks.pop();
-    }
-
-    addBlock(block){
-       this.blocks.push(block);
     }
 
     getCantBlocks(){
@@ -17,11 +17,8 @@ class Code {
 
     toString() {
         let str = '';
-        for (const key in this.blocks) {
-            if (this.blocks.hasOwnProperty(key)) {
-                const block = this.blocks[key];
-                str += `${block.toString()}`;
-            }
+        for (const block of this.blocks) {
+            str += `${block.toString()}\n`; 
         }
         return str;
     }

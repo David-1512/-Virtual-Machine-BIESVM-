@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';  // Usar promesas para la lectura de archivos
 import Loader from './src/loader/loader.js';
 
-const DEFAULT_FILENAME = './basm/version1.bies';
+const DEFAULT_FILENAME = './basm/version2.bies';
 
 const getFilename = () => 
     process.argv.length >= 3 ? process.argv[2] : DEFAULT_FILENAME;

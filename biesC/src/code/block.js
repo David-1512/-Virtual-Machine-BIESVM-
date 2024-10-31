@@ -1,5 +1,5 @@
 class Block {
-    constructor(id,parent,argument) {
+    constructor(id,argument,parent) {
         this.id = id;
         this.parent = parent;
         this.argument = argument;
@@ -20,7 +20,11 @@ class Block {
     }
 
     addVariable(valor){
-        this.variables.set(variables.size, valor);
+        this.variables.set(this.variables.size, valor);
+    }
+   
+    getCantVariables(){
+        return this.variables.size;
     }
 
     getVariable(variable){
@@ -35,10 +39,10 @@ class Block {
        }
    }
   
-
+  
     toString() {
         let str = '';
-        str += `${this.id}\n`
+        str += `$Fun $${this.id} args:${this.argument} parent:${this.parent} \n`
         for (const key in this.instruccions) {
             if (this.instruccions.hasOwnProperty(key)) {
                 const instruccion = this.instruccions[key];
