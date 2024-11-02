@@ -3,7 +3,8 @@ node_modules/
 
 # Archivos generados por ANTLR4
 grammar/.antlr/
-/parser/grammar/*
+parser/grammar
+biesC/parser/grammar/
 
 # package-lock.json
 package-lock.json
