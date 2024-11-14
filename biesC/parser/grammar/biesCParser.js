@@ -3,66 +3,96 @@
 import antlr4 from 'antlr4';
 import biesCVisitor from './biesCVisitor.js';
 
-const serializedATN = [4,1,38,190,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
+const serializedATN = [4,1,51,290,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,
 4,2,5,7,5,2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,
-2,13,7,13,1,0,1,0,5,0,31,8,0,10,0,12,0,34,9,0,1,0,1,0,1,1,1,1,1,1,3,1,41,
-8,1,1,2,1,2,1,2,1,2,1,2,1,2,5,2,49,8,2,10,2,12,2,52,9,2,3,2,54,8,2,1,2,1,
-2,1,2,4,2,59,8,2,11,2,12,2,60,1,3,1,3,1,3,5,3,66,8,3,10,3,12,3,69,9,3,1,
-3,1,3,1,3,4,3,74,8,3,11,3,12,3,75,1,4,1,4,1,4,1,4,5,4,82,8,4,10,4,12,4,85,
-9,4,3,4,87,8,4,1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,3,5,97,8,5,1,6,1,6,1,6,1,
-6,1,6,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,1,8,1,8,1,8,4,8,115,8,8,11,8,12,8,
-116,1,8,1,8,4,8,121,8,8,11,8,12,8,122,1,9,1,9,1,9,4,9,128,8,9,11,9,12,9,
-129,1,9,1,9,1,10,1,10,1,10,1,10,1,10,5,10,139,8,10,10,10,12,10,142,9,10,
-3,10,144,8,10,1,10,1,10,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,
-1,11,3,11,159,8,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,1,11,5,11,170,
-8,11,10,11,12,11,173,9,11,1,12,1,12,1,12,1,12,5,12,179,8,12,10,12,12,12,
-182,9,12,3,12,184,8,12,1,12,1,12,1,13,1,13,1,13,0,1,22,14,0,2,4,6,8,10,12,
-14,16,18,20,22,24,26,0,3,1,0,15,16,1,0,17,18,1,0,19,24,205,0,32,1,0,0,0,
-2,40,1,0,0,0,4,42,1,0,0,0,6,62,1,0,0,0,8,77,1,0,0,0,10,96,1,0,0,0,12,98,
-1,0,0,0,14,103,1,0,0,0,16,108,1,0,0,0,18,124,1,0,0,0,20,133,1,0,0,0,22,158,
-1,0,0,0,24,174,1,0,0,0,26,187,1,0,0,0,28,31,3,2,1,0,29,31,3,10,5,0,30,28,
-1,0,0,0,30,29,1,0,0,0,31,34,1,0,0,0,32,30,1,0,0,0,32,33,1,0,0,0,33,35,1,
-0,0,0,34,32,1,0,0,0,35,36,5,0,0,1,36,1,1,0,0,0,37,41,3,4,2,0,38,41,3,6,3,
-0,39,41,3,14,7,0,40,37,1,0,0,0,40,38,1,0,0,0,40,39,1,0,0,0,41,3,1,0,0,0,
-42,43,5,1,0,0,43,44,3,26,13,0,44,53,5,2,0,0,45,50,3,26,13,0,46,47,5,3,0,
-0,47,49,3,26,13,0,48,46,1,0,0,0,49,52,1,0,0,0,50,48,1,0,0,0,50,51,1,0,0,
-0,51,54,1,0,0,0,52,50,1,0,0,0,53,45,1,0,0,0,53,54,1,0,0,0,54,55,1,0,0,0,
-55,56,5,4,0,0,56,58,5,5,0,0,57,59,3,10,5,0,58,57,1,0,0,0,59,60,1,0,0,0,60,
-58,1,0,0,0,60,61,1,0,0,0,61,5,1,0,0,0,62,63,5,6,0,0,63,67,5,7,0,0,64,66,
-3,12,6,0,65,64,1,0,0,0,66,69,1,0,0,0,67,65,1,0,0,0,67,68,1,0,0,0,68,70,1,
-0,0,0,69,67,1,0,0,0,70,71,5,8,0,0,71,73,5,9,0,0,72,74,3,10,5,0,73,72,1,0,
-0,0,74,75,1,0,0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,7,1,0,0,0,77,86,5,2,0,0,
-78,83,3,26,13,0,79,80,5,3,0,0,80,82,3,26,13,0,81,79,1,0,0,0,82,85,1,0,0,
-0,83,81,1,0,0,0,83,84,1,0,0,0,84,87,1,0,0,0,85,83,1,0,0,0,86,78,1,0,0,0,
-86,87,1,0,0,0,87,88,1,0,0,0,88,89,5,4,0,0,89,90,5,5,0,0,90,91,3,18,9,0,91,
-9,1,0,0,0,92,97,3,12,6,0,93,97,3,16,8,0,94,97,3,18,9,0,95,97,3,20,10,0,96,
-92,1,0,0,0,96,93,1,0,0,0,96,94,1,0,0,0,96,95,1,0,0,0,97,11,1,0,0,0,98,99,
-5,6,0,0,99,100,3,26,13,0,100,101,5,10,0,0,101,102,3,22,11,0,102,13,1,0,0,
-0,103,104,5,6,0,0,104,105,3,26,13,0,105,106,5,10,0,0,106,107,3,8,4,0,107,
-15,1,0,0,0,108,109,5,11,0,0,109,110,5,2,0,0,110,111,3,22,11,0,111,112,5,
-4,0,0,112,114,5,12,0,0,113,115,3,10,5,0,114,113,1,0,0,0,115,116,1,0,0,0,
-116,114,1,0,0,0,116,117,1,0,0,0,117,118,1,0,0,0,118,120,5,13,0,0,119,121,
-3,10,5,0,120,119,1,0,0,0,121,122,1,0,0,0,122,120,1,0,0,0,122,123,1,0,0,0,
-123,17,1,0,0,0,124,125,5,14,0,0,125,127,5,2,0,0,126,128,3,22,11,0,127,126,
-1,0,0,0,128,129,1,0,0,0,129,127,1,0,0,0,129,130,1,0,0,0,130,131,1,0,0,0,
-131,132,5,4,0,0,132,19,1,0,0,0,133,134,3,26,13,0,134,143,5,2,0,0,135,140,
-3,22,11,0,136,137,5,3,0,0,137,139,3,22,11,0,138,136,1,0,0,0,139,142,1,0,
-0,0,140,138,1,0,0,0,140,141,1,0,0,0,141,144,1,0,0,0,142,140,1,0,0,0,143,
-135,1,0,0,0,143,144,1,0,0,0,144,145,1,0,0,0,145,146,5,4,0,0,146,21,1,0,0,
-0,147,148,6,11,-1,0,148,159,5,29,0,0,149,159,5,34,0,0,150,159,5,30,0,0,151,
-159,5,25,0,0,152,153,5,26,0,0,153,154,5,2,0,0,154,155,5,34,0,0,155,159,5,
-4,0,0,156,159,3,26,13,0,157,159,3,24,12,0,158,147,1,0,0,0,158,149,1,0,0,
-0,158,150,1,0,0,0,158,151,1,0,0,0,158,152,1,0,0,0,158,156,1,0,0,0,158,157,
-1,0,0,0,159,171,1,0,0,0,160,161,10,10,0,0,161,162,7,0,0,0,162,170,3,22,11,
-11,163,164,10,9,0,0,164,165,7,1,0,0,165,170,3,22,11,10,166,167,10,8,0,0,
-167,168,7,2,0,0,168,170,3,22,11,9,169,160,1,0,0,0,169,163,1,0,0,0,169,166,
-1,0,0,0,170,173,1,0,0,0,171,169,1,0,0,0,171,172,1,0,0,0,172,23,1,0,0,0,173,
-171,1,0,0,0,174,183,5,27,0,0,175,180,3,22,11,0,176,177,5,3,0,0,177,179,3,
-22,11,0,178,176,1,0,0,0,179,182,1,0,0,0,180,178,1,0,0,0,180,181,1,0,0,0,
-181,184,1,0,0,0,182,180,1,0,0,0,183,175,1,0,0,0,183,184,1,0,0,0,184,185,
-1,0,0,0,185,186,5,28,0,0,186,25,1,0,0,0,187,188,5,38,0,0,188,27,1,0,0,0,
-21,30,32,40,50,53,60,67,75,83,86,96,116,122,129,140,143,158,169,171,180,
-183];
+2,13,7,13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,
+20,7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,2,27,
+7,27,2,28,7,28,2,29,7,29,2,30,7,30,1,0,5,0,64,8,0,10,0,12,0,67,9,0,1,0,1,
+0,1,1,1,1,3,1,73,8,1,1,2,1,2,1,2,1,2,3,2,79,8,2,1,3,1,3,1,3,1,3,1,3,1,4,
+1,4,1,4,1,4,1,4,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,7,1,7,1,8,1,8,
+1,8,5,8,106,8,8,10,8,12,8,109,9,8,1,9,1,9,1,9,5,9,114,8,9,10,9,12,9,117,
+9,9,1,10,1,10,1,10,5,10,122,8,10,10,10,12,10,125,9,10,1,11,1,11,1,11,5,11,
+130,8,11,10,11,12,11,133,9,11,1,12,1,12,1,12,5,12,138,8,12,10,12,12,12,141,
+9,12,1,13,1,13,1,13,5,13,146,8,13,10,13,12,13,149,9,13,1,14,1,14,1,14,5,
+14,154,8,14,10,14,12,14,157,9,14,1,15,1,15,1,15,3,15,162,8,15,1,16,1,16,
+1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,3,16,175,8,16,1,17,1,17,1,18,
+1,18,1,18,3,18,182,8,18,1,18,1,18,1,18,3,18,187,8,18,1,18,5,18,190,8,18,
+10,18,12,18,193,9,18,1,19,1,19,1,19,5,19,198,8,19,10,19,12,19,201,9,19,1,
+20,1,20,1,20,1,20,5,20,207,8,20,10,20,12,20,210,9,20,3,20,212,8,20,1,20,
+1,20,3,20,216,8,20,1,21,1,21,1,21,1,21,5,21,222,8,21,10,21,12,21,225,9,21,
+3,21,227,8,21,1,21,1,21,1,22,1,22,1,22,1,22,1,22,1,23,1,23,1,23,1,23,1,23,
+1,23,1,23,1,23,1,24,3,24,245,8,24,1,24,1,24,1,25,1,25,1,26,1,26,1,26,1,26,
+1,26,1,27,1,27,1,27,1,27,5,27,260,8,27,10,27,12,27,263,9,27,1,27,1,27,1,
+28,1,28,5,28,269,8,28,10,28,12,28,272,9,28,1,28,1,28,3,28,276,8,28,1,29,
+1,29,1,29,1,29,1,29,3,29,283,8,29,1,30,1,30,1,30,1,30,1,30,1,30,0,0,31,0,
+2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,
+54,56,58,60,0,7,1,0,4,5,1,0,6,9,1,0,10,11,1,0,12,13,2,0,11,11,15,15,3,0,
+33,33,42,43,47,48,1,0,34,40,294,0,65,1,0,0,0,2,72,1,0,0,0,4,78,1,0,0,0,6,
+80,1,0,0,0,8,85,1,0,0,0,10,90,1,0,0,0,12,95,1,0,0,0,14,100,1,0,0,0,16,102,
+1,0,0,0,18,110,1,0,0,0,20,118,1,0,0,0,22,126,1,0,0,0,24,134,1,0,0,0,26,142,
+1,0,0,0,28,150,1,0,0,0,30,161,1,0,0,0,32,174,1,0,0,0,34,176,1,0,0,0,36,178,
+1,0,0,0,38,194,1,0,0,0,40,215,1,0,0,0,42,217,1,0,0,0,44,230,1,0,0,0,46,235,
+1,0,0,0,48,244,1,0,0,0,50,248,1,0,0,0,52,250,1,0,0,0,54,255,1,0,0,0,56,275,
+1,0,0,0,58,282,1,0,0,0,60,284,1,0,0,0,62,64,3,2,1,0,63,62,1,0,0,0,64,67,
+1,0,0,0,65,63,1,0,0,0,65,66,1,0,0,0,66,68,1,0,0,0,67,65,1,0,0,0,68,69,5,
+0,0,1,69,1,1,0,0,0,70,73,3,4,2,0,71,73,3,14,7,0,72,70,1,0,0,0,72,71,1,0,
+0,0,73,3,1,0,0,0,74,79,3,6,3,0,75,79,3,8,4,0,76,79,3,10,5,0,77,79,3,12,6,
+0,78,74,1,0,0,0,78,75,1,0,0,0,78,76,1,0,0,0,78,77,1,0,0,0,79,5,1,0,0,0,80,
+81,5,23,0,0,81,82,5,48,0,0,82,83,5,1,0,0,83,84,3,14,7,0,84,7,1,0,0,0,85,
+86,5,24,0,0,86,87,5,48,0,0,87,88,5,1,0,0,88,89,3,14,7,0,89,9,1,0,0,0,90,
+91,5,26,0,0,91,92,5,48,0,0,92,93,5,1,0,0,93,94,3,14,7,0,94,11,1,0,0,0,95,
+96,5,25,0,0,96,97,5,48,0,0,97,98,5,1,0,0,98,99,3,58,29,0,99,13,1,0,0,0,100,
+101,3,16,8,0,101,15,1,0,0,0,102,107,3,18,9,0,103,104,5,2,0,0,104,106,3,18,
+9,0,105,103,1,0,0,0,106,109,1,0,0,0,107,105,1,0,0,0,107,108,1,0,0,0,108,
+17,1,0,0,0,109,107,1,0,0,0,110,115,3,20,10,0,111,112,5,3,0,0,112,114,3,20,
+10,0,113,111,1,0,0,0,114,117,1,0,0,0,115,113,1,0,0,0,115,116,1,0,0,0,116,
+19,1,0,0,0,117,115,1,0,0,0,118,123,3,22,11,0,119,120,7,0,0,0,120,122,3,22,
+11,0,121,119,1,0,0,0,122,125,1,0,0,0,123,121,1,0,0,0,123,124,1,0,0,0,124,
+21,1,0,0,0,125,123,1,0,0,0,126,131,3,24,12,0,127,128,7,1,0,0,128,130,3,24,
+12,0,129,127,1,0,0,0,130,133,1,0,0,0,131,129,1,0,0,0,131,132,1,0,0,0,132,
+23,1,0,0,0,133,131,1,0,0,0,134,139,3,26,13,0,135,136,7,2,0,0,136,138,3,26,
+13,0,137,135,1,0,0,0,138,141,1,0,0,0,139,137,1,0,0,0,139,140,1,0,0,0,140,
+25,1,0,0,0,141,139,1,0,0,0,142,147,3,28,14,0,143,144,7,3,0,0,144,146,3,28,
+14,0,145,143,1,0,0,0,146,149,1,0,0,0,147,145,1,0,0,0,147,148,1,0,0,0,148,
+27,1,0,0,0,149,147,1,0,0,0,150,155,3,30,15,0,151,152,5,14,0,0,152,154,3,
+30,15,0,153,151,1,0,0,0,154,157,1,0,0,0,155,153,1,0,0,0,155,156,1,0,0,0,
+156,29,1,0,0,0,157,155,1,0,0,0,158,159,7,4,0,0,159,162,3,30,15,0,160,162,
+3,32,16,0,161,158,1,0,0,0,161,160,1,0,0,0,162,31,1,0,0,0,163,175,3,34,17,
+0,164,175,3,42,21,0,165,166,5,16,0,0,166,167,3,14,7,0,167,168,5,17,0,0,168,
+175,1,0,0,0,169,175,3,36,18,0,170,175,3,44,22,0,171,175,3,46,23,0,172,175,
+3,58,29,0,173,175,3,60,30,0,174,163,1,0,0,0,174,164,1,0,0,0,174,165,1,0,
+0,0,174,169,1,0,0,0,174,170,1,0,0,0,174,171,1,0,0,0,174,172,1,0,0,0,174,
+173,1,0,0,0,175,33,1,0,0,0,176,177,7,5,0,0,177,35,1,0,0,0,178,179,5,48,0,
+0,179,181,5,16,0,0,180,182,3,38,19,0,181,180,1,0,0,0,181,182,1,0,0,0,182,
+183,1,0,0,0,183,191,5,17,0,0,184,186,5,16,0,0,185,187,3,38,19,0,186,185,
+1,0,0,0,186,187,1,0,0,0,187,188,1,0,0,0,188,190,5,17,0,0,189,184,1,0,0,0,
+190,193,1,0,0,0,191,189,1,0,0,0,191,192,1,0,0,0,192,37,1,0,0,0,193,191,1,
+0,0,0,194,199,3,14,7,0,195,196,5,18,0,0,196,198,3,14,7,0,197,195,1,0,0,0,
+198,201,1,0,0,0,199,197,1,0,0,0,199,200,1,0,0,0,200,39,1,0,0,0,201,199,1,
+0,0,0,202,211,5,16,0,0,203,208,5,48,0,0,204,205,5,18,0,0,205,207,5,48,0,
+0,206,204,1,0,0,0,207,210,1,0,0,0,208,206,1,0,0,0,208,209,1,0,0,0,209,212,
+1,0,0,0,210,208,1,0,0,0,211,203,1,0,0,0,211,212,1,0,0,0,212,213,1,0,0,0,
+213,216,5,17,0,0,214,216,5,48,0,0,215,202,1,0,0,0,215,214,1,0,0,0,216,41,
+1,0,0,0,217,226,5,19,0,0,218,223,3,14,7,0,219,220,5,18,0,0,220,222,3,14,
+7,0,221,219,1,0,0,0,222,225,1,0,0,0,223,221,1,0,0,0,223,224,1,0,0,0,224,
+227,1,0,0,0,225,223,1,0,0,0,226,218,1,0,0,0,226,227,1,0,0,0,227,228,1,0,
+0,0,228,229,5,20,0,0,229,43,1,0,0,0,230,231,5,48,0,0,231,232,5,19,0,0,232,
+233,3,14,7,0,233,234,5,20,0,0,234,45,1,0,0,0,235,236,5,28,0,0,236,237,5,
+16,0,0,237,238,3,14,7,0,238,239,5,17,0,0,239,240,3,48,24,0,240,241,5,30,
+0,0,241,242,3,50,25,0,242,47,1,0,0,0,243,245,5,29,0,0,244,243,1,0,0,0,244,
+245,1,0,0,0,245,246,1,0,0,0,246,247,3,56,28,0,247,49,1,0,0,0,248,249,3,56,
+28,0,249,51,1,0,0,0,250,251,5,26,0,0,251,252,3,54,27,0,252,253,5,27,0,0,
+253,254,3,56,28,0,254,53,1,0,0,0,255,261,5,21,0,0,256,260,3,6,3,0,257,260,
+3,8,4,0,258,260,3,52,26,0,259,256,1,0,0,0,259,257,1,0,0,0,259,258,1,0,0,
+0,260,263,1,0,0,0,261,259,1,0,0,0,261,262,1,0,0,0,262,264,1,0,0,0,263,261,
+1,0,0,0,264,265,5,22,0,0,265,55,1,0,0,0,266,270,5,21,0,0,267,269,3,2,1,0,
+268,267,1,0,0,0,269,272,1,0,0,0,270,268,1,0,0,0,270,271,1,0,0,0,271,273,
+1,0,0,0,272,270,1,0,0,0,273,276,5,22,0,0,274,276,3,14,7,0,275,266,1,0,0,
+0,275,274,1,0,0,0,276,57,1,0,0,0,277,278,3,40,20,0,278,279,5,41,0,0,279,
+280,3,56,28,0,280,283,1,0,0,0,281,283,3,52,26,0,282,277,1,0,0,0,282,281,
+1,0,0,0,283,59,1,0,0,0,284,285,7,6,0,0,285,286,5,16,0,0,286,287,3,14,7,0,
+287,288,5,17,0,0,288,61,1,0,0,0,27,65,72,78,107,115,123,131,139,147,155,
+161,174,181,186,191,199,208,211,215,223,226,244,259,261,270,275,282];
 
 
 const atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -74,21 +104,32 @@ const sharedContextCache = new antlr4.atn.PredictionContextCache();
 export default class biesCParser extends antlr4.Parser {
 
     static grammarFileName = "biesC.g4";
-    static literalNames = [ null, "'fun'", "'('", "','", "')'", "'=>'", 
-                            "'let'", "'{'", "'}'", "'in'", "'='", "'if'", 
-                            "'then'", "'else'", "'print'", "'+'", "'-'", 
-                            "'*'", "'/'", "'=='", "'!='", "'>'", "'>='", 
-                            "'<'", "'<='", "'null'", "'input'", "'['", "']'" ];
+    static literalNames = [ null, "'='", "'||'", "'&&'", "'=='", "'!='", 
+                            "'>'", "'>='", "'<'", "'<='", "'+'", "'-'", 
+                            "'*'", "'/'", "'**'", "'!'", "'('", "')'", "','", 
+                            "'['", "']'", "'{'", "'}'", "'const'", "'var'", 
+                            "'fun'", "'let'", "'in'", "'if'", "'then'", 
+                            "'else'", "'true'", "'false'", "'null'", "'print'", 
+                            "'input'", "'len'", "'int'", "'str'", "'bool'", 
+                            "'list'", "'=>'" ];
     static symbolicNames = [ null, null, null, null, null, null, null, null, 
                              null, null, null, null, null, null, null, null, 
-                             null, null, null, null, null, null, null, null, 
-                             null, null, null, null, null, "NUMBER", "BOOLEAN", 
-                             "INT", "FLOAT", "SCI", "STRING", "WS", "LC", 
-                             "BC", "ID" ];
-    static ruleNames = [ "program", "block", "function", "let_in", "lambda", 
-                         "instruction", "declaration_expression", "declaration_lambna", 
-                         "condicional", "print", "call_variable", "expression", 
-                         "list", "variable" ];
+                             null, null, null, null, null, null, null, "CONST", 
+                             "VAR", "FUN", "LET", "IN", "IF", "THEN", "ELSE", 
+                             "TRUE", "FALSE", "NULL", "PRINT", "INPUT", 
+                             "LEN", "INT", "STR", "BOOL", "LIST", "ARROW", 
+                             "NUMBER", "BOOLEAN", "INTEGER", "FLOAT", "SCI", 
+                             "STRING", "ID", "LC", "BC", "WS" ];
+    static ruleNames = [ "program", "statement", "declaration", "constDeclaration", 
+                         "varDeclaration", "letDeclaration", "funDeclaration", 
+                         "expression", "logicalOrExpression", "logicalAndExpression", 
+                         "equalityExpression", "relationalExpression", "additiveExpression", 
+                         "multiplicativeExpression", "exponentialExpression", 
+                         "unaryExpression", "primaryExpression", "literal", 
+                         "functionCallChain", "argumentList", "params", 
+                         "list", "listAccess", "ifExpression", "thenExpr", 
+                         "elseExpr", "letInDeclaration", "blockDeclaration", 
+                         "blockExpression", "lambda", "builtinFunction" ];
 
     constructor(input) {
         super(input);
@@ -98,29 +139,6 @@ export default class biesCParser extends antlr4.Parser {
         this.symbolicNames = biesCParser.symbolicNames;
     }
 
-    sempred(localctx, ruleIndex, predIndex) {
-    	switch(ruleIndex) {
-    	case 11:
-    	    		return this.expression_sempred(localctx, predIndex);
-        default:
-            throw "No predicate with index:" + ruleIndex;
-       }
-    }
-
-    expression_sempred(localctx, predIndex) {
-    	switch(predIndex) {
-    		case 0:
-    			return this.precpred(this._ctx, 10);
-    		case 1:
-    			return this.precpred(this._ctx, 9);
-    		case 2:
-    			return this.precpred(this._ctx, 8);
-    		default:
-    			throw "No predicate with index:" + predIndex;
-    	}
-    };
-
-
 
 
 	program() {
@@ -129,30 +147,17 @@ export default class biesCParser extends antlr4.Parser {
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 32;
+	        this.state = 65;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        while((((_la) & ~0x1f) === 0 && ((1 << _la) & 18498) !== 0) || _la===38) {
-	            this.state = 30;
-	            this._errHandler.sync(this);
-	            var la_ = this._interp.adaptivePredict(this._input,0,this._ctx);
-	            switch(la_) {
-	            case 1:
-	                this.state = 28;
-	                this.block();
-	                break;
-
-	            case 2:
-	                this.state = 29;
-	                this.instruction();
-	                break;
-
-	            }
-	            this.state = 34;
+	        while((((_la) & ~0x1f) === 0 && ((1 << _la) & 394889216) !== 0) || ((((_la - 33)) & ~0x1f) === 0 && ((1 << (_la - 33)) & 50943) !== 0)) {
+	            this.state = 62;
+	            this.statement();
+	            this.state = 67;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
-	        this.state = 35;
+	        this.state = 68;
 	        this.match(biesCParser.EOF);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
@@ -170,30 +175,24 @@ export default class biesCParser extends antlr4.Parser {
 
 
 
-	block() {
-	    let localctx = new BlockContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 2, biesCParser.RULE_block);
+	statement() {
+	    let localctx = new StatementContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 2, biesCParser.RULE_statement);
 	    try {
-	        this.state = 40;
+	        this.state = 72;
 	        this._errHandler.sync(this);
-	        var la_ = this._interp.adaptivePredict(this._input,2,this._ctx);
+	        var la_ = this._interp.adaptivePredict(this._input,1,this._ctx);
 	        switch(la_) {
 	        case 1:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 37;
-	            this.function_();
+	            this.state = 70;
+	            this.declaration();
 	            break;
 
 	        case 2:
 	            this.enterOuterAlt(localctx, 2);
-	            this.state = 38;
-	            this.let_in();
-	            break;
-
-	        case 3:
-	            this.enterOuterAlt(localctx, 3);
-	            this.state = 39;
-	            this.declaration_lambna();
+	            this.state = 71;
+	            this.expression();
 	            break;
 
 	        }
@@ -213,58 +212,843 @@ export default class biesCParser extends antlr4.Parser {
 
 
 
-	function_() {
-	    let localctx = new FunctionContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 4, biesCParser.RULE_function);
+	declaration() {
+	    let localctx = new DeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 4, biesCParser.RULE_declaration);
+	    try {
+	        this.state = 78;
+	        this._errHandler.sync(this);
+	        switch(this._input.LA(1)) {
+	        case 23:
+	            this.enterOuterAlt(localctx, 1);
+	            this.state = 74;
+	            this.constDeclaration();
+	            break;
+	        case 24:
+	            this.enterOuterAlt(localctx, 2);
+	            this.state = 75;
+	            this.varDeclaration();
+	            break;
+	        case 26:
+	            this.enterOuterAlt(localctx, 3);
+	            this.state = 76;
+	            this.letDeclaration();
+	            break;
+	        case 25:
+	            this.enterOuterAlt(localctx, 4);
+	            this.state = 77;
+	            this.funDeclaration();
+	            break;
+	        default:
+	            throw new antlr4.error.NoViableAltException(this);
+	        }
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	constDeclaration() {
+	    let localctx = new ConstDeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 6, biesCParser.RULE_constDeclaration);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 80;
+	        this.match(biesCParser.CONST);
+	        this.state = 81;
+	        this.match(biesCParser.ID);
+	        this.state = 82;
+	        this.match(biesCParser.T__0);
+	        this.state = 83;
+	        this.expression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	varDeclaration() {
+	    let localctx = new VarDeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 8, biesCParser.RULE_varDeclaration);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 85;
+	        this.match(biesCParser.VAR);
+	        this.state = 86;
+	        this.match(biesCParser.ID);
+	        this.state = 87;
+	        this.match(biesCParser.T__0);
+	        this.state = 88;
+	        this.expression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	letDeclaration() {
+	    let localctx = new LetDeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 10, biesCParser.RULE_letDeclaration);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 90;
+	        this.match(biesCParser.LET);
+	        this.state = 91;
+	        this.match(biesCParser.ID);
+	        this.state = 92;
+	        this.match(biesCParser.T__0);
+	        this.state = 93;
+	        this.expression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	funDeclaration() {
+	    let localctx = new FunDeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 12, biesCParser.RULE_funDeclaration);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 95;
+	        this.match(biesCParser.FUN);
+	        this.state = 96;
+	        this.match(biesCParser.ID);
+	        this.state = 97;
+	        this.match(biesCParser.T__0);
+	        this.state = 98;
+	        this.lambda();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	expression() {
+	    let localctx = new ExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 14, biesCParser.RULE_expression);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 100;
+	        this.logicalOrExpression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	logicalOrExpression() {
+	    let localctx = new LogicalOrExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 16, biesCParser.RULE_logicalOrExpression);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 102;
+	        this.logicalAndExpression();
+	        this.state = 107;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,3,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 103;
+	                this.match(biesCParser.T__1);
+	                this.state = 104;
+	                this.logicalAndExpression(); 
+	            }
+	            this.state = 109;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,3,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	logicalAndExpression() {
+	    let localctx = new LogicalAndExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 18, biesCParser.RULE_logicalAndExpression);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 110;
+	        this.equalityExpression();
+	        this.state = 115;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,4,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 111;
+	                this.match(biesCParser.T__2);
+	                this.state = 112;
+	                this.equalityExpression(); 
+	            }
+	            this.state = 117;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,4,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	equalityExpression() {
+	    let localctx = new EqualityExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 20, biesCParser.RULE_equalityExpression);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 42;
-	        this.match(biesCParser.T__0);
-	        this.state = 43;
-	        this.variable();
-	        this.state = 44;
-	        this.match(biesCParser.T__1);
-	        this.state = 53;
+	        this.state = 118;
+	        this.relationalExpression();
+	        this.state = 123;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,5,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 119;
+	                _la = this._input.LA(1);
+	                if(!(_la===4 || _la===5)) {
+	                this._errHandler.recoverInline(this);
+	                }
+	                else {
+	                	this._errHandler.reportMatch(this);
+	                    this.consume();
+	                }
+	                this.state = 120;
+	                this.relationalExpression(); 
+	            }
+	            this.state = 125;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,5,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	relationalExpression() {
+	    let localctx = new RelationalExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 22, biesCParser.RULE_relationalExpression);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 126;
+	        this.additiveExpression();
+	        this.state = 131;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,6,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 127;
+	                _la = this._input.LA(1);
+	                if(!((((_la) & ~0x1f) === 0 && ((1 << _la) & 960) !== 0))) {
+	                this._errHandler.recoverInline(this);
+	                }
+	                else {
+	                	this._errHandler.reportMatch(this);
+	                    this.consume();
+	                }
+	                this.state = 128;
+	                this.additiveExpression(); 
+	            }
+	            this.state = 133;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,6,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	additiveExpression() {
+	    let localctx = new AdditiveExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 24, biesCParser.RULE_additiveExpression);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 134;
+	        this.multiplicativeExpression();
+	        this.state = 139;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,7,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 135;
+	                _la = this._input.LA(1);
+	                if(!(_la===10 || _la===11)) {
+	                this._errHandler.recoverInline(this);
+	                }
+	                else {
+	                	this._errHandler.reportMatch(this);
+	                    this.consume();
+	                }
+	                this.state = 136;
+	                this.multiplicativeExpression(); 
+	            }
+	            this.state = 141;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,7,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	multiplicativeExpression() {
+	    let localctx = new MultiplicativeExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 26, biesCParser.RULE_multiplicativeExpression);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 142;
+	        this.exponentialExpression();
+	        this.state = 147;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,8,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 143;
+	                _la = this._input.LA(1);
+	                if(!(_la===12 || _la===13)) {
+	                this._errHandler.recoverInline(this);
+	                }
+	                else {
+	                	this._errHandler.reportMatch(this);
+	                    this.consume();
+	                }
+	                this.state = 144;
+	                this.exponentialExpression(); 
+	            }
+	            this.state = 149;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,8,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	exponentialExpression() {
+	    let localctx = new ExponentialExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 28, biesCParser.RULE_exponentialExpression);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 150;
+	        this.unaryExpression();
+	        this.state = 155;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,9,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 151;
+	                this.match(biesCParser.T__13);
+	                this.state = 152;
+	                this.unaryExpression(); 
+	            }
+	            this.state = 157;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,9,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	unaryExpression() {
+	    let localctx = new UnaryExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 30, biesCParser.RULE_unaryExpression);
+	    var _la = 0;
+	    try {
+	        this.state = 161;
+	        this._errHandler.sync(this);
+	        switch(this._input.LA(1)) {
+	        case 11:
+	        case 15:
+	            this.enterOuterAlt(localctx, 1);
+	            this.state = 158;
+	            _la = this._input.LA(1);
+	            if(!(_la===11 || _la===15)) {
+	            this._errHandler.recoverInline(this);
+	            }
+	            else {
+	            	this._errHandler.reportMatch(this);
+	                this.consume();
+	            }
+	            this.state = 159;
+	            this.unaryExpression();
+	            break;
+	        case 16:
+	        case 19:
+	        case 26:
+	        case 28:
+	        case 33:
+	        case 34:
+	        case 35:
+	        case 36:
+	        case 37:
+	        case 38:
+	        case 39:
+	        case 40:
+	        case 42:
+	        case 43:
+	        case 47:
+	        case 48:
+	            this.enterOuterAlt(localctx, 2);
+	            this.state = 160;
+	            this.primaryExpression();
+	            break;
+	        default:
+	            throw new antlr4.error.NoViableAltException(this);
+	        }
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	primaryExpression() {
+	    let localctx = new PrimaryExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 32, biesCParser.RULE_primaryExpression);
+	    try {
+	        this.state = 174;
+	        this._errHandler.sync(this);
+	        var la_ = this._interp.adaptivePredict(this._input,11,this._ctx);
+	        switch(la_) {
+	        case 1:
+	            this.enterOuterAlt(localctx, 1);
+	            this.state = 163;
+	            this.literal();
+	            break;
+
+	        case 2:
+	            this.enterOuterAlt(localctx, 2);
+	            this.state = 164;
+	            this.list();
+	            break;
+
+	        case 3:
+	            this.enterOuterAlt(localctx, 3);
+	            this.state = 165;
+	            this.match(biesCParser.T__15);
+	            this.state = 166;
+	            this.expression();
+	            this.state = 167;
+	            this.match(biesCParser.T__16);
+	            break;
+
+	        case 4:
+	            this.enterOuterAlt(localctx, 4);
+	            this.state = 169;
+	            this.functionCallChain();
+	            break;
+
+	        case 5:
+	            this.enterOuterAlt(localctx, 5);
+	            this.state = 170;
+	            this.listAccess();
+	            break;
+
+	        case 6:
+	            this.enterOuterAlt(localctx, 6);
+	            this.state = 171;
+	            this.ifExpression();
+	            break;
+
+	        case 7:
+	            this.enterOuterAlt(localctx, 7);
+	            this.state = 172;
+	            this.lambda();
+	            break;
+
+	        case 8:
+	            this.enterOuterAlt(localctx, 8);
+	            this.state = 173;
+	            this.builtinFunction();
+	            break;
+
+	        }
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	literal() {
+	    let localctx = new LiteralContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 34, biesCParser.RULE_literal);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 176;
+	        _la = this._input.LA(1);
+	        if(!(((((_la - 33)) & ~0x1f) === 0 && ((1 << (_la - 33)) & 50689) !== 0))) {
+	        this._errHandler.recoverInline(this);
+	        }
+	        else {
+	        	this._errHandler.reportMatch(this);
+	            this.consume();
+	        }
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	functionCallChain() {
+	    let localctx = new FunctionCallChainContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 36, biesCParser.RULE_functionCallChain);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 178;
+	        this.match(biesCParser.ID);
+	        this.state = 179;
+	        this.match(biesCParser.T__15);
+	        this.state = 181;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        if(_la===38) {
-	            this.state = 45;
-	            this.variable();
-	            this.state = 50;
+	        if((((_la) & ~0x1f) === 0 && ((1 << _la) & 336168960) !== 0) || ((((_la - 33)) & ~0x1f) === 0 && ((1 << (_la - 33)) & 50943) !== 0)) {
+	            this.state = 180;
+	            this.argumentList();
+	        }
+
+	        this.state = 183;
+	        this.match(biesCParser.T__16);
+	        this.state = 191;
+	        this._errHandler.sync(this);
+	        var _alt = this._interp.adaptivePredict(this._input,14,this._ctx)
+	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
+	            if(_alt===1) {
+	                this.state = 184;
+	                this.match(biesCParser.T__15);
+	                this.state = 186;
+	                this._errHandler.sync(this);
+	                _la = this._input.LA(1);
+	                if((((_la) & ~0x1f) === 0 && ((1 << _la) & 336168960) !== 0) || ((((_la - 33)) & ~0x1f) === 0 && ((1 << (_la - 33)) & 50943) !== 0)) {
+	                    this.state = 185;
+	                    this.argumentList();
+	                }
+
+	                this.state = 188;
+	                this.match(biesCParser.T__16); 
+	            }
+	            this.state = 193;
+	            this._errHandler.sync(this);
+	            _alt = this._interp.adaptivePredict(this._input,14,this._ctx);
+	        }
+
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	argumentList() {
+	    let localctx = new ArgumentListContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 38, biesCParser.RULE_argumentList);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 194;
+	        this.expression();
+	        this.state = 199;
+	        this._errHandler.sync(this);
+	        _la = this._input.LA(1);
+	        while(_la===18) {
+	            this.state = 195;
+	            this.match(biesCParser.T__17);
+	            this.state = 196;
+	            this.expression();
+	            this.state = 201;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
-	            while(_la===3) {
-	                this.state = 46;
-	                this.match(biesCParser.T__2);
-	                this.state = 47;
-	                this.variable();
-	                this.state = 52;
+	        }
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	params() {
+	    let localctx = new ParamsContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 40, biesCParser.RULE_params);
+	    var _la = 0;
+	    try {
+	        this.state = 215;
+	        this._errHandler.sync(this);
+	        switch(this._input.LA(1)) {
+	        case 16:
+	            this.enterOuterAlt(localctx, 1);
+	            this.state = 202;
+	            this.match(biesCParser.T__15);
+	            this.state = 211;
+	            this._errHandler.sync(this);
+	            _la = this._input.LA(1);
+	            if(_la===48) {
+	                this.state = 203;
+	                this.match(biesCParser.ID);
+	                this.state = 208;
+	                this._errHandler.sync(this);
+	                _la = this._input.LA(1);
+	                while(_la===18) {
+	                    this.state = 204;
+	                    this.match(biesCParser.T__17);
+	                    this.state = 205;
+	                    this.match(biesCParser.ID);
+	                    this.state = 210;
+	                    this._errHandler.sync(this);
+	                    _la = this._input.LA(1);
+	                }
+	            }
+
+	            this.state = 213;
+	            this.match(biesCParser.T__16);
+	            break;
+	        case 48:
+	            this.enterOuterAlt(localctx, 2);
+	            this.state = 214;
+	            this.match(biesCParser.ID);
+	            break;
+	        default:
+	            throw new antlr4.error.NoViableAltException(this);
+	        }
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	list() {
+	    let localctx = new ListContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 42, biesCParser.RULE_list);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 217;
+	        this.match(biesCParser.T__18);
+	        this.state = 226;
+	        this._errHandler.sync(this);
+	        _la = this._input.LA(1);
+	        if((((_la) & ~0x1f) === 0 && ((1 << _la) & 336168960) !== 0) || ((((_la - 33)) & ~0x1f) === 0 && ((1 << (_la - 33)) & 50943) !== 0)) {
+	            this.state = 218;
+	            this.expression();
+	            this.state = 223;
+	            this._errHandler.sync(this);
+	            _la = this._input.LA(1);
+	            while(_la===18) {
+	                this.state = 219;
+	                this.match(biesCParser.T__17);
+	                this.state = 220;
+	                this.expression();
+	                this.state = 225;
 	                this._errHandler.sync(this);
 	                _la = this._input.LA(1);
 	            }
 	        }
 
-	        this.state = 55;
-	        this.match(biesCParser.T__3);
-	        this.state = 56;
-	        this.match(biesCParser.T__4);
-	        this.state = 58; 
-	        this._errHandler.sync(this);
-	        var _alt = 1;
-	        do {
-	        	switch (_alt) {
-	        	case 1:
-	        		this.state = 57;
-	        		this.instruction();
-	        		break;
-	        	default:
-	        		throw new antlr4.error.NoViableAltException(this);
-	        	}
-	        	this.state = 60; 
-	        	this._errHandler.sync(this);
-	        	_alt = this._interp.adaptivePredict(this._input,5, this._ctx);
-	        } while ( _alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER );
+	        this.state = 228;
+	        this.match(biesCParser.T__19);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -281,46 +1065,256 @@ export default class biesCParser extends antlr4.Parser {
 
 
 
-	let_in() {
-	    let localctx = new Let_inContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 6, biesCParser.RULE_let_in);
+	listAccess() {
+	    let localctx = new ListAccessContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 44, biesCParser.RULE_listAccess);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 230;
+	        this.match(biesCParser.ID);
+	        this.state = 231;
+	        this.match(biesCParser.T__18);
+	        this.state = 232;
+	        this.expression();
+	        this.state = 233;
+	        this.match(biesCParser.T__19);
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	ifExpression() {
+	    let localctx = new IfExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 46, biesCParser.RULE_ifExpression);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 235;
+	        this.match(biesCParser.IF);
+	        this.state = 236;
+	        this.match(biesCParser.T__15);
+	        this.state = 237;
+	        this.expression();
+	        this.state = 238;
+	        this.match(biesCParser.T__16);
+	        this.state = 239;
+	        this.thenExpr();
+	        this.state = 240;
+	        this.match(biesCParser.ELSE);
+	        this.state = 241;
+	        this.elseExpr();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	thenExpr() {
+	    let localctx = new ThenExprContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 48, biesCParser.RULE_thenExpr);
 	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 62;
-	        this.match(biesCParser.T__5);
-	        this.state = 63;
-	        this.match(biesCParser.T__6);
-	        this.state = 67;
+	        this.state = 244;
 	        this._errHandler.sync(this);
 	        _la = this._input.LA(1);
-	        while(_la===6) {
-	            this.state = 64;
-	            this.declaration_expression();
-	            this.state = 69;
+	        if(_la===29) {
+	            this.state = 243;
+	            this.match(biesCParser.THEN);
+	        }
+
+	        this.state = 246;
+	        this.blockExpression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	elseExpr() {
+	    let localctx = new ElseExprContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 50, biesCParser.RULE_elseExpr);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 248;
+	        this.blockExpression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	letInDeclaration() {
+	    let localctx = new LetInDeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 52, biesCParser.RULE_letInDeclaration);
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 250;
+	        this.match(biesCParser.LET);
+	        this.state = 251;
+	        this.blockDeclaration();
+	        this.state = 252;
+	        this.match(biesCParser.IN);
+	        this.state = 253;
+	        this.blockExpression();
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	blockDeclaration() {
+	    let localctx = new BlockDeclarationContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 54, biesCParser.RULE_blockDeclaration);
+	    var _la = 0;
+	    try {
+	        this.enterOuterAlt(localctx, 1);
+	        this.state = 255;
+	        this.match(biesCParser.T__20);
+	        this.state = 261;
+	        this._errHandler.sync(this);
+	        _la = this._input.LA(1);
+	        while((((_la) & ~0x1f) === 0 && ((1 << _la) & 92274688) !== 0)) {
+	            this.state = 259;
+	            this._errHandler.sync(this);
+	            switch(this._input.LA(1)) {
+	            case 23:
+	                this.state = 256;
+	                this.constDeclaration();
+	                break;
+	            case 24:
+	                this.state = 257;
+	                this.varDeclaration();
+	                break;
+	            case 26:
+	                this.state = 258;
+	                this.letInDeclaration();
+	                break;
+	            default:
+	                throw new antlr4.error.NoViableAltException(this);
+	            }
+	            this.state = 263;
 	            this._errHandler.sync(this);
 	            _la = this._input.LA(1);
 	        }
-	        this.state = 70;
-	        this.match(biesCParser.T__7);
-	        this.state = 71;
-	        this.match(biesCParser.T__8);
-	        this.state = 73; 
+	        this.state = 264;
+	        this.match(biesCParser.T__21);
+	    } catch (re) {
+	    	if(re instanceof antlr4.error.RecognitionException) {
+		        localctx.exception = re;
+		        this._errHandler.reportError(this, re);
+		        this._errHandler.recover(this, re);
+		    } else {
+		    	throw re;
+		    }
+	    } finally {
+	        this.exitRule();
+	    }
+	    return localctx;
+	}
+
+
+
+	blockExpression() {
+	    let localctx = new BlockExpressionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 56, biesCParser.RULE_blockExpression);
+	    var _la = 0;
+	    try {
+	        this.state = 275;
 	        this._errHandler.sync(this);
-	        var _alt = 1;
-	        do {
-	        	switch (_alt) {
-	        	case 1:
-	        		this.state = 72;
-	        		this.instruction();
-	        		break;
-	        	default:
-	        		throw new antlr4.error.NoViableAltException(this);
-	        	}
-	        	this.state = 75; 
-	        	this._errHandler.sync(this);
-	        	_alt = this._interp.adaptivePredict(this._input,7, this._ctx);
-	        } while ( _alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER );
+	        switch(this._input.LA(1)) {
+	        case 21:
+	            this.enterOuterAlt(localctx, 1);
+	            this.state = 266;
+	            this.match(biesCParser.T__20);
+	            this.state = 270;
+	            this._errHandler.sync(this);
+	            _la = this._input.LA(1);
+	            while((((_la) & ~0x1f) === 0 && ((1 << _la) & 394889216) !== 0) || ((((_la - 33)) & ~0x1f) === 0 && ((1 << (_la - 33)) & 50943) !== 0)) {
+	                this.state = 267;
+	                this.statement();
+	                this.state = 272;
+	                this._errHandler.sync(this);
+	                _la = this._input.LA(1);
+	            }
+	            this.state = 273;
+	            this.match(biesCParser.T__21);
+	            break;
+	        case 11:
+	        case 15:
+	        case 16:
+	        case 19:
+	        case 26:
+	        case 28:
+	        case 33:
+	        case 34:
+	        case 35:
+	        case 36:
+	        case 37:
+	        case 38:
+	        case 39:
+	        case 40:
+	        case 42:
+	        case 43:
+	        case 47:
+	        case 48:
+	            this.enterOuterAlt(localctx, 2);
+	            this.state = 274;
+	            this.expression();
+	            break;
+	        default:
+	            throw new antlr4.error.NoViableAltException(this);
+	        }
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -339,483 +1333,29 @@ export default class biesCParser extends antlr4.Parser {
 
 	lambda() {
 	    let localctx = new LambdaContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 8, biesCParser.RULE_lambda);
-	    var _la = 0;
+	    this.enterRule(localctx, 58, biesCParser.RULE_lambda);
 	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 77;
-	        this.match(biesCParser.T__1);
-	        this.state = 86;
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        if(_la===38) {
-	            this.state = 78;
-	            this.variable();
-	            this.state = 83;
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	            while(_la===3) {
-	                this.state = 79;
-	                this.match(biesCParser.T__2);
-	                this.state = 80;
-	                this.variable();
-	                this.state = 85;
-	                this._errHandler.sync(this);
-	                _la = this._input.LA(1);
-	            }
-	        }
-
-	        this.state = 88;
-	        this.match(biesCParser.T__3);
-	        this.state = 89;
-	        this.match(biesCParser.T__4);
-	        this.state = 90;
-	        this.print();
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	instruction() {
-	    let localctx = new InstructionContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 10, biesCParser.RULE_instruction);
-	    try {
-	        this.state = 96;
+	        this.state = 282;
 	        this._errHandler.sync(this);
 	        switch(this._input.LA(1)) {
-	        case 6:
+	        case 16:
+	        case 48:
 	            this.enterOuterAlt(localctx, 1);
-	            this.state = 92;
-	            this.declaration_expression();
-	            break;
-	        case 11:
-	            this.enterOuterAlt(localctx, 2);
-	            this.state = 93;
-	            this.condicional();
-	            break;
-	        case 14:
-	            this.enterOuterAlt(localctx, 3);
-	            this.state = 94;
-	            this.print();
-	            break;
-	        case 38:
-	            this.enterOuterAlt(localctx, 4);
-	            this.state = 95;
-	            this.call_variable();
-	            break;
-	        default:
-	            throw new antlr4.error.NoViableAltException(this);
-	        }
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	declaration_expression() {
-	    let localctx = new Declaration_expressionContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 12, biesCParser.RULE_declaration_expression);
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 98;
-	        this.match(biesCParser.T__5);
-	        this.state = 99;
-	        this.variable();
-	        this.state = 100;
-	        this.match(biesCParser.T__9);
-	        this.state = 101;
-	        this.expression(0);
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	declaration_lambna() {
-	    let localctx = new Declaration_lambnaContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 14, biesCParser.RULE_declaration_lambna);
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 103;
-	        this.match(biesCParser.T__5);
-	        this.state = 104;
-	        this.variable();
-	        this.state = 105;
-	        this.match(biesCParser.T__9);
-	        this.state = 106;
-	        this.lambda();
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	condicional() {
-	    let localctx = new CondicionalContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 16, biesCParser.RULE_condicional);
-	    var _la = 0;
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 108;
-	        this.match(biesCParser.T__10);
-	        this.state = 109;
-	        this.match(biesCParser.T__1);
-	        this.state = 110;
-	        this.expression(0);
-	        this.state = 111;
-	        this.match(biesCParser.T__3);
-	        this.state = 112;
-	        this.match(biesCParser.T__11);
-	        this.state = 114; 
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        do {
-	            this.state = 113;
-	            this.instruction();
-	            this.state = 116; 
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	        } while((((_la) & ~0x1f) === 0 && ((1 << _la) & 18496) !== 0) || _la===38);
-	        this.state = 118;
-	        this.match(biesCParser.T__12);
-	        this.state = 120; 
-	        this._errHandler.sync(this);
-	        var _alt = 1;
-	        do {
-	        	switch (_alt) {
-	        	case 1:
-	        		this.state = 119;
-	        		this.instruction();
-	        		break;
-	        	default:
-	        		throw new antlr4.error.NoViableAltException(this);
-	        	}
-	        	this.state = 122; 
-	        	this._errHandler.sync(this);
-	        	_alt = this._interp.adaptivePredict(this._input,12, this._ctx);
-	        } while ( _alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER );
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	print() {
-	    let localctx = new PrintContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 18, biesCParser.RULE_print);
-	    var _la = 0;
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 124;
-	        this.match(biesCParser.T__13);
-	        this.state = 125;
-	        this.match(biesCParser.T__1);
-	        this.state = 127; 
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        do {
-	            this.state = 126;
-	            this.expression(0);
-	            this.state = 129; 
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	        } while(((((_la - 25)) & ~0x1f) === 0 && ((1 << (_la - 25)) & 8759) !== 0));
-	        this.state = 131;
-	        this.match(biesCParser.T__3);
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-
-	call_variable() {
-	    let localctx = new Call_variableContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 20, biesCParser.RULE_call_variable);
-	    var _la = 0;
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 133;
-	        this.variable();
-	        this.state = 134;
-	        this.match(biesCParser.T__1);
-	        this.state = 143;
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        if(((((_la - 25)) & ~0x1f) === 0 && ((1 << (_la - 25)) & 8759) !== 0)) {
-	            this.state = 135;
-	            this.expression(0);
-	            this.state = 140;
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	            while(_la===3) {
-	                this.state = 136;
-	                this.match(biesCParser.T__2);
-	                this.state = 137;
-	                this.expression(0);
-	                this.state = 142;
-	                this._errHandler.sync(this);
-	                _la = this._input.LA(1);
-	            }
-	        }
-
-	        this.state = 145;
-	        this.match(biesCParser.T__3);
-	    } catch (re) {
-	    	if(re instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = re;
-		        this._errHandler.reportError(this, re);
-		        this._errHandler.recover(this, re);
-		    } else {
-		    	throw re;
-		    }
-	    } finally {
-	        this.exitRule();
-	    }
-	    return localctx;
-	}
-
-
-	expression(_p) {
-		if(_p===undefined) {
-		    _p = 0;
-		}
-	    const _parentctx = this._ctx;
-	    const _parentState = this.state;
-	    let localctx = new ExpressionContext(this, this._ctx, _parentState);
-	    let _prevctx = localctx;
-	    const _startState = 22;
-	    this.enterRecursionRule(localctx, 22, biesCParser.RULE_expression, _p);
-	    var _la = 0;
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 158;
-	        this._errHandler.sync(this);
-	        switch(this._input.LA(1)) {
-	        case 29:
-	            this.state = 148;
-	            this.match(biesCParser.NUMBER);
-	            break;
-	        case 34:
-	            this.state = 149;
-	            this.match(biesCParser.STRING);
-	            break;
-	        case 30:
-	            this.state = 150;
-	            this.match(biesCParser.BOOLEAN);
-	            break;
-	        case 25:
-	            this.state = 151;
-	            this.match(biesCParser.T__24);
+	            this.state = 277;
+	            this.params();
+	            this.state = 278;
+	            this.match(biesCParser.ARROW);
+	            this.state = 279;
+	            this.blockExpression();
 	            break;
 	        case 26:
-	            this.state = 152;
-	            this.match(biesCParser.T__25);
-	            this.state = 153;
-	            this.match(biesCParser.T__1);
-	            this.state = 154;
-	            this.match(biesCParser.STRING);
-	            this.state = 155;
-	            this.match(biesCParser.T__3);
-	            break;
-	        case 38:
-	            this.state = 156;
-	            this.variable();
-	            break;
-	        case 27:
-	            this.state = 157;
-	            this.list();
+	            this.enterOuterAlt(localctx, 2);
+	            this.state = 281;
+	            this.letInDeclaration();
 	            break;
 	        default:
 	            throw new antlr4.error.NoViableAltException(this);
 	        }
-	        this._ctx.stop = this._input.LT(-1);
-	        this.state = 171;
-	        this._errHandler.sync(this);
-	        var _alt = this._interp.adaptivePredict(this._input,18,this._ctx)
-	        while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
-	            if(_alt===1) {
-	                if(this._parseListeners!==null) {
-	                    this.triggerExitRuleEvent();
-	                }
-	                _prevctx = localctx;
-	                this.state = 169;
-	                this._errHandler.sync(this);
-	                var la_ = this._interp.adaptivePredict(this._input,17,this._ctx);
-	                switch(la_) {
-	                case 1:
-	                    localctx = new ExpressionContext(this, _parentctx, _parentState);
-	                    this.pushNewRecursionContext(localctx, _startState, biesCParser.RULE_expression);
-	                    this.state = 160;
-	                    if (!( this.precpred(this._ctx, 10))) {
-	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 10)");
-	                    }
-	                    this.state = 161;
-	                    _la = this._input.LA(1);
-	                    if(!(_la===15 || _la===16)) {
-	                    this._errHandler.recoverInline(this);
-	                    }
-	                    else {
-	                    	this._errHandler.reportMatch(this);
-	                        this.consume();
-	                    }
-	                    this.state = 162;
-	                    this.expression(11);
-	                    break;
-
-	                case 2:
-	                    localctx = new ExpressionContext(this, _parentctx, _parentState);
-	                    this.pushNewRecursionContext(localctx, _startState, biesCParser.RULE_expression);
-	                    this.state = 163;
-	                    if (!( this.precpred(this._ctx, 9))) {
-	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 9)");
-	                    }
-	                    this.state = 164;
-	                    _la = this._input.LA(1);
-	                    if(!(_la===17 || _la===18)) {
-	                    this._errHandler.recoverInline(this);
-	                    }
-	                    else {
-	                    	this._errHandler.reportMatch(this);
-	                        this.consume();
-	                    }
-	                    this.state = 165;
-	                    this.expression(10);
-	                    break;
-
-	                case 3:
-	                    localctx = new ExpressionContext(this, _parentctx, _parentState);
-	                    this.pushNewRecursionContext(localctx, _startState, biesCParser.RULE_expression);
-	                    this.state = 166;
-	                    if (!( this.precpred(this._ctx, 8))) {
-	                        throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 8)");
-	                    }
-	                    this.state = 167;
-	                    _la = this._input.LA(1);
-	                    if(!((((_la) & ~0x1f) === 0 && ((1 << _la) & 33030144) !== 0))) {
-	                    this._errHandler.recoverInline(this);
-	                    }
-	                    else {
-	                    	this._errHandler.reportMatch(this);
-	                        this.consume();
-	                    }
-	                    this.state = 168;
-	                    this.expression(9);
-	                    break;
-
-	                } 
-	            }
-	            this.state = 173;
-	            this._errHandler.sync(this);
-	            _alt = this._interp.adaptivePredict(this._input,18,this._ctx);
-	        }
-
-	    } catch( error) {
-	        if(error instanceof antlr4.error.RecognitionException) {
-		        localctx.exception = error;
-		        this._errHandler.reportError(this, error);
-		        this._errHandler.recover(this, error);
-		    } else {
-		    	throw error;
-		    }
-	    } finally {
-	        this.unrollRecursionContexts(_parentctx)
-	    }
-	    return localctx;
-	}
-
-
-
-	list() {
-	    let localctx = new ListContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 24, biesCParser.RULE_list);
-	    var _la = 0;
-	    try {
-	        this.enterOuterAlt(localctx, 1);
-	        this.state = 174;
-	        this.match(biesCParser.T__26);
-	        this.state = 183;
-	        this._errHandler.sync(this);
-	        _la = this._input.LA(1);
-	        if(((((_la - 25)) & ~0x1f) === 0 && ((1 << (_la - 25)) & 8759) !== 0)) {
-	            this.state = 175;
-	            this.expression(0);
-	            this.state = 180;
-	            this._errHandler.sync(this);
-	            _la = this._input.LA(1);
-	            while(_la===3) {
-	                this.state = 176;
-	                this.match(biesCParser.T__2);
-	                this.state = 177;
-	                this.expression(0);
-	                this.state = 182;
-	                this._errHandler.sync(this);
-	                _la = this._input.LA(1);
-	            }
-	        }
-
-	        this.state = 185;
-	        this.match(biesCParser.T__27);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -832,13 +1372,27 @@ export default class biesCParser extends antlr4.Parser {
 
 
 
-	variable() {
-	    let localctx = new VariableContext(this, this._ctx, this.state);
-	    this.enterRule(localctx, 26, biesCParser.RULE_variable);
+	builtinFunction() {
+	    let localctx = new BuiltinFunctionContext(this, this._ctx, this.state);
+	    this.enterRule(localctx, 60, biesCParser.RULE_builtinFunction);
+	    var _la = 0;
 	    try {
 	        this.enterOuterAlt(localctx, 1);
-	        this.state = 187;
-	        this.match(biesCParser.ID);
+	        this.state = 284;
+	        _la = this._input.LA(1);
+	        if(!(((((_la - 34)) & ~0x1f) === 0 && ((1 << (_la - 34)) & 127) !== 0))) {
+	        this._errHandler.recoverInline(this);
+	        }
+	        else {
+	        	this._errHandler.reportMatch(this);
+	            this.consume();
+	        }
+	        this.state = 285;
+	        this.match(biesCParser.T__15);
+	        this.state = 286;
+	        this.expression();
+	        this.state = 287;
+	        this.match(biesCParser.T__16);
 	    } catch (re) {
 	    	if(re instanceof antlr4.error.RecognitionException) {
 		        localctx.exception = re;
@@ -879,37 +1433,67 @@ biesCParser.T__18 = 19;
 biesCParser.T__19 = 20;
 biesCParser.T__20 = 21;
 biesCParser.T__21 = 22;
-biesCParser.T__22 = 23;
-biesCParser.T__23 = 24;
-biesCParser.T__24 = 25;
-biesCParser.T__25 = 26;
-biesCParser.T__26 = 27;
-biesCParser.T__27 = 28;
-biesCParser.NUMBER = 29;
-biesCParser.BOOLEAN = 30;
-biesCParser.INT = 31;
-biesCParser.FLOAT = 32;
-biesCParser.SCI = 33;
-biesCParser.STRING = 34;
-biesCParser.WS = 35;
-biesCParser.LC = 36;
-biesCParser.BC = 37;
-biesCParser.ID = 38;
+biesCParser.CONST = 23;
+biesCParser.VAR = 24;
+biesCParser.FUN = 25;
+biesCParser.LET = 26;
+biesCParser.IN = 27;
+biesCParser.IF = 28;
+biesCParser.THEN = 29;
+biesCParser.ELSE = 30;
+biesCParser.TRUE = 31;
+biesCParser.FALSE = 32;
+biesCParser.NULL = 33;
+biesCParser.PRINT = 34;
+biesCParser.INPUT = 35;
+biesCParser.LEN = 36;
+biesCParser.INT = 37;
+biesCParser.STR = 38;
+biesCParser.BOOL = 39;
+biesCParser.LIST = 40;
+biesCParser.ARROW = 41;
+biesCParser.NUMBER = 42;
+biesCParser.BOOLEAN = 43;
+biesCParser.INTEGER = 44;
+biesCParser.FLOAT = 45;
+biesCParser.SCI = 46;
+biesCParser.STRING = 47;
+biesCParser.ID = 48;
+biesCParser.LC = 49;
+biesCParser.BC = 50;
+biesCParser.WS = 51;
 
 biesCParser.RULE_program = 0;
-biesCParser.RULE_block = 1;
-biesCParser.RULE_function = 2;
-biesCParser.RULE_let_in = 3;
-biesCParser.RULE_lambda = 4;
-biesCParser.RULE_instruction = 5;
-biesCParser.RULE_declaration_expression = 6;
-biesCParser.RULE_declaration_lambna = 7;
-biesCParser.RULE_condicional = 8;
-biesCParser.RULE_print = 9;
-biesCParser.RULE_call_variable = 10;
-biesCParser.RULE_expression = 11;
-biesCParser.RULE_list = 12;
-biesCParser.RULE_variable = 13;
+biesCParser.RULE_statement = 1;
+biesCParser.RULE_declaration = 2;
+biesCParser.RULE_constDeclaration = 3;
+biesCParser.RULE_varDeclaration = 4;
+biesCParser.RULE_letDeclaration = 5;
+biesCParser.RULE_funDeclaration = 6;
+biesCParser.RULE_expression = 7;
+biesCParser.RULE_logicalOrExpression = 8;
+biesCParser.RULE_logicalAndExpression = 9;
+biesCParser.RULE_equalityExpression = 10;
+biesCParser.RULE_relationalExpression = 11;
+biesCParser.RULE_additiveExpression = 12;
+biesCParser.RULE_multiplicativeExpression = 13;
+biesCParser.RULE_exponentialExpression = 14;
+biesCParser.RULE_unaryExpression = 15;
+biesCParser.RULE_primaryExpression = 16;
+biesCParser.RULE_literal = 17;
+biesCParser.RULE_functionCallChain = 18;
+biesCParser.RULE_argumentList = 19;
+biesCParser.RULE_params = 20;
+biesCParser.RULE_list = 21;
+biesCParser.RULE_listAccess = 22;
+biesCParser.RULE_ifExpression = 23;
+biesCParser.RULE_thenExpr = 24;
+biesCParser.RULE_elseExpr = 25;
+biesCParser.RULE_letInDeclaration = 26;
+biesCParser.RULE_blockDeclaration = 27;
+biesCParser.RULE_blockExpression = 28;
+biesCParser.RULE_lambda = 29;
+biesCParser.RULE_builtinFunction = 30;
 
 class ProgramContext extends antlr4.ParserRuleContext {
 
@@ -929,25 +1513,14 @@ class ProgramContext extends antlr4.ParserRuleContext {
 	    return this.getToken(biesCParser.EOF, 0);
 	};
 
-	block = function(i) {
+	statement = function(i) {
 	    if(i===undefined) {
 	        i = null;
 	    }
 	    if(i===null) {
-	        return this.getTypedRuleContexts(BlockContext);
+	        return this.getTypedRuleContexts(StatementContext);
 	    } else {
-	        return this.getTypedRuleContext(BlockContext,i);
-	    }
-	};
-
-	instruction = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(InstructionContext);
-	    } else {
-	        return this.getTypedRuleContext(InstructionContext,i);
+	        return this.getTypedRuleContext(StatementContext,i);
 	    }
 	};
 
@@ -964,7 +1537,7 @@ class ProgramContext extends antlr4.ParserRuleContext {
 
 
 
-class BlockContext extends antlr4.ParserRuleContext {
+class StatementContext extends antlr4.ParserRuleContext {
 
     constructor(parser, parent, invokingState) {
         if(parent===undefined) {
@@ -975,233 +1548,11 @@ class BlockContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_block;
+        this.ruleIndex = biesCParser.RULE_statement;
     }
 
-	function_() {
-	    return this.getTypedRuleContext(FunctionContext,0);
-	};
-
-	let_in() {
-	    return this.getTypedRuleContext(Let_inContext,0);
-	};
-
-	declaration_lambna() {
-	    return this.getTypedRuleContext(Declaration_lambnaContext,0);
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitBlock(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class FunctionContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_function;
-    }
-
-	variable = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(VariableContext);
-	    } else {
-	        return this.getTypedRuleContext(VariableContext,i);
-	    }
-	};
-
-	instruction = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(InstructionContext);
-	    } else {
-	        return this.getTypedRuleContext(InstructionContext,i);
-	    }
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitFunction(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class Let_inContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_let_in;
-    }
-
-	declaration_expression = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(Declaration_expressionContext);
-	    } else {
-	        return this.getTypedRuleContext(Declaration_expressionContext,i);
-	    }
-	};
-
-	instruction = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(InstructionContext);
-	    } else {
-	        return this.getTypedRuleContext(InstructionContext,i);
-	    }
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitLet_in(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class LambdaContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_lambda;
-    }
-
-	print() {
-	    return this.getTypedRuleContext(PrintContext,0);
-	};
-
-	variable = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(VariableContext);
-	    } else {
-	        return this.getTypedRuleContext(VariableContext,i);
-	    }
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitLambda(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class InstructionContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_instruction;
-    }
-
-	declaration_expression() {
-	    return this.getTypedRuleContext(Declaration_expressionContext,0);
-	};
-
-	condicional() {
-	    return this.getTypedRuleContext(CondicionalContext,0);
-	};
-
-	print() {
-	    return this.getTypedRuleContext(PrintContext,0);
-	};
-
-	call_variable() {
-	    return this.getTypedRuleContext(Call_variableContext,0);
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitInstruction(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class Declaration_expressionContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_declaration_expression;
-    }
-
-	variable() {
-	    return this.getTypedRuleContext(VariableContext,0);
+	declaration() {
+	    return this.getTypedRuleContext(DeclarationContext,0);
 	};
 
 	expression() {
@@ -1210,7 +1561,7 @@ class Declaration_expressionContext extends antlr4.ParserRuleContext {
 
 	accept(visitor) {
 	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitDeclaration_expression(this);
+	        return visitor.visitStatement(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -1221,7 +1572,7 @@ class Declaration_expressionContext extends antlr4.ParserRuleContext {
 
 
 
-class Declaration_lambnaContext extends antlr4.ParserRuleContext {
+class DeclarationContext extends antlr4.ParserRuleContext {
 
     constructor(parser, parent, invokingState) {
         if(parent===undefined) {
@@ -1232,11 +1583,175 @@ class Declaration_lambnaContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_declaration_lambna;
+        this.ruleIndex = biesCParser.RULE_declaration;
     }
 
-	variable() {
-	    return this.getTypedRuleContext(VariableContext,0);
+	constDeclaration() {
+	    return this.getTypedRuleContext(ConstDeclarationContext,0);
+	};
+
+	varDeclaration() {
+	    return this.getTypedRuleContext(VarDeclarationContext,0);
+	};
+
+	letDeclaration() {
+	    return this.getTypedRuleContext(LetDeclarationContext,0);
+	};
+
+	funDeclaration() {
+	    return this.getTypedRuleContext(FunDeclarationContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitDeclaration(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class ConstDeclarationContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_constDeclaration;
+    }
+
+	CONST() {
+	    return this.getToken(biesCParser.CONST, 0);
+	};
+
+	ID() {
+	    return this.getToken(biesCParser.ID, 0);
+	};
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitConstDeclaration(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class VarDeclarationContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_varDeclaration;
+    }
+
+	VAR() {
+	    return this.getToken(biesCParser.VAR, 0);
+	};
+
+	ID() {
+	    return this.getToken(biesCParser.ID, 0);
+	};
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitVarDeclaration(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class LetDeclarationContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_letDeclaration;
+    }
+
+	LET() {
+	    return this.getToken(biesCParser.LET, 0);
+	};
+
+	ID() {
+	    return this.getToken(biesCParser.ID, 0);
+	};
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitLetDeclaration(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class FunDeclarationContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_funDeclaration;
+    }
+
+	FUN() {
+	    return this.getToken(biesCParser.FUN, 0);
+	};
+
+	ID() {
+	    return this.getToken(biesCParser.ID, 0);
 	};
 
 	lambda() {
@@ -1245,129 +1760,7 @@ class Declaration_lambnaContext extends antlr4.ParserRuleContext {
 
 	accept(visitor) {
 	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitDeclaration_lambna(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class CondicionalContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_condicional;
-    }
-
-	expression() {
-	    return this.getTypedRuleContext(ExpressionContext,0);
-	};
-
-	instruction = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(InstructionContext);
-	    } else {
-	        return this.getTypedRuleContext(InstructionContext,i);
-	    }
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitCondicional(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class PrintContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_print;
-    }
-
-	expression = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(ExpressionContext);
-	    } else {
-	        return this.getTypedRuleContext(ExpressionContext,i);
-	    }
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitPrint(this);
-	    } else {
-	        return visitor.visitChildren(this);
-	    }
-	}
-
-
-}
-
-
-
-class Call_variableContext extends antlr4.ParserRuleContext {
-
-    constructor(parser, parent, invokingState) {
-        if(parent===undefined) {
-            parent = null;
-        }
-        if(invokingState===undefined || invokingState===null) {
-            invokingState = -1;
-        }
-        super(parent, invokingState);
-        this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_call_variable;
-    }
-
-	variable() {
-	    return this.getTypedRuleContext(VariableContext,0);
-	};
-
-	expression = function(i) {
-	    if(i===undefined) {
-	        i = null;
-	    }
-	    if(i===null) {
-	        return this.getTypedRuleContexts(ExpressionContext);
-	    } else {
-	        return this.getTypedRuleContext(ExpressionContext,i);
-	    }
-	};
-
-	accept(visitor) {
-	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitCall_variable(this);
+	        return visitor.visitFunDeclaration(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -1392,25 +1785,485 @@ class ExpressionContext extends antlr4.ParserRuleContext {
         this.ruleIndex = biesCParser.RULE_expression;
     }
 
-	NUMBER() {
-	    return this.getToken(biesCParser.NUMBER, 0);
+	logicalOrExpression() {
+	    return this.getTypedRuleContext(LogicalOrExpressionContext,0);
 	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class LogicalOrExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_logicalOrExpression;
+    }
+
+	logicalAndExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(LogicalAndExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(LogicalAndExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitLogicalOrExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class LogicalAndExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_logicalAndExpression;
+    }
+
+	equalityExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(EqualityExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(EqualityExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitLogicalAndExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class EqualityExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_equalityExpression;
+    }
+
+	relationalExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(RelationalExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(RelationalExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitEqualityExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class RelationalExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_relationalExpression;
+    }
+
+	additiveExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(AdditiveExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(AdditiveExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitRelationalExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class AdditiveExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_additiveExpression;
+    }
+
+	multiplicativeExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(MultiplicativeExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(MultiplicativeExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitAdditiveExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class MultiplicativeExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_multiplicativeExpression;
+    }
+
+	exponentialExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(ExponentialExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(ExponentialExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitMultiplicativeExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class ExponentialExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_exponentialExpression;
+    }
+
+	unaryExpression = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(UnaryExpressionContext);
+	    } else {
+	        return this.getTypedRuleContext(UnaryExpressionContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitExponentialExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class UnaryExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_unaryExpression;
+    }
+
+	unaryExpression() {
+	    return this.getTypedRuleContext(UnaryExpressionContext,0);
+	};
+
+	primaryExpression() {
+	    return this.getTypedRuleContext(PrimaryExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitUnaryExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class PrimaryExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_primaryExpression;
+    }
+
+	literal() {
+	    return this.getTypedRuleContext(LiteralContext,0);
+	};
+
+	list() {
+	    return this.getTypedRuleContext(ListContext,0);
+	};
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	functionCallChain() {
+	    return this.getTypedRuleContext(FunctionCallChainContext,0);
+	};
+
+	listAccess() {
+	    return this.getTypedRuleContext(ListAccessContext,0);
+	};
+
+	ifExpression() {
+	    return this.getTypedRuleContext(IfExpressionContext,0);
+	};
+
+	lambda() {
+	    return this.getTypedRuleContext(LambdaContext,0);
+	};
+
+	builtinFunction() {
+	    return this.getTypedRuleContext(BuiltinFunctionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitPrimaryExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class LiteralContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_literal;
+    }
 
 	STRING() {
 	    return this.getToken(biesCParser.STRING, 0);
+	};
+
+	ID() {
+	    return this.getToken(biesCParser.ID, 0);
+	};
+
+	NUMBER() {
+	    return this.getToken(biesCParser.NUMBER, 0);
 	};
 
 	BOOLEAN() {
 	    return this.getToken(biesCParser.BOOLEAN, 0);
 	};
 
-	variable() {
-	    return this.getTypedRuleContext(VariableContext,0);
+	NULL() {
+	    return this.getToken(biesCParser.NULL, 0);
 	};
 
-	list() {
-	    return this.getTypedRuleContext(ListContext,0);
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitLiteral(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class FunctionCallChainContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_functionCallChain;
+    }
+
+	ID() {
+	    return this.getToken(biesCParser.ID, 0);
 	};
+
+	argumentList = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(ArgumentListContext);
+	    } else {
+	        return this.getTypedRuleContext(ArgumentListContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitFunctionCallChain(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class ArgumentListContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_argumentList;
+    }
 
 	expression = function(i) {
 	    if(i===undefined) {
@@ -1425,7 +2278,46 @@ class ExpressionContext extends antlr4.ParserRuleContext {
 
 	accept(visitor) {
 	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitExpression(this);
+	        return visitor.visitArgumentList(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class ParamsContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_params;
+    }
+
+	ID = function(i) {
+		if(i===undefined) {
+			i = null;
+		}
+	    if(i===null) {
+	        return this.getTokens(biesCParser.ID);
+	    } else {
+	        return this.getToken(biesCParser.ID, i);
+	    }
+	};
+
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitParams(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -1474,7 +2366,7 @@ class ListContext extends antlr4.ParserRuleContext {
 
 
 
-class VariableContext extends antlr4.ParserRuleContext {
+class ListAccessContext extends antlr4.ParserRuleContext {
 
     constructor(parser, parent, invokingState) {
         if(parent===undefined) {
@@ -1485,16 +2377,380 @@ class VariableContext extends antlr4.ParserRuleContext {
         }
         super(parent, invokingState);
         this.parser = parser;
-        this.ruleIndex = biesCParser.RULE_variable;
+        this.ruleIndex = biesCParser.RULE_listAccess;
     }
 
 	ID() {
 	    return this.getToken(biesCParser.ID, 0);
 	};
 
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
 	accept(visitor) {
 	    if ( visitor instanceof biesCVisitor ) {
-	        return visitor.visitVariable(this);
+	        return visitor.visitListAccess(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class IfExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_ifExpression;
+    }
+
+	IF() {
+	    return this.getToken(biesCParser.IF, 0);
+	};
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	thenExpr() {
+	    return this.getTypedRuleContext(ThenExprContext,0);
+	};
+
+	ELSE() {
+	    return this.getToken(biesCParser.ELSE, 0);
+	};
+
+	elseExpr() {
+	    return this.getTypedRuleContext(ElseExprContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitIfExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class ThenExprContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_thenExpr;
+    }
+
+	blockExpression() {
+	    return this.getTypedRuleContext(BlockExpressionContext,0);
+	};
+
+	THEN() {
+	    return this.getToken(biesCParser.THEN, 0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitThenExpr(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class ElseExprContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_elseExpr;
+    }
+
+	blockExpression() {
+	    return this.getTypedRuleContext(BlockExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitElseExpr(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class LetInDeclarationContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_letInDeclaration;
+    }
+
+	LET() {
+	    return this.getToken(biesCParser.LET, 0);
+	};
+
+	blockDeclaration() {
+	    return this.getTypedRuleContext(BlockDeclarationContext,0);
+	};
+
+	IN() {
+	    return this.getToken(biesCParser.IN, 0);
+	};
+
+	blockExpression() {
+	    return this.getTypedRuleContext(BlockExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitLetInDeclaration(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class BlockDeclarationContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_blockDeclaration;
+    }
+
+	constDeclaration = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(ConstDeclarationContext);
+	    } else {
+	        return this.getTypedRuleContext(ConstDeclarationContext,i);
+	    }
+	};
+
+	varDeclaration = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(VarDeclarationContext);
+	    } else {
+	        return this.getTypedRuleContext(VarDeclarationContext,i);
+	    }
+	};
+
+	letInDeclaration = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(LetInDeclarationContext);
+	    } else {
+	        return this.getTypedRuleContext(LetInDeclarationContext,i);
+	    }
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitBlockDeclaration(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class BlockExpressionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_blockExpression;
+    }
+
+	statement = function(i) {
+	    if(i===undefined) {
+	        i = null;
+	    }
+	    if(i===null) {
+	        return this.getTypedRuleContexts(StatementContext);
+	    } else {
+	        return this.getTypedRuleContext(StatementContext,i);
+	    }
+	};
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitBlockExpression(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class LambdaContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_lambda;
+    }
+
+	params() {
+	    return this.getTypedRuleContext(ParamsContext,0);
+	};
+
+	ARROW() {
+	    return this.getToken(biesCParser.ARROW, 0);
+	};
+
+	blockExpression() {
+	    return this.getTypedRuleContext(BlockExpressionContext,0);
+	};
+
+	letInDeclaration() {
+	    return this.getTypedRuleContext(LetInDeclarationContext,0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitLambda(this);
+	    } else {
+	        return visitor.visitChildren(this);
+	    }
+	}
+
+
+}
+
+
+
+class BuiltinFunctionContext extends antlr4.ParserRuleContext {
+
+    constructor(parser, parent, invokingState) {
+        if(parent===undefined) {
+            parent = null;
+        }
+        if(invokingState===undefined || invokingState===null) {
+            invokingState = -1;
+        }
+        super(parent, invokingState);
+        this.parser = parser;
+        this.ruleIndex = biesCParser.RULE_builtinFunction;
+    }
+
+	expression() {
+	    return this.getTypedRuleContext(ExpressionContext,0);
+	};
+
+	PRINT() {
+	    return this.getToken(biesCParser.PRINT, 0);
+	};
+
+	INPUT() {
+	    return this.getToken(biesCParser.INPUT, 0);
+	};
+
+	LEN() {
+	    return this.getToken(biesCParser.LEN, 0);
+	};
+
+	INT() {
+	    return this.getToken(biesCParser.INT, 0);
+	};
+
+	STR() {
+	    return this.getToken(biesCParser.STR, 0);
+	};
+
+	BOOL() {
+	    return this.getToken(biesCParser.BOOL, 0);
+	};
+
+	LIST() {
+	    return this.getToken(biesCParser.LIST, 0);
+	};
+
+	accept(visitor) {
+	    if ( visitor instanceof biesCVisitor ) {
+	        return visitor.visitBuiltinFunction(this);
 	    } else {
 	        return visitor.visitChildren(this);
 	    }
@@ -1507,16 +2763,33 @@ class VariableContext extends antlr4.ParserRuleContext {
 
 
 biesCParser.ProgramContext = ProgramContext; 
-biesCParser.BlockContext = BlockContext; 
-biesCParser.FunctionContext = FunctionContext; 
-biesCParser.Let_inContext = Let_inContext; 
-biesCParser.LambdaContext = LambdaContext; 
-biesCParser.InstructionContext = InstructionContext; 
-biesCParser.Declaration_expressionContext = Declaration_expressionContext; 
-biesCParser.Declaration_lambnaContext = Declaration_lambnaContext; 
-biesCParser.CondicionalContext = CondicionalContext; 
-biesCParser.PrintContext = PrintContext; 
-biesCParser.Call_variableContext = Call_variableContext; 
+biesCParser.StatementContext = StatementContext; 
+biesCParser.DeclarationContext = DeclarationContext; 
+biesCParser.ConstDeclarationContext = ConstDeclarationContext; 
+biesCParser.VarDeclarationContext = VarDeclarationContext; 
+biesCParser.LetDeclarationContext = LetDeclarationContext; 
+biesCParser.FunDeclarationContext = FunDeclarationContext; 
 biesCParser.ExpressionContext = ExpressionContext; 
+biesCParser.LogicalOrExpressionContext = LogicalOrExpressionContext; 
+biesCParser.LogicalAndExpressionContext = LogicalAndExpressionContext; 
+biesCParser.EqualityExpressionContext = EqualityExpressionContext; 
+biesCParser.RelationalExpressionContext = RelationalExpressionContext; 
+biesCParser.AdditiveExpressionContext = AdditiveExpressionContext; 
+biesCParser.MultiplicativeExpressionContext = MultiplicativeExpressionContext; 
+biesCParser.ExponentialExpressionContext = ExponentialExpressionContext; 
+biesCParser.UnaryExpressionContext = UnaryExpressionContext; 
+biesCParser.PrimaryExpressionContext = PrimaryExpressionContext; 
+biesCParser.LiteralContext = LiteralContext; 
+biesCParser.FunctionCallChainContext = FunctionCallChainContext; 
+biesCParser.ArgumentListContext = ArgumentListContext; 
+biesCParser.ParamsContext = ParamsContext; 
 biesCParser.ListContext = ListContext; 
-biesCParser.VariableContext = VariableContext; 
+biesCParser.ListAccessContext = ListAccessContext; 
+biesCParser.IfExpressionContext = IfExpressionContext; 
+biesCParser.ThenExprContext = ThenExprContext; 
+biesCParser.ElseExprContext = ElseExprContext; 
+biesCParser.LetInDeclarationContext = LetInDeclarationContext; 
+biesCParser.BlockDeclarationContext = BlockDeclarationContext; 
+biesCParser.BlockExpressionContext = BlockExpressionContext; 
+biesCParser.LambdaContext = LambdaContext; 
+biesCParser.BuiltinFunctionContext = BuiltinFunctionContext; 

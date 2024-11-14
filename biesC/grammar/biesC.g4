@@ -1,111 +1,221 @@
 grammar biesC;
 
-NUMBER: INT | FLOAT | SCI;
-BOOLEAN: 'true' | 'false';
-INT: [-]?[0-9]+;
-FLOAT: [-]?[0-9]+ '.' [0-9]+;
-SCI: [-]?[0-9]+ ('.' [0-9]+)? [eE] [+-]? [0-9]+;
-STRING: '"' ( ~["\\] | '\\' . )* '"';
-WS: [ \t\r\n]+ -> skip;
-LC: '//' ~[\r\n]* -> skip;
-BC: '/*' .*? '*/' -> skip;
-ID: [a-zA-Z_][a-zA-Z0-9_]*;
-
-
 program
     : statement* EOF
     ;
 
 statement
-    : expression
-    | declaration
-    ;
-
-declaration
-    : 'let' ID '=' (lambda | aritmeticExpression | value | list)
-    | const
-;
-
-value:
-STRING
-| ID
-| NUMBER
-| len
-| listAccess
-| input
-;
-
-
-conditionalExpression:
- value ('==' | '!=' | '>' | '>=' | '<' | '<=' | '!') value
-;
-
-aritmeticExpression:
-  value ('*' | '/' | '+' | '-' |  '**')  (value |  aritmeticExpression)
-  | '(' aritmeticExpression ')'
-;
-
-
-lambda
-    : params '=>'  (expression | lambda | value)
-    ;
-
-params
-    : '(' ')'
-    | '(' value (',' value)* ')'
-    | ID
-    ;
-
-expression
- :  print
- | functionCallChain
- | letInDeclaration
- | ifExpression
-;
-
-letInDeclaration
-    : 'let' blockDeclaration 'in' blockExpression
-    ;
-
-const:
-  'const' ID '=' (lambda | aritmeticExpression | value | list)
-;
-
-input:
- 'input' '(' STRING ')'
-;
-
-blockDeclaration
-    : '{' (const)* '}'
-    ;
-
-blockExpression
-    : '{' (statement)* '}'
+    : declaration
     | expression
     ;
 
-ifExpression
-    : 'if' '(' conditionalExpression ')' 'then'? value 'else' (value | expression)
+declaration
+    : constDeclaration
+    | varDeclaration
+    | letDeclaration
+    | funDeclaration
     ;
 
-len:
- 'len' '(' ID ')'
-;
+constDeclaration
+    : CONST ID '=' expression
+    ;
+
+varDeclaration
+    : VAR ID '=' expression
+    ;
+
+letDeclaration
+    : LET ID '=' expression
+    ;
+
+funDeclaration
+    : FUN ID '=' lambda
+    ;
+
+expression
+    : logicalOrExpression
+    ;
+
+logicalOrExpression
+    : logicalAndExpression ( '||' logicalAndExpression )*
+    ;
+
+logicalAndExpression
+    : equalityExpression ( '&&' equalityExpression )*
+    ;
+
+equalityExpression
+    : relationalExpression ( ('==' | '!=') relationalExpression )*
+    ;
+
+relationalExpression
+    : additiveExpression ( ('>' | '>=' | '<' | '<=') additiveExpression )*
+    ;
+
+additiveExpression
+    : multiplicativeExpression ( ('+' | '-') multiplicativeExpression )*
+    ;
+
+multiplicativeExpression
+    : exponentialExpression ( ('*' | '/') exponentialExpression )*
+    ;
+
+exponentialExpression
+    : unaryExpression ( '**' unaryExpression )*
+    ;
+
+unaryExpression
+    : ('!' | '-') unaryExpression
+    | primaryExpression
+    ;
+
+primaryExpression
+    : literal
+    | list
+    | '(' expression ')'
+    | functionCallChain
+    | listAccess
+    | ifExpression
+    | lambda
+    | builtinFunction
+    ;
+
+literal
+    : STRING
+    | ID
+    | NUMBER
+    | BOOLEAN
+    | NULL
+    ;
+
 functionCallChain
-    :  ID '(' (value| aritmeticExpression) (',' (value | aritmeticExpression))* ')'
-    | functionCallChain '(' value ')'
+    : ID '(' argumentList? ')' ( '(' argumentList? ')' )*
     ;
 
-print:
- 'print' '(' (value | functionCallChain | aritmeticExpression ) ')'
-;
+argumentList
+    : expression (',' expression)*
+    ;
+
+params
+    : '(' (ID (',' ID)*)? ')'
+    | ID
+    ;
 
 list
-    : '[' ']'
-    | '[' value (',' value)* ']'
+    : '[' (expression (',' expression)*)? ']'
+    ;
+
+listAccess
+    : ID '[' expression ']'
+    ;
+
+ifExpression
+    : IF '(' expression ')' thenExpr ELSE elseExpr
+    ;
+
+thenExpr
+    : THEN? blockExpression
+    ;
+
+elseExpr
+    : blockExpression
+    ;
+
+letInDeclaration
+    : LET blockDeclaration IN blockExpression
+    ;
+
+blockDeclaration
+    : '{' (constDeclaration | varDeclaration | letInDeclaration)* '}'
+    ;
+
+blockExpression
+    : '{' statement* '}'
+    | expression
+    ;
+
+lambda
+    : params ARROW blockExpression
+    | letInDeclaration
+    ;
+
+builtinFunction
+    : ( PRINT | INPUT | LEN | INT | STR | BOOL | LIST )'(' expression ')'
     ;
 
 
-listAccess
-    : ID '['(aritmeticExpression | NUMBER | ID )']'
+// ==============================
+// Reglas Léxicas (Tokens)
+// ==============================
+
+// Palabras Clave
+CONST   : 'const';
+VAR     : 'var';
+FUN     : 'fun';
+LET     : 'let';
+IN      : 'in';
+
+IF      : 'if';
+THEN    : 'then';
+ELSE    : 'else';
+
+TRUE    : 'true';
+FALSE   : 'false';
+NULL    : 'null';
+
+PRINT   : 'print';
+INPUT   : 'input';
+LEN     : 'len';
+INT     : 'int';
+STR     : 'str';
+BOOL    : 'bool';
+LIST    : 'list';
+
+// Operadores
+ARROW   : '=>';
+
+// Literales
+NUMBER
+    : INTEGER
+    | FLOAT
+    | SCI
+    ;
+
+BOOLEAN
+    : TRUE
+    | FALSE
+    ;
+
+INTEGER
+    : [0-9]+
+    ;
+
+FLOAT
+    : [0-9]+ '.' [0-9]+
+    ;
+
+SCI
+    : [0-9]+ ('.' [0-9]+)? [eE] [+-]? [0-9]+
+    ;
+
+STRING
+    : '"' ( ~["\\] | '\\' . )* '"'
+    ;
+
+// Identificadores
+ID
+    : [a-zA-Z_][a-zA-Z0-9_]*
+    ;
+
+// Comentarios y Espacios en Blanco
+LC
+    : '//' ~[\r\n]* -> skip
+    ;
+
+BC
+    : '/*' .*? '*/' -> skip
+    ;
+
+WS
+    : [ \t\r\n]+ -> skip
     ;
