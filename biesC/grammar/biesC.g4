@@ -1,7 +1,6 @@
 grammar biesC;
 
-
-NUMBER: INT | FLOAT | SCI; 
+NUMBER: INT | FLOAT | SCI;
 BOOLEAN: 'true' | 'false';
 INT: [-]?[0-9]+;
 FLOAT: [-]?[0-9]+ '.' [0-9]+;
@@ -12,125 +11,101 @@ LC: '//' ~[\r\n]* -> skip;
 BC: '/*' .*? '*/' -> skip;
 ID: [a-zA-Z_][a-zA-Z0-9_]*;
 
-program: (block | instruction)* EOF;
 
-//program: statement+ EOF;
+program
+    : statement* EOF
+    ;
 
-block
-: function
-|let_in
-|declaration_lambna
-;
-
-function
-:'fun' variable '(' (variable (',' variable)*)? ')' '=>' instruction+ //expression
-;
-
-let_in
-:'let' '{' declaration_expression* '}' 'in' instruction+ 
-;
-
-lambda
-  : '(' (variable (',' variable)*)? ')' '=>' print
-  ;
-
-instruction
-:declaration_expression
-|condicional
-|print
-|call_variable
-;
-
-declaration_expression
-: 'let' variable '=' expression 
-;
-
-declaration_lambna
-: 'let' variable '=' lambda
-;
-
-condicional
-: 'if' '(' expression ')' 'then' instruction+  'else' instruction+ 
-;
-
-print: 
-'print' '(' expression+ ')' 
-;
-
-call_variable
-: variable  '(' (expression (',' expression)*)? ')'
-;
-
-expression
-  : expression ('+' | '-') expression
-  | expression ('*' | '/') expression
-  | expression ('==' | '!=' | '>' | '>=' | '<' | '<=') expression
-  | NUMBER
-  | STRING
-  | BOOLEAN
-  | 'null'
-  | 'input' '(' STRING ')' // Para manejar la entrada
-  | variable
-  | list
-  ;
-
-list
-  : '[' (expression (',' expression)*)? ']'
-  ;
-
-variable: ID;
-
-
-
-/*lambda
-  : '(' (variable (',' variable)*)? ')' '=>' statement
-  ;
-
-/*statement
-  : declaration
-  | 'fun' variable '(' (variable (',' variable)*)? ')' '=>' block
-  | 'if' '(' expression ')' 'then' block 'else' block
-  | 'let' '{' declaration* '}' 'in' block
-  | print 
-  | block
-  | variable  '(' (expression (',' expression)*)? ')'
-  ;
-
-print: 
-'print' '(' expression+ ')' 
-;
+statement
+    : expression
+    | declaration
+    ;
 
 declaration
-  : 'let' variable '=' expression
-  ;
+    : 'let' ID '=' (lambda | aritmeticExpression | value | list)
+    | const
+;
 
-expression
-  : expression ('+' | '-') expression
-  | expression ('*' | '/') expression
-  | expression ('==' | '!=' | '>' | '>=' | '<' | '<=') expression
-  | '(' expression ')'
-  | NUMBER
-  | STRING
-  | BOOLEAN
-  | 'null'
-  | 'input' '(' STRING ')' // Para manejar la entrada
-  | variable
-  | list
-  | lambda
-  ;
+value:
+STRING
+| ID
+| NUMBER
+| len
+| listAccess
+| input
+;
+
+
+conditionalExpression:
+ value ('==' | '!=' | '>' | '>=' | '<' | '<=' | '!') value
+;
+
+aritmeticExpression:
+  value ('*' | '/' | '+' | '-' |  '**')  (value |  aritmeticExpression)
+  | '(' aritmeticExpression ')'
+;
+
 
 lambda
-  : '(' (variable (',' variable)*)? ')' '=>' statement
-  ;
+    : params '=>'  (expression | lambda | value)
+    ;
+
+params
+    : '(' ')'
+    | '(' value (',' value)* ')'
+    | ID
+    ;
+
+expression
+ :  print
+ | functionCallChain
+ | letInDeclaration
+ | ifExpression
+;
+
+letInDeclaration
+    : 'let' blockDeclaration 'in' blockExpression
+    ;
+
+const:
+  'const' ID '=' (lambda | aritmeticExpression | value | list)
+;
+
+input:
+ 'input' '(' STRING ')'
+;
+
+blockDeclaration
+    : '{' (const)* '}'
+    ;
+
+blockExpression
+    : '{' (statement)* '}'
+    | expression
+    ;
+
+ifExpression
+    : 'if' '(' conditionalExpression ')' 'then'? value 'else' (value | expression)
+    ;
+
+len:
+ 'len' '(' ID ')'
+;
+functionCallChain
+    :  ID '(' (value| aritmeticExpression) (',' (value | aritmeticExpression))* ')'
+    | functionCallChain '(' value ')'
+    ;
+
+print:
+ 'print' '(' (value | functionCallChain | aritmeticExpression ) ')'
+;
 
 list
-  : '[' (expression (',' expression)*)? ']'
-  ;
-
-block: '{' statement* '}' ;
-
-variable: ID;*/
+    : '[' ']'
+    | '[' value (',' value)* ']'
+    ;
 
 
-
-
+listAccess
+    : ID '['(aritmeticExpression | NUMBER | ID )']'
+    ;
