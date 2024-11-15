@@ -13,17 +13,17 @@ class SemanticAnalyzer {
 
         const tree = parser.program();
 
-        const semanticVisitor = new SemanticVisitor();
-        semanticVisitor.visit(tree);
-        const symbolTable = semanticVisitor.getSymbolTable();
-        const errors = semanticVisitor.getErrors();
-        if (errors.length > 0) {
-            for (let i = 0; i < errors.length; i++) {
-                console.error(errors[i]);
-            }
-        }
+        // const semanticVisitor = new SemanticVisitor();
+        // semanticVisitor.visit(tree);
+        // const symbolTable = semanticVisitor.getSymbolTable();
+        // const errors = semanticVisitor.getErrors();
+        // if (errors.length > 0) {
+        //     for (let i = 0; i < errors.length; i++) {
+        //         console.error(errors[i]);
+        //     }
+        // }
 
-        console.log(symbolTable);
+        // console.log(symbolTable);
 
         const astCode = new ASTCode(0,0,0);
         const code = astCode.visit(tree);

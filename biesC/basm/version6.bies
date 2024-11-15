@@ -9,6 +9,3 @@ let {
 		splash("Testing helloworld Version " + version + " ***")
 		print(greetings())
     }	
-
-
-)

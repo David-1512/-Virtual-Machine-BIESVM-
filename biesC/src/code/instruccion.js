@@ -7,8 +7,9 @@ class Instruccion {
     toString() {
         let str = `${this.mnemonic}`;
         if (this.values && this.values.length > 0) { 
-            str += ` ${this.values.join(', ')}`; 
+            str += ` ${this.values.join(' ')}`; 
         }
+        
         return str + '\n'; 
     }
 }

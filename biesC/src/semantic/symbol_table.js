@@ -1,7 +1,7 @@
-class variable{
-    constructor(name, type, value, line){
+class Variable {
+    constructor(name, type, value, line) {
         this.name = name;
-        this.id = 0;
+        this.id = -1;  // id se asignará en el scope
         this.type = type;
         this.value = value;
         this.line = line;
@@ -9,94 +9,95 @@ class variable{
 }
 
 class Scope {
-    constructor(parent = null, id = 0, funName = "main"){
+    static instances = [];
+
+    constructor(parent = null, id = 0, funName = "main") {
         this.funName = funName;
         this.id = id;
-        this.parent = parent;        
-        this.variables = {};
-        this.children = [];        
+        this.parent = parent;
+        this.variables = {};  // Variables locales de este scope
+        this.children = [];   // Scopes hijos
+        Scope.instances.push(this);
     }
 
-    addVariable(name, type, value, line){
+    addVariable(name, type, value, line) {
         if (name in this.variables) {
             throw new Error(`Variable '${name}' ya está definida en este alcance.`);
-        }       
-        this.variables[name] = new variable(name, type, value, line);
-        this.variables[name].id = Object.keys(this.variables).length;
-        
-        return [ 0, this.variables[name].id ];        
+        }
+        const variable = new Variable(name, type, value, line);
+        variable.id = Object.keys(this.variables).length;  // Asignamos un ID único por scope
+        this.variables[name] = variable;
+        return [0, variable.id];
     }
 
-    getEnvAndLocal(name, env = 0){
-        if (this.variables[name] !== undefined){
-            return [env, this.variables[name].id];
-        } else if (this.parent){
-            return this.parent.getEnvAndLocal(name, env + 1);
-        }else{
+    static getEnvAndLocal(scope, name, env = 0) {
+        if (scope.variables[name] !== undefined) {
+            return [env, scope.variables[name].id];
+        } else if (scope.parent) {
+            return Scope.getEnvAndLocal(scope.parent, name, env + 1);
+        } else {
             throw new Error(`Variable '${name}' no está definida en este alcance.`);
         }
     }
 
-    getVariable(name){
-        if (this.variables[name] !== undefined){
-            return this.variables[name];
-        } else if (this.parent){
-            return this.parent.getVariable(name);
+    static getVariable(scope, name) {
+        if (scope.variables[name] !== undefined) {
+            return scope.variables[name];
+        } else if (scope.parent) {
+            return Scope.getVariable(scope.parent, name);
         }
         return null;
     }
-    
-    addChild(child){
-        this.children.push(child);
+
+    static addChild(parent, child) {
+        parent.children.push(child);
     }
 
-    getChildren(){
-        return this.children;
+    static getChildren(scope) {
+        return scope.children;
     }
 
-    getParent(){
-        return this.parent;
+    static getParent(scope) {
+        return scope.parent;
     }
 
-    getVariables(){
-        return this.variables;
+    static getVariables(scope) {
+        return scope.variables;
     }
 
-    getId(){
-        return this.id;
-    }    
+    static getId(scope) {
+        return scope.id;
+    }
 }
 
-class SymbolTable{
-    constructor(){
-        this.globalScope = new Scope(null, 0); // Alcance global con ID 0
-        this.currentScope = this.globalScope;
-        this.nextScopeId = 1; // ID para nuevos alcances
+class SymbolTable {
+    static globalScope = new Scope(null, 0);
+    static currentScope = SymbolTable.globalScope;
+    static nextScopeId = 1;
+
+    static addVariable(name, type, value, line) {
+        return SymbolTable.currentScope.addVariable(name, type, value, line);
     }
 
-    addVariable(name, type, value, line){
-        return this.currentScope.addVariable(name, type, value, line);
+    static getEnvAndLocal(name) {
+        return Scope.getEnvAndLocal(SymbolTable.currentScope, name);
     }
 
-    getVariable(name){
-        return this.currentScope.getVariable(name);
+    static getVariable(name) {
+        return Scope.getVariable(SymbolTable.currentScope, name);
     }
 
-    getEnvAndLocal(name){
-        return this.currentScope.getEnvAndLocal(name);
+    static addScope(funName) {
+        const newScope = new Scope(SymbolTable.currentScope, SymbolTable.nextScopeId, funName);
+        Scope.addChild(SymbolTable.currentScope, newScope);
+        SymbolTable.currentScope = newScope;
+        SymbolTable.nextScopeId++;
     }
 
-    addScope(funName){
-        let newScope = new Scope(this.currentScope, this.nextScopeId, funName);
-        this.currentScope.addChild(newScope);
-        this.currentScope = newScope;
-        this.nextScopeId++;
-    }   
-
-    getScopeIdbyName(funName){
-        let scope = this.globalScope;
-        while(scope){
-            if(scope.funName === funName){
+    static getScopeIdbyName(funName) {
+        let scope = SymbolTable.globalScope;
+        while (scope) {
+            if (scope.funName === funName) {
                 return scope.id;
             }
             scope = scope.children[0];
@@ -104,27 +105,29 @@ class SymbolTable{
         throw new Error(`Función '${funName}' no está definida.`);
     }
 
-    setScope(scope){
-        this.currentScope = scope;
+    static setScope(scope) {
+        SymbolTable.currentScope = scope;
     }
 
-    getCurrentScope(){
-        return this.currentScope;
+    static getCurrentScopeId() {
+        return Scope.getId(SymbolTable.currentScope);
     }
 
-    getGlobalScope(){
-        return this.globalScope;
+    static getCurrentScope() {
+        return SymbolTable.currentScope;
     }
 
-    exitScope() {
-        if (this.currentScope.parent) {
-            this.currentScope = this.currentScope.parent;
+    static getGlobalScope() {
+        return SymbolTable.globalScope;
+    }
+
+    static exitScope() {
+        if (SymbolTable.currentScope.parent) {
+            SymbolTable.currentScope = SymbolTable.currentScope.parent;
         } else {
             throw new Error("No se puede salir del alcance global.");
         }
     }
-
 }
 
 export default SymbolTable;
-

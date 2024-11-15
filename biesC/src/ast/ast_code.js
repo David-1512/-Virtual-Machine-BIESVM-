@@ -1,12 +1,15 @@
 import biesCVisitor from "../../parser/grammar/biesCVisitor.js";
+import biesCLexer from "../../parser/grammar/biesCLexer.js";
 import Block from "../code/block.js";
 import Instruccion from "../code/Instruccion.js";
+import SymbolTable from "../semantic/symbol_table.js";
+
 
 class ASTCode extends biesCVisitor{
 
    constructor(id,argument,parent){
       super();
-      this.block = new Block(id,argument,parent);
+      this.block = new Block(SymbolTable.getCurrentScopeId(),argument,parent);
    }
 
    visitProgram(ctx) {
@@ -95,7 +98,8 @@ class ASTCode extends biesCVisitor{
       args = ctx.argumentList().length;
     }
     //Aqui en el diccionario //
-    this.block.addInstruccion(new Instruccion('BLD'));
+    let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
+    this.block.addInstruccion(new Instruccion('BLD', params));
     this.block.addInstruccion(new Instruccion('APP', args != 0 ? [args] : []));
   }
 
@@ -116,7 +120,8 @@ class ASTCode extends biesCVisitor{
 
     if(ctx.ID()){
       //Buscar en el diccionario / Si no error //
-      this.block.addInstruccion(new Instruccion('BLD'));
+      let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
+      this.block.addInstruccion(new Instruccion('BLD', params));
     }
 
     if(ctx.NUMBER()){this.block.addInstruccion(new Instruccion('LDV',[parseInt(ctx.NUMBER().getText(),10)]));}
@@ -130,30 +135,45 @@ class ASTCode extends biesCVisitor{
   visitConstDeclaration(ctx){  //Ver como quitar esta repeticion
     this.visit(ctx.expression());
     //Diccionario
-    this.block.addInstruccion(new Instruccion('BST'));
+    let params = SymbolTable.addVariable(ctx.ID().getText(), "const", null, ctx.start.line);
+    this.block.addInstruccion(new Instruccion('BST', params));
   }
 
   visitLetDeclaration(ctx) {
     this.visit(ctx.expression());
     //Diccionario
-    this.block.addInstruccion(new Instruccion('BST'));
+    let params = SymbolTable.addVariable(ctx.ID().getText(), "let", null, ctx.start.line);
+    this.block.addInstruccion(new Instruccion('BST', params));
   }
 
   //Lambda
   visitLambda(ctx){
+    SymbolTable.addScope("");
     if  (ctx.letInDeclaration()) { this.visit(ctx.letInDeclaration());}
     else{
+
+    //=============================================================================================
+    for (let i = 0; i < ctx.params().getChildCount(); i++) {
+      const paramNode = ctx.params().getChild(i);
+
+      if (paramNode.symbol && paramNode.symbol.type === biesCLexer.ID) {
+          SymbolTable.addVariable(paramNode.getText(), "param", null, ctx.start.line);
+      }
+    }    
+    //==============================================================================================
+    
     let lambda = new ASTLambda(this.block.getCantBlocks()+1,ctx.params().getChildCount()-2,this.block.getId());
     this.block.addBlock(lambda.visitL(ctx));
-    this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getCantBlocks()}`]));
-    }
+    this.block.addInstruccion(new Instruccion('LDF', [`$${SymbolTable.getCurrentScopeId()}`]));
+    }  
+    SymbolTable.exitScope();
   }
 
-  visitLetInDeclaration(ctx){
+  visitLetInDeclaration(ctx){    
     let letIn = new ASTLetIn(this.block.getCantBlocks()+1,0,this.block.getId());
     this.block.addBlock(letIn.visitLI(ctx));
-    this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getCantBlocks()}`]));
-    this.block.addInstruccion(new Instruccion('APP'));
+    this.block.addInstruccion(new Instruccion('LDF', [`$${SymbolTable.getCurrentScopeId()}`]));
+    this.block.addInstruccion(new Instruccion('APP'));    
   }
 
   visitBlockExpression(ctx){
