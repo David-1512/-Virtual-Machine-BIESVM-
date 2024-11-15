@@ -4,44 +4,32 @@ class Block {
         this.parent = parent;
         this.argument = argument;
         this.instruccions = [];
-        this.variables = new Map();
+        this.blocks = [];
     }
 
     getId(){
         return this.id;
     }
 
-    getInstruccion(){
-        return this.instruccions.pop();
-    }
-
     addInstruccion(instruccion){
        this.instruccions.push(instruccion);
     }
 
-    addVariable(valor){
-        this.variables.set(this.variables.size, valor);
-    }
-   
-    getCantVariables(){
-        return this.variables.size;
+    addBlock(block){
+        this.blocks.push(block);
+     }
+
+     getCantBlocks(){
+        return this.blocks.length;
     }
 
-    getVariable(variable){
-        return this.variables.get(variable);
-    }
-
-    getKeyByValue(value) {
-        for (let [key, val] of this.variables.entries()) {
-            if (val === value) {
-                return key; 
-            }
-       }
-   }
-  
-  
     toString() {
         let str = '';
+        for (const block of this.blocks) {
+            if (block) {
+                str += `${block.toString()}\n`; 
+            }
+        }
         str += `$Fun $${this.id} args:${this.argument} parent:${this.parent} \n`
         for (const key in this.instruccions) {
             if (this.instruccions.hasOwnProperty(key)) {

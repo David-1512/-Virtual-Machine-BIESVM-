@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';  // Usar promesas para la lectura de archivos
-import Loader from './src/loader/loader.js';
+import SemanticAnalyzer from './src/loader/semantic_analyzer.js';
 
-const DEFAULT_FILENAME = './basm/version2.bies';
+const DEFAULT_FILENAME = './basm/version1.bies';
 
 const getFilename = () => 
     process.argv.length >= 3 ? process.argv[2] : DEFAULT_FILENAME;
@@ -24,8 +24,8 @@ const readFileAsync = async (filename) => {
 
 
 const executeCode = (data) => {
-    const loader = new Loader();
-    const code = loader.load(data);
+    const semanticAnalizer = new SemanticAnalyzer(); 
+    const code =  semanticAnalizer.load(data);
 };
 
 
