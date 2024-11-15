@@ -83,11 +83,16 @@ class ASTCode extends biesCVisitor{
     if (ctx.ifExpression()) {this.visit(ctx.ifExpression());}
   }
 
-  visitIfExpression(ctx){
+  visitIfExpression(ctx){  //BIfurcacion 
     this.visit(ctx.expression());
-
+    this.block.addInstruccion(new Instruccion('BF')); //Contar la cantidad de instrucciones //Hacer un arbol
+    this.visit(ctx.thenExpr());
+    this.visit(ctx.elseExpr());
   }
- 
+
+  visitThenExpr(ctx){this.visit(ctx.blockExpression());}
+  visitElseExpr(ctx){this.visit(ctx.blockExpression());}
+
   visitFunctionCallChain(ctx){
     let args = 0;
     if (ctx.argumentList()) {
@@ -100,7 +105,7 @@ class ASTCode extends biesCVisitor{
   }
 
   visitArgumentList(ctx){
-    this.visit(ctx.expression());
+    this.visit(ctx.expression()); //Aqui debo ver como viajar por cada argumento
   }
 
 
