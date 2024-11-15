@@ -29,7 +29,18 @@ class ASTCode extends biesCVisitor{
   
   visitLogicalAndExpression(ctx) { this.visit(ctx.equalityExpression());}
   
-  visitEqualityExpression(ctx) { this.visit(ctx.relationalExpression());}
+  visitEqualityExpression(ctx) { 
+    if (ctx.getChildCount() > 1){
+      this.visit(ctx.getChild(0));
+      for (let i = 1; i < ctx.getChildCount(); i++) { 
+        this.visit(ctx.getChild(i));
+        const operator = ctx.getChild(i-1).getText();
+        this.block.addInstruccion(new Instruccion('EQ'));
+        if (operator === '!=') {this.block.addInstruccion(new Instruccion('NEG'));} 
+      }
+  }
+  else{  this.visit(ctx.relationalExpression());}
+  }
  
   visitRelationalExpression(ctx) {this.visit(ctx.additiveExpression());}
 
@@ -46,7 +57,18 @@ class ASTCode extends biesCVisitor{
     else{this.visit(ctx.multiplicativeExpression());}
   }
  
-  visitMultiplicativeExpression(ctx) {this.visit(ctx.exponentialExpression());}
+  visitMultiplicativeExpression(ctx) {
+    if (ctx.getChildCount() > 1){
+      this.visit(ctx.getChild(0));
+      for (let i = 1; i < ctx.getChildCount(); i++) { 
+        this.visit(ctx.getChild(i));
+        const operator = ctx.getChild(i-1).getText();
+        if (operator === '*') {this.block.addInstruccion(new Instruccion('MUL'));}
+        if (operator === '/') {this.block.addInstruccion(new Instruccion('DIV'));}
+      }
+  }
+  else{ this.visit(ctx.exponentialExpression());}
+  }
   
   visitExponentialExpression(ctx) {this.visit(ctx.unaryExpression());}
   
@@ -57,18 +79,43 @@ class ASTCode extends biesCVisitor{
     if  (ctx.literal()) {this.visit(ctx.literal());}
     if (ctx.lambda()) {this.visit(ctx.lambda());}
     if (ctx.expression()) {this.visit(ctx.expression());}
+    if (ctx.functionCallChain()) {this.visit(ctx.functionCallChain());}
+    if (ctx.ifExpression()) {this.visit(ctx.ifExpression());}
+  }
+
+  visitIfExpression(ctx){
+    this.visit(ctx.expression());
+
   }
  
+  visitFunctionCallChain(ctx){
+    let args = 0;
+    if (ctx.argumentList()) {
+      this.visit(ctx.argumentList());
+      args = ctx.argumentList().length;
+    }
+    //Aqui en el diccionario //
+    this.block.addInstruccion(new Instruccion('BLD'));
+    this.block.addInstruccion(new Instruccion('APP', args != 0 ? [args] : []));
+  }
+
+  visitArgumentList(ctx){
+    this.visit(ctx.expression());
+  }
+
+
   visitBuiltinFunction(ctx) { 
     this.visit(ctx.expression());
     if(ctx.PRINT()){this.block.addInstruccion(new Instruccion('PRN'));} 
+    if(ctx.INPUT()){this.block.addInstruccion(new Instruccion('INP'));} 
+    if(ctx.LEN()){this.block.addInstruccion(new Instruccion('LEN'));}  //Hay que hecharle cabeza
   }
 
   visitLiteral(ctx){
     if (ctx.STRING()) {this.block.addInstruccion(new Instruccion('LDV',[ctx.STRING().getText().slice(1, -1)])); }
 
     if(ctx.ID()){
-      //Buscar en el diccionario / Si no error
+      //Buscar en el diccionario / Si no error //
       this.block.addInstruccion(new Instruccion('BLD'));
     }
 
@@ -80,7 +127,13 @@ class ASTCode extends biesCVisitor{
     if  (ctx.letDeclaration()) {this.visit(ctx.letDeclaration());}
   }
 
-  visitLetDeclaration(ctx){
+  visitConstDeclaration(ctx){  //Ver como quitar esta repeticion
+    this.visit(ctx.expression());
+    //Diccionario
+    this.block.addInstruccion(new Instruccion('BST'));
+  }
+
+  visitLetDeclaration(ctx) {
     this.visit(ctx.expression());
     //Diccionario
     this.block.addInstruccion(new Instruccion('BST'));
@@ -88,15 +141,31 @@ class ASTCode extends biesCVisitor{
 
   //Lambda
   visitLambda(ctx){
-    let lambda = new ASTLambda(this.block.getId()+1,ctx.params().getChildCount()-2,this.block.getId());
+    if  (ctx.letInDeclaration()) { this.visit(ctx.letInDeclaration());}
+    else{
+    let lambda = new ASTLambda(this.block.getCantBlocks()+1,ctx.params().getChildCount()-2,this.block.getId());
     this.block.addBlock(lambda.visitL(ctx));
-    this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getId()+1}`]));
+    this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getCantBlocks()}`]));
+    }
+  }
+
+  visitLetInDeclaration(ctx){
+    let letIn = new ASTLetIn(this.block.getCantBlocks()+1,0,this.block.getId());
+    this.block.addBlock(letIn.visitLI(ctx));
+    this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getCantBlocks()}`]));
+    this.block.addInstruccion(new Instruccion('APP'));
   }
 
   visitBlockExpression(ctx){
     if (ctx.expression()) {this.visit(ctx.expression());}
+    if (ctx.statement()) {this.visit(ctx.statement());}
   }
 
+  visitBlockDeclaration(ctx){
+    for (let i = 1; i < ctx.getChildCount()-1; i++) { 
+      this.visit(ctx.getChild(i));
+    }
+  }
 }
 
 class ASTLambda extends ASTCode {
@@ -110,5 +179,17 @@ class ASTLambda extends ASTCode {
   }
 }
 
+class ASTLetIn extends ASTCode {
+  constructor(id, argument, parent) {
+     super(id, argument, parent);
+  }
+
+  visitLI(ctx) {
+      this.visit(ctx.blockDeclaration());
+      this.visit(ctx.blockExpression());
+      return this.block;
+  }
+}
+
 export default ASTCode;
-export { ASTLambda };
+export { ASTLambda,ASTLetIn };
