@@ -70,10 +70,10 @@ unaryExpression
     ;
 
 primaryExpression
-    : literal
-    | list
-    | '(' expression ')'
+    : list
     | functionCallChain
+    | literal
+    | '(' expression ')'
     | listAccess
     | ifExpression
     | lambda
