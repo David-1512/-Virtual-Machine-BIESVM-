@@ -12,14 +12,14 @@ class Block {
     }
 
     addInstruccion(instruccion){
-       this.instruccions.push(instruccion);
+        this.instruccions.push(instruccion);
     }
 
     addBlock(block){
         this.blocks.push(block);
-     }
+    }
 
-     getCantBlocks(){
+    getCantBlocks(){
         return this.blocks.length;
     }
 

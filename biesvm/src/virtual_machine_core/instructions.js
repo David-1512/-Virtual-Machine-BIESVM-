@@ -85,7 +85,6 @@ export default class Instructions {
 
 		this.#registerInstruction(MNEMONICS.NEG, new Commands.UnaryOperationCommand((n) => -n));
 		this.#registerInstruction(MNEMONICS.SGN, new Commands.UnaryOperationCommand((n) => n > 0 ? 1 : 0));
-		this.#registerInstruction(MNEMONICS.SQRT, new Commands.UnaryOperationCommand((n) => Math.sqrt(n)));
 
         // Comandos de comparación y lógica
 		this.#registerInstruction(MNEMONICS.EQ, new Commands.EQCommand((n, m) => n === m));
