@@ -108,7 +108,7 @@ class ASTCode extends biesCVisitor{
     this.visit(ctx.expression());
     if(ctx.PRINT()){this.block.addInstruccion(new Instruccion('PRN'));} 
     if(ctx.INPUT()){this.block.addInstruccion(new Instruccion('INP'));} 
-    if(ctx.LEN()){this.block.addInstruccion(new Instruccion('LEN'));}
+    if(ctx.LEN()){this.block.addInstruccion(new Instruccion('LEN'));}  //Hay que hecharle cabeza
   }
 
   visitLiteral(ctx){
