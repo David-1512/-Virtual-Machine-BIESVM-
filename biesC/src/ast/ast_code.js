@@ -93,6 +93,10 @@ class ASTCode extends biesCVisitor{
     this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getId()+1}`]));
   }
 
+  visitBlockExpression(ctx){
+    if (ctx.expression()) {this.visit(ctx.expression());}
+  }
+
 }
 
 class ASTLambda extends ASTCode {
@@ -103,10 +107,6 @@ class ASTLambda extends ASTCode {
   visitL(ctx) {
       this.visit(ctx.blockExpression()); 
       return this.block;
-  }
-
-  visitBlockExpression(ctx){
-    if (ctx.expression()) {this.visit(ctx.expression());}
   }
 }
 
