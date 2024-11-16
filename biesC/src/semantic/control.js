@@ -15,3 +15,21 @@ class Errors {
 		}
 	}
 }
+
+class Logs {
+	static logs = [];
+
+	static getErrors() {
+		return this.logs;
+	}
+
+	static addError(log) {
+		this.logs.push(log);
+	}
+
+	static printErrors() {
+		for (let i = 0; i < this.logs.length; i++) {
+			console.error(this.logs[i]);
+		}
+	}
+}
