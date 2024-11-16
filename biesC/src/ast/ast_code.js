@@ -12,6 +12,8 @@ class ASTCode extends biesCVisitor{
    visitProgram(ctx) {
     ctx.statement().forEach(this.visit.bind(this));
     this.block.addInstruccion(new Instruccion('HLT'));
+    this.block.addInstruccion(new Instruccion(`$END $${this.block.getId()}`));
+    this.block.addInstruccion(new Instruccion(`INI $${this.block.getId()}`));
     return this.block;
   }
 
@@ -35,14 +37,27 @@ class ASTCode extends biesCVisitor{
       for (let i = 1; i < ctx.getChildCount(); i++) { 
         this.visit(ctx.getChild(i));
         const operator = ctx.getChild(i-1).getText();
-        this.block.addInstruccion(new Instruccion('EQ'));
+        if (operator === '==') {this.block.addInstruccion(new Instruccion('EQ'));}
         if (operator === '!=') {this.block.addInstruccion(new Instruccion('NEG'));} 
       }
   }
   else{  this.visit(ctx.relationalExpression());}
   }
  
-  visitRelationalExpression(ctx) {this.visit(ctx.additiveExpression());}
+  visitRelationalExpression(ctx) {  //Esto hacerlo diferente
+    if (ctx.getChildCount() > 1){
+      this.visit(ctx.getChild(0));
+      for (let i = 1; i < ctx.getChildCount(); i++) { 
+        this.visit(ctx.getChild(i));
+        const operator = ctx.getChild(i-1).getText();
+        if (operator === '>') {this.block.addInstruccion(new Instruccion('GT'));}
+        if (operator === '>=') {this.block.addInstruccion(new Instruccion('GTE'));}
+        if (operator === '<') {this.block.addInstruccion(new Instruccion('LT'));}
+        if (operator === '<=') {this.block.addInstruccion(new Instruccion('LTE'));}
+      }
+  }
+  else{ this.visit(ctx.additiveExpression());}
+  }
 
   visitAdditiveExpression(ctx) { 
     if (ctx.getChildCount() > 1){
@@ -70,7 +85,17 @@ class ASTCode extends biesCVisitor{
   else{ this.visit(ctx.exponentialExpression());}
   }
   
-  visitExponentialExpression(ctx) {this.visit(ctx.unaryExpression());}
+  visitExponentialExpression(ctx) {
+    if (ctx.getChildCount() > 1){
+      this.visit(ctx.getChild(0));
+      for (let i = 1; i < ctx.getChildCount(); i++) { 
+        this.visit(ctx.getChild(i));
+        const operator = ctx.getChild(i-1).getText();
+        if (operator === '**') {this.block.addInstruccion(new Instruccion('POW'));}
+      }
+  }
+  else{this.visit(ctx.unaryExpression());}
+  }
   
   visitUnaryExpression(ctx) {this.visit(ctx.primaryExpression());}
   
@@ -83,37 +108,63 @@ class ASTCode extends biesCVisitor{
     if (ctx.ifExpression()) {this.visit(ctx.ifExpression());}
   }
 
-  visitIfExpression(ctx){  //BIfurcacion 
+  visitIfExpression(ctx){  
     this.visit(ctx.expression());
-    this.block.addInstruccion(new Instruccion('BF')); //Contar la cantidad de instrucciones //Hacer un arbol
     this.visit(ctx.thenExpr());
     this.visit(ctx.elseExpr());
   }
 
-  visitThenExpr(ctx){this.visit(ctx.blockExpression());}
-  visitElseExpr(ctx){this.visit(ctx.blockExpression());}
+  visitThenExpr(ctx){
+    let thenAST = new ASTIfElse();
+    let thenPart = thenAST.visitIE(ctx);
+    this.block.addInstruccion(new Instruccion('BF', [thenPart.getCantInstruccions()+1])); 
+    this.thenElseInstruccions(thenPart.getInstruccions());
+  }
+
+  visitElseExpr(ctx){
+    let elseAST = new ASTIfElse();
+    let elsePart = elseAST.visitIE(ctx);
+    this.block.addInstruccion(new Instruccion('BR',[elsePart.getCantInstruccions()])); 
+    this.thenElseInstruccions(elsePart.getInstruccions());
+  }
+
+  thenElseInstruccions(instruccions){
+    for (const instruccion of instruccions) {
+      this.block.addInstruccion(instruccion);
+    }
+  }
 
   visitFunctionCallChain(ctx){
-    let args = 0;
     if (ctx.argumentList()) {
-      this.visit(ctx.argumentList());
-      args = ctx.argumentList().length;
+      if (ctx.getChildCount() > 4){
+        for (let i = 2; i < ctx.getChildCount(); i+=3) { 
+          this.visit(ctx.getChild(i));
+        }
+      }else{this.visit(ctx.argumentList());} 
     }
+    else{
     //Aqui en el diccionario //
     this.block.addInstruccion(new Instruccion('BLD'));
-    this.block.addInstruccion(new Instruccion('APP', args != 0 ? [args] : []));
+    this.block.addInstruccion(new Instruccion('APP'));
+    }
   }
 
   visitArgumentList(ctx){
-    this.visit(ctx.expression()); //Aqui debo ver como viajar por cada argumento
+    let args = 0;
+    for (let i = 0; i < ctx.getChildCount(); i += 2) { 
+      this.visit(ctx.getChild(i));
+      args += 1;
+    }
+    //Aqui en el diccionario //
+    this.block.addInstruccion(new Instruccion('BLD'));
+    this.block.addInstruccion(new Instruccion('APP',[args]));
   }
-
 
   visitBuiltinFunction(ctx) { 
     this.visit(ctx.expression());
     if(ctx.PRINT()){this.block.addInstruccion(new Instruccion('PRN'));} 
     if(ctx.INPUT()){this.block.addInstruccion(new Instruccion('INP'));} 
-    if(ctx.LEN()){this.block.addInstruccion(new Instruccion('LEN'));}  //Hay que hecharle cabeza
+    if(ctx.LEN()){this.block.addInstruccion(new Instruccion('LEN'));}  
   }
 
   visitLiteral(ctx){
@@ -148,11 +199,16 @@ class ASTCode extends biesCVisitor{
   visitLambda(ctx){
     if  (ctx.letInDeclaration()) { this.visit(ctx.letInDeclaration());}
     else{
-    let lambda = new ASTLambda(this.block.getCantBlocks()+1,ctx.params().getChildCount()-2,this.block.getId());
+    let cantParams = 0;
+    if(ctx.params().getChildCount() == 1 || ctx.params().getChildCount() == 3){cantParams = 1;}
+    if(ctx.params().getChildCount() == 2){cantParams = 0;}
+    if(ctx.params().getChildCount() > 3){for (let i = 1; i < ctx.params().getChildCount(); i += 2) { cantParams += 1;}}
+    let lambda = new ASTLambda(this.block.getCantBlocks()+1,cantParams,this.block.getId());
     this.block.addBlock(lambda.visitL(ctx));
     this.block.addInstruccion(new Instruccion('LDF', [`$${this.block.getCantBlocks()}`]));
     }
   }
+
 
   visitLetInDeclaration(ctx){
     let letIn = new ASTLetIn(this.block.getCantBlocks()+1,0,this.block.getId());
@@ -180,6 +236,8 @@ class ASTLambda extends ASTCode {
 
   visitL(ctx) {
       this.visit(ctx.blockExpression()); 
+      this.block.addInstruccion(new Instruccion('RET'));
+      this.block.addInstruccion(new Instruccion(`$END $${this.block.getId()}`));
       return this.block;
   }
 }
@@ -192,9 +250,23 @@ class ASTLetIn extends ASTCode {
   visitLI(ctx) {
       this.visit(ctx.blockDeclaration());
       this.visit(ctx.blockExpression());
+      this.block.addInstruccion(new Instruccion('RET'));
+      this.block.addInstruccion(new Instruccion(`$END $${this.block.getId()}`));
+      return this.block;
+  }
+}
+
+class ASTIfElse extends ASTCode {
+  constructor(id = 0, argument = 0, parent = 0) {
+     super(id, argument, parent);
+  }
+
+  visitIE(ctx) {
+      this.visit(ctx.blockExpression());
       return this.block;
   }
 }
 
 export default ASTCode;
-export { ASTLambda,ASTLetIn };
+export { ASTLambda,ASTLetIn, ASTIfElse };
+
