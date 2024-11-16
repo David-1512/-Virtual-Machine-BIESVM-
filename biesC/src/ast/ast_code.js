@@ -140,20 +140,23 @@ class ASTCode extends biesCVisitor{
     }
   }
 
-  visitFunctionCallChain(ctx){
-      let args = 0;
-      if (ctx.getChildCount() >= 4){
-        for (let i = 2; i < ctx.getChildCount(); i+=3) { 
-          args += this.visit(ctx.getChild(i));  
-        }
-      }
-      let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
-      this.block.addInstruccion(new Instruccion('BLD', params));
-      this.block.addInstruccion(new Instruccion('APP',[args]));
-  }
-
   
+ visitFunctionCallChain(ctx){
+    let args = [];
+    for (let i = ctx.getChildCount()-1; i >= 1; i--) {  
+      args.push(this.visit(ctx.getChild(i))); 
+    }
+    for (let i = 1; i < ctx.getChildCount(); i++) {
+      if(i == 1){
+        let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
+        this.block.addInstruccion(new Instruccion('BLD', params));
+    }
+    this.block.addInstruccion(new Instruccion('APP',[args.pop()]));
+    }
 
+  }
+  
+  visitFuntionArgs(ctx){return this.visit(ctx.argumentList());}
 
   visitArgumentList(ctx){
     let args = 0;
@@ -161,7 +164,7 @@ class ASTCode extends biesCVisitor{
        this.visit(ctx.getChild(i));
        args += 1;
     }
-    return args
+    return args;
   }
 
   visitBuiltinFunction(ctx) { 
@@ -286,5 +289,5 @@ class ASTIfElse extends ASTCode {
 }
 
 export default ASTCode;
-export { ASTLambda,ASTLetIn, ASTIfElse };
+export { ASTLambda,ASTLetIn, ASTIfElse};
 
