@@ -29,7 +29,7 @@ letDeclaration
     ;
 
 funDeclaration
-    : FUN ID '=' lambda
+    : FUN ID '(' (ID (',' ID)*)? ')' ARROW letInDeclaration
     ;
 
 expression
@@ -95,7 +95,7 @@ functionCallChain
 funtionArgs
     : '(' argumentList? ')'
     ;
-    
+
 argumentList
     : expression (',' expression)*
     ;
