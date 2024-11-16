@@ -24,13 +24,66 @@ class ASTCode extends biesCVisitor {
 		if (ctx.declaration()) { this.visit(ctx.declaration());	}
 	}
 
-	//Expression
+  visitGenericExpression(ctx) {
+    if (ctx.getChildCount() > 1) {
+        this.visit(ctx.getChild(0));
+        for (let i = 1; i < ctx.getChildCount(); i++) {
+            const operator = ctx.getChild(i - 1).getText(); 
+            this.visit(ctx.getChild(i)); 
+            switch(operator){
+              case '||': this.block.addInstruccion(new Instruccion(MNEMONICS.OR)); break;
+              case '&&': this.block.addInstruccion(new Instruccion(MNEMONICS.AND)); break;
+              case '==': this.block.addInstruccion(new Instruccion(MNEMONICS.EQ)); break;
+              case '!=': this.block.addInstruccion(new Instruccion(MNEMONICS.NEQ)); break;
+              case '>': this.block.addInstruccion(new Instruccion(MNEMONICS.GT)); break;
+              case '>=': this.block.addInstruccion(new Instruccion(MNEMONICS.GTE)); break;
+              case '<': this.block.addInstruccion(new Instruccion(MNEMONICS.LT)); break;
+              case '<=': this.block.addInstruccion(new Instruccion(MNEMONICS.LTE)); break;
+              case '+': this.block.addInstruccion(new Instruccion(MNEMONICS.ADD)); break;
+              case '-': this.block.addInstruccion(new Instruccion(MNEMONICS.SUB)); break;
+              case '*': this.block.addInstruccion(new Instruccion(MNEMONICS.MUL)); break;
+              case '/': this.block.addInstruccion(new Instruccion(MNEMONICS.DIV)); break;
+              case '**': this.block.addInstruccion(new Instruccion(MNEMONICS.POW)); break;
+            }
+        }
+    }
+     else {this.visit(ctx.getChild(0));}
+  }
 
-	visitExpression(ctx) {	this.visit(ctx.logicalOrExpression());	}
+  visitExpression(ctx) {this.visitGenericExpression(ctx.logicalOrExpression());	}
+  visitLogicalOrExpression(ctx) { this.visitGenericExpression(ctx); }
+  visitLogicalAndExpression(ctx) { this.visitGenericExpression(ctx); }
+  visitEqualityExpression(ctx) { this.visitGenericExpression(ctx); }
+  visitRelationalExpression(ctx) { this.visitGenericExpression(ctx); }
+  visitAdditiveExpression(ctx) { this.visitGenericExpression(ctx); }
+  visitMultiplicativeExpression(ctx) { this.visitGenericExpression(ctx); }
+  visitExponentialExpression(ctx) { this.visit(ctx.unaryExpression()); }
 
-	visitLogicalOrExpression(ctx) {	this.visit(ctx.logicalAndExpression()); }
+	/*visitLogicalOrExpression(ctx) {
+		if (ctx.getChildCount() > 1) {
+			this.visit(ctx.getChild(0));
+			for (let i = 1; i < ctx.getChildCount(); i++) {
+				this.visit(ctx.getChild(i));
+				const operator = ctx.getChild(i - 1).getText();
+				if (operator === '||') {	this.block.addInstruccion(new Instruccion(MNEMONICS.OR));	}
+			}
+		} else {
+			this.visit(ctx.logicalAndExpression());
+		}
+	}
 
-	visitLogicalAndExpression(ctx) { this.visit(ctx.equalityExpression());	}
+	visitLogicalAndExpression(ctx) { 
+    if (ctx.getChildCount() > 1) {
+			this.visit(ctx.getChild(0));
+			for (let i = 1; i < ctx.getChildCount(); i++) {
+				this.visit(ctx.getChild(i));
+				const operator = ctx.getChild(i - 1).getText();
+				if (operator === '&&') {	this.block.addInstruccion(new Instruccion(MNEMONICS.AND));	}
+			}
+		} else {
+      this.visit(ctx.equalityExpression());	
+		}
+  }
 
 	visitEqualityExpression(ctx) {
 		if (ctx.getChildCount() > 1) {
@@ -39,7 +92,7 @@ class ASTCode extends biesCVisitor {
 				this.visit(ctx.getChild(i));
 				const operator = ctx.getChild(i - 1).getText();
 				if (operator === '==') {	this.block.addInstruccion(new Instruccion(MNEMONICS.EQ));	}
-				if (operator === '!=') {	this.block.addInstruccion(new Instruccion(MNEMONICS.NEQ));	} //REVISAR
+				if (operator === '!=') {	this.block.addInstruccion(new Instruccion(MNEMONICS.NEQ));	} 
 			}
 		} else {
 			this.visit(ctx.relationalExpression());
@@ -47,7 +100,6 @@ class ASTCode extends biesCVisitor {
 	}
 
 	visitRelationalExpression(ctx) {
-		//Esto hacerlo diferente
 		if (ctx.getChildCount() > 1) {
 			this.visit(ctx.getChild(0));
 			for (let i = 1; i < ctx.getChildCount(); i++) {
@@ -104,10 +156,16 @@ class ASTCode extends biesCVisitor {
 		} else {
 			this.visit(ctx.unaryExpression());
 		}
-	}
+	}*/
 
 	visitUnaryExpression(ctx) {
-		this.visit(ctx.primaryExpression());
+    if (ctx.getChildCount() === 2) {
+				const operator = ctx.getChild(0).getText();
+        this.visit(ctx.getChild(1));
+				if (operator === '!') {this.block.addInstruccion(new Instruccion(MNEMONICS.NEG));} //Preguntar
+        if (operator === '-') {this.block.addInstruccion(new Instruccion(MNEMONICS.NEG));}
+    } 
+    else {this.visit(ctx.primaryExpression());}
 	}
 
 	visitPrimaryExpression(ctx) {
@@ -237,8 +295,12 @@ class ASTCode extends biesCVisitor {
 
 	//Declaration
 	visitDeclaration(ctx) {
-		if (ctx.letDeclaration()) {this.visit(ctx.letDeclaration());}
-
+		//if (ctx.letDeclaration()) {this.visit(ctx.letDeclaration());}
+   // if(ctx.constDeclaration()) {this.visit(ctx.constDeclaration());}
+   // if(ctx.varDeclaration()) {this.visit(ctx.varDeclaration());}
+    if(ctx.letDeclaration()) {this.visitVarLetDeclaration(ctx.letDeclaration());}
+    if(ctx.constDeclaration()) {this.visit(ctx.constDeclaration());}
+    if(ctx.varDeclaration()) {this.visitVarLetDeclaration(ctx.varDeclaration());}
     if(ctx.funDeclaration()) {this.visit(ctx.funDeclaration());}
 	}
 
@@ -247,22 +309,33 @@ class ASTCode extends biesCVisitor {
     this.visit(ctx.lambda()); //Aqui esta el detalle
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
   }
+  
+  visitVarLetDeclaration(ctx){
+    this.visit(ctx.expression());
+		let params = SymbolTable.addIdentifier(ctx.ID().getText(), 'const', null, ctx.start.line);
+		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
+  }
 
-
-	visitConstDeclaration(ctx) {
-		//Ver como quitar esta repeticion
+  visitConstDeclaration(ctx) {
 		this.visit(ctx.expression());
-		//Diccionario
 		let params = SymbolTable.addIdentifier(ctx.ID().getText(), 'const', null, ctx.start.line);
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
 	}
+
+
+  /*visitVarDeclaration(ctx){
+    this.visit(ctx.expression());
+		//Diccionario
+		let params = SymbolTable.addIdentifier(ctx.ID().getText(), 'const', null, ctx.start.line);
+		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
+  }
 
 	visitLetDeclaration(ctx) {
 		this.visit(ctx.expression());
 		//Diccionario
 		let params = SymbolTable.addIdentifier(ctx.ID().getText(), 'let', null, ctx.start.line);
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
-	}
+	}*/
 
 	//Lambda
 	visitLambda(ctx) {
