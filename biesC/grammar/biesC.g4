@@ -32,6 +32,7 @@ funDeclaration
     : FUN ID '=' lambda
     ;
 
+
 expression
     : logicalOrExpression
     ;
@@ -95,7 +96,7 @@ functionCallChain
 funtionArgs
     : '(' argumentList? ')'
     ;
-    
+
 argumentList
     : expression (',' expression)*
     ;
