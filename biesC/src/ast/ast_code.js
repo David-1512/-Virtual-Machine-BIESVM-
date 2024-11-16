@@ -191,8 +191,7 @@ class ASTCode extends biesCVisitor {
 			this.block.addInstruccion(new Instruccion(MNEMONICS.APP, [args.pop()]));
 		}
 	}
-
-	  
+  
   visitFuntionArgs(ctx){
     if(ctx.getChildCount() == 2){ return 0;}
     else{return this.visit(ctx.argumentList());}
