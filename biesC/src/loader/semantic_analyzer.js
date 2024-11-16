@@ -25,7 +25,7 @@ class SemanticAnalyzer {
 
         // console.log(symbolTable);
 
-        const astCode = new ASTCode(0,0,0);
+        const astCode = new ASTCode(0,0,'$0');
         const code = astCode.visit(tree);
         console.log(code.toString());
         return code;

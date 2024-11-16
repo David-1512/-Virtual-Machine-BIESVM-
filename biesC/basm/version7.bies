@@ -6,3 +6,12 @@ let {
 	print("*** Testing max("+ x + " ," + y + ") ***")
 	print(max(x)(y))
 }
+
+
+
+/*
+
+
+
+
+*/

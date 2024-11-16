@@ -141,34 +141,24 @@ class ASTCode extends biesCVisitor{
   }
 
   visitFunctionCallChain(ctx){
-    if (ctx.argumentList()) {
-      if (ctx.getChildCount() > 4){
+      let args = 0;
+      if (ctx.getChildCount() >= 4){
         for (let i = 2; i < ctx.getChildCount(); i+=3) { 
-          this.visit(ctx.getChild(i));
+          args += this.visit(ctx.getChild(i));  
         }
-      }else{this.visit(ctx.argumentList());} 
-    }
-    //else{
-    //Aqui en el diccionario //
-   /* let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
-    this.block.addInstruccion(new Instruccion('BLD', params));
-    this.block.addInstruccion(new Instruccion('APP', args != 0 ? [args] : []));
-    this.block.addInstruccion(new Instruccion('BLD'));
-    this.block.addInstruccion(new Instruccion('APP'));*/
-    //}
+      }
+      let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
+      this.block.addInstruccion(new Instruccion('BLD', params));
+      this.block.addInstruccion(new Instruccion('APP',[args]));
   }
 
   visitArgumentList(ctx){
     let args = 0;
     for (let i = 0; i < ctx.getChildCount(); i += 2) { 
-      this.visit(ctx.getChild(i));
-      args += 1;
+       this.visit(ctx.getChild(i));
+       args += 1;
     }
-    //Aqui en el diccionario //
-    let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
-    this.block.addInstruccion(new Instruccion('BLD', params));
-   // this.block.addInstruccion(new Instruccion('BLD'));
-    this.block.addInstruccion(new Instruccion('APP',[args]));
+    return args
   }
 
   visitBuiltinFunction(ctx) { 
@@ -179,7 +169,7 @@ class ASTCode extends biesCVisitor{
   }
 
   visitLiteral(ctx){
-    if (ctx.STRING()) {this.block.addInstruccion(new Instruccion('LDV',[ctx.STRING().getText().slice(1, -1)])); }
+    if (ctx.STRING()) {this.block.addInstruccion(new Instruccion('LDV',[ctx.STRING().getText()])); }
 
     if(ctx.ID()){
       //Buscar en el diccionario / Si no error //
@@ -228,7 +218,7 @@ class ASTCode extends biesCVisitor{
     if(ctx.params().getChildCount() == 1 || ctx.params().getChildCount() == 3){cantParams = 1;}
     if(ctx.params().getChildCount() == 2){cantParams = 0;}
     if(ctx.params().getChildCount() > 3){for (let i = 1; i < ctx.params().getChildCount(); i += 2) { cantParams += 1;}}
-    let lambda = new ASTLambda(this.block.getCantBlocks()+1,cantParams,this.block.getId());
+    let lambda = new ASTLambda(this.block.getCantBlocks()+1,cantParams,`$${this.block.getId()}`);
     this.block.addBlock(lambda.visitL(ctx));
     this.block.addInstruccion(new Instruccion('LDF', [`$${SymbolTable.getCurrentScopeId()}`]));
     }  
@@ -236,10 +226,10 @@ class ASTCode extends biesCVisitor{
   }
 
   visitLetInDeclaration(ctx){
-    let letIn = new ASTLetIn(this.block.getCantBlocks()+1,0,this.block.getId());
+    let letIn = new ASTLetIn(this.block.getCantBlocks()+1,0,`$${this.block.getId()}`);
     this.block.addBlock(letIn.visitLI(ctx));
     this.block.addInstruccion(new Instruccion('LDF', [`$${SymbolTable.getCurrentScopeId()}`]));
-    this.block.addInstruccion(new Instruccion('APP'));    
+    this.block.addInstruccion(new Instruccion('APP',[0]));    
   }
 
   visitBlockExpression(ctx){

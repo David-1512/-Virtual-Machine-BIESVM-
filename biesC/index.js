@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';  // Usar promesas para la lectura de archivos
 import SemanticAnalyzer from './src/loader/semantic_analyzer.js';
 
-const DEFAULT_FILENAME = './basm/version7.bies';
+const DEFAULT_FILENAME = './basm/version0.bies';
 
 const getFilename = () => 
     process.argv.length >= 3 ? process.argv[2] : DEFAULT_FILENAME;
