@@ -178,10 +178,12 @@ class ASTCode extends biesCVisitor {
 		}
 	}
 
-	visitFuntionArgs(ctx) {
-		return this.visit(ctx.argumentList());
-	}
-
+	  
+  visitFuntionArgs(ctx){
+    if(ctx.getChildCount() == 2){ return 0;}
+    else{return this.visit(ctx.argumentList());}
+  }
+  
 	visitArgumentList(ctx) {
 		let args = 0;
 		for (let i = 0; i < ctx.getChildCount(); i += 2) {
