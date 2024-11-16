@@ -138,6 +138,10 @@ export default class Instructions {
 		this.#registerInstruction(MNEMONICS.CST, new Commands.CstCommand());
 		this.#registerInstruction(MNEMONICS.INO, new Commands.InoCommand());
 
+		// Comandos extras
+		this.#registerInstruction(MNEMONICS.POW, new Commands.OperationCommand((n, m) => Math.pow(n, m)));
+		this.#registerInstruction(MNEMONICS.LEN, new Commands.UnaryOperationCommand((n) => n.length));
+
     }
 }
 

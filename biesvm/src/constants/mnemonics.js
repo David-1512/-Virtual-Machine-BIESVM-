@@ -77,6 +77,10 @@ export const MNEMONICS = {
      
     CST: 'CST',
     INO: 'INO',
+
+    //Extras
+    POW: 'POW',
+    LEN: 'LEN',
 };
 
 

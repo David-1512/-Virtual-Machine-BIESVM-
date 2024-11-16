@@ -46,8 +46,9 @@ class InpCommand extends Command {
      * @param {Object} runner - Instancia que maneja el estado de la máquina virtual.
      * @param {WritableStream} outputStream - Flujo de salida para escribir los resultados.
      */
-    execute(runner,outputStream) {        
-        const input = readlineSync.question('');  
+    execute(runner,outputStream) {     
+        const message = runner.stack.pop();
+        const input = readlineSync.question(message);  
         outputStream.write(`Entrando por teclado: ${input || ''}\n`);
         runner.stack.push(input || ''); 
 

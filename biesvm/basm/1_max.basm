@@ -8,18 +8,18 @@
 
 
 $FUN $0 args:1 parent:$0
-    LDV 4    
-    LDV 5    
+    LDV 4 ; x = 4    
+    LDV 5 ; y = 5    
     LDF $1 ; Arma la balija 
-    BST 0 0
+    BST 0 0 
     BLD 0 0   
-    APP 2;   
+    APP 2 ; max(x, y)   
     PRN
     HLT
 $END $0
 
 $FUN $1 args:2 parent:$0 
-    BLD 0 0 ; y = -5
+    BLD 0 0 ; y = 5
     BLD 0 1 ; x = 4
     GT ; y > x
     BF 3 ; if x > y 

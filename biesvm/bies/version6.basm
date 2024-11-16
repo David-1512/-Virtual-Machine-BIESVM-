@@ -1,0 +1,54 @@
+;let max = (x, y) => if (x > y) then x else y
+;let {
+;	const x = 10
+;	const y = 20
+;} in {
+;	print("*** Testing max("+ x + " ," + y + ") ***")
+;	print(max(x, y))
+;}
+
+
+
+
+$FUN $1 args:2 parent:$0 
+BLD 0 0 ; x
+BLD 0 1 ; y
+GT ; x > y
+BF 3 ; if false
+BLD 0 0 ; x
+BR 2 ; return x
+BLD 0 1 ; y
+RET 
+$END $1
+
+$FUN $2 args:0 parent:$0 ; CAMBIOS AQUI CON RESPECTO A IF
+LDV 10
+BST 0 0 ; x = 10
+LDV 20
+BST 0 1 ; y = 20
+LDV "*** Testing max("
+BLD 0 0 
+ADD
+LDV " ,"
+ADD
+BLD 0 1
+ADD
+LDV ") ***"
+ADD
+PRN
+BLD 0 0
+BLD 0 1
+BLD 1 0
+APP 2
+PRN
+RET
+$END $2
+
+$FUN $0 args:0 parent:$0
+LDF $1
+BST 0 0
+LDF $2
+APP 0
+HLT
+$END $0
+INI $0

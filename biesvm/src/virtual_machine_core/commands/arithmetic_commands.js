@@ -41,11 +41,11 @@ class OperationCommand extends Command {
      * @throws {Error} Si los valores no pueden ser convertidos a números.
      */
     execute(runner,outputStream, errorStream) {
-        const m = Number(runner.stack.pop());
-        const n = Number(runner.stack.pop());
+        const m = (runner.stack.pop()); //Quitamos el numero
+        const n = (runner.stack.pop()); //Quitamos el numero
         outputStream.write(`Operando ${n} y ${m} = ${this.operation(n, m)}\n`);
         runner.stack.push(this.operation(n, m));
-       
+    
     }
 }
 
@@ -70,7 +70,7 @@ class UnaryOperationCommand extends Command {
     * @throws {Error} Si el valor no puede ser convertido a un número.
     */
     execute(runner,outputStream,errorStream) {
-        const n1 = Number(runner.stack.pop());
+        const n1 = (runner.stack.pop()); //Quitamos el casteo numero
         outputStream.write(`Operando ${n1}  = ${this.operation(n1)}\n`);
         runner.stack.push(this.operation(n1));
     }

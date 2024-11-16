@@ -1,0 +1,133 @@
+;let {
+;		const splash = (msg) => print(msg)
+;		const greetings = () => 
+;		      let {const greet = input("Enter greeting>") 
+;			  } in 
+;			  if (len(greet) == 0 ) then "Hello World!" else greet
+;	} in {
+;	    let version = 5 ** 5 / (4 + 1) //(5 / (4 + 1))
+;		splash("Testing helloworld Version " + version + " ***")
+;		print(greetings())
+;   }		
+
+
+
+$FUN $2 args:1 parent:$1 
+BLD 0 0
+PRN
+RET
+$END $2
+
+$FUN $4 args:0 parent:$3 ; CAMBIOS ACA, PARA QUE FUNCIONE EN LA MAQUINA VIRTUAL
+LDV "Enter greeting>"
+INP
+BST 0 0
+BLD 0 0
+LEN
+LDV 0
+EQ
+BF 3
+LDV "Hello World!"
+BR 2
+BLD 0 0
+RET
+$END $4
+
+$FUN $3 args:0 parent:$1
+LDF $4
+APP 0
+RET
+$END $3
+
+$FUN $1 args:0 parent:$0
+LDF $2
+BST 0 0
+LDF $3
+BST 0 1
+LDV 5
+LDV 5
+POW
+LDV 4
+LDV 1
+ADD
+DIV
+BST 0 2
+LDV "Testing helloworld Version "
+BLD 0 2
+ADD
+LDV " ***"
+ADD
+BLD 0 0
+APP 1
+BLD 0 1
+APP 0
+PRN
+RET
+$END $1
+
+$FUN $0 args:0 parent:$0
+LDF $1
+APP 0
+HLT
+$END $0
+INI $0
+
+;$Fun $2 args:1 parent:$1 
+;BLD 0 0
+;PRN
+;RET
+;$END $2
+;
+;$Fun $4 args:0 parent:$3
+;LDV "Enter greeting>"
+;INP
+;BST 0 0
+;BLD 0 0
+;LEN
+;LDV 0
+;EQ
+;BF 2
+;LDV "Hello World!"
+;BR 1
+;BLD 0 0
+;RET
+;$END $4
+;
+;$Fun $3 args:0 parent:$1
+;LDF $4
+;APP 0
+;RET
+;$END $3
+;
+;$Fun $1 args:0 parent:$0
+;LDF $2
+;BST 0 0
+;LDF $3
+;BST 0 1
+;LDV 5
+;LDV 5
+;POW
+;LDV 4
+;LDV 1
+;ADD
+;DIV
+;BST 0 2
+;LDV "Testing helloworld Version "
+;BLD 0 2
+;ADD
+;LDV " ***"
+;ADD
+;BLD 0 0
+;APP 1
+;BLD 0 1
+;APP 0
+;PRN
+;RET
+;$END $1
+;
+;$Fun $0 args:0 parent:$0
+;LDF $1
+;APP 0
+;HLT
+;$END $0
+;INI $0

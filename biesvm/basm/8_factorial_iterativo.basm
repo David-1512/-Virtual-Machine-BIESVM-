@@ -31,7 +31,6 @@ $END $1
 
 $FUN $0 args:1 parent:$0 ; main
     LDV "Ingrese el valor al cual calcular factorial: "        ; Cargar el valor 5 (n)
-    PRN
     INP
     LDF $1        ; Cargar la función factorial
     BST 0 0

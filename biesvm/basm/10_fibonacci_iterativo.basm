@@ -37,7 +37,6 @@ $END $1
 
 $FUN $0 args:1 parent:$0 ; main
     LDV "Ingrese un valor para fibonacci: "
-    PRN
     INP           ; Cargar el valor 5 (n)
     LDF $1        ; Cargar la función fibonacci
     BST 0 0

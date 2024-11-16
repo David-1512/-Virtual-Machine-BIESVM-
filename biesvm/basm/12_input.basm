@@ -8,8 +8,7 @@
 ;Descripción: Imprimir un mensaje obtenido por input del usuario
 
 $FUN $0 args:0 parent:$0
-    LDV "Digite un mensaje: "
-    PRN
+    LDV "Digite un mensaje: "    
     INP
     PRN
     HLT
