@@ -11,6 +11,14 @@ class Block {
         return this.id;
     }
 
+    getInstruccions(){
+       return this.instruccions;
+    }
+
+    getCantInstruccions(){
+       return this.instruccions.length;
+    }
+
     addInstruccion(instruccion){
         this.instruccions.push(instruccion);
     }

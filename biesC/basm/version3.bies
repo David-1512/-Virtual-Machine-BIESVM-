@@ -1,4 +1,5 @@
 let splash = (msg) => print(msg)
-let version = 666 - 664
-splash("Testing helloworld Version " + version + "***")  //Aqui preguntar
-print("Hello World!") 
+let greetings = () => "Hello World!"
+let version = (4 + 1 - 2)
+splash("Testing helloworld Version " + version + " ***")
+print(greetings()) 
