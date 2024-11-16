@@ -129,10 +129,19 @@ class ASTCode extends biesCVisitor {
 		if (ctx.ifExpression()) {
 			this.visit(ctx.ifExpression());
 		}
-		if (ctx.list()) {
-			this.visit(ctx.list());
-		}
+		
+    if (ctx.list()) {this.visit(ctx.list());}
+
+    if(ctx.listAccess()){this.visit(ctx.listAccess());}
 	}
+
+  visitListAccess(ctx){
+    let linea = ctx.ID().getSymbol().line;
+    let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), linea);
+    this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
+    this.visit(ctx.expression());
+    this.block.addInstruccion(new Instruccion(MNEMONICS.LTK));
+  }
 
 	visitList(ctx) {
     this.block.addInstruccion(new Instruccion(MNEMONICS.LDV,['[]']));
@@ -140,8 +149,7 @@ class ASTCode extends biesCVisitor {
       this.visit(ctx.getChild(i));
       this.block.addInstruccion(new Instruccion(MNEMONICS.LIN));
     }
-  } 
-
+  }
 
 	visitIfExpression(ctx) {
 		this.visit(ctx.expression());
