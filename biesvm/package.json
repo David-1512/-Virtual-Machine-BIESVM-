@@ -11,7 +11,9 @@
 		"antlr4": "java -jar ./tools/antlr-4.13.2-complete.jar -no-listener -visitor -Dlanguage=JavaScript -o ./parser/grammar ./grammar/biesASM.g4",
 		"test": "jest",
 		"start": "node ./biesvm.js",
-		"jsdoc": "jsdoc -c jsdoc.json"
+		"jsdoc": "jsdoc -c jsdoc.json",
+		"format": "prettier --write .",
+		"configure": "node config/setup_environment.js"
 	},
 	"dependencies": {
 		"antlr4": "^4.13.1-patch-1",
@@ -22,6 +24,7 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"jsdoc": "^4.0.3"
+		"jsdoc": "^4.0.3",
+		"prettier": "^3.3.3"
 	}
 }

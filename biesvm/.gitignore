@@ -23,6 +23,7 @@ pnpm-debug.log*
 coverage/
 
 # Documentación generada por JSDoc
+out/
 docs/
 
 # Archivos del sistema operativo

@@ -6,10 +6,10 @@ Proyecto académico donde se implementa una máquina virtual basada en pila para
 
 ## Autores
 
-- **David Serrano Medrano**
-- **Leandro Mora Corrales**
-- **Xiara Suarez Alpizar**
-- **Bryan Hernandez Hernández**
+-   **David Serrano Medrano**
+-   **Leandro Mora Corrales**
+-   **Xiara Suarez Alpizar**
+-   **Bryan Hernandez Hernández**
 
 ## Requisitos del sistema
 
@@ -39,8 +39,8 @@ Java 8 o superior (para ejecutar ANTLR4)
 2. Crear Documentacion
    npm run jsdoc
 
-
 ## Ejecutar
+
     npx biesvm --o salida.txt --e errores.txt --trace 1 ./nombre_archivo.basm
 
 ## Licencia

@@ -1,17 +1,30 @@
 {
-  "name": "biesc",
-  "version": "1.0.0",
-  "description": "Compilador virtual biesVM en Node.js",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "antlr4": "java -jar ./tools/antlr-4.13.2-complete.jar -no-listener -visitor -Dlanguage=JavaScript -o ./parser/grammar ./grammar/biesC.g4",
-    "test": "jest"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "antlr4": "^4.13.2",
-    "biesc": "file:"
-  }
+	"name": "biesc",
+	"version": "1.0.0",
+	"description": "Compilador virtual biesVM en Node.js",
+	"main": "index.js",
+	"type": "module",
+	"bin": {
+		"biesc": "../bin/biesc.js"
+	},
+	"scripts": {
+		"antlr4": "java -jar ./tools/antlr-4.13.2-complete.jar -no-listener -visitor -Dlanguage=JavaScript -o ./parser/grammar ./grammar/biesC.g4",
+		"test": "jest",
+		"start": "node ./biesvm.js",
+		"jsdoc": "jsdoc -c jsdoc.json",
+		"format": "prettier --write .",
+		"configure": "node config/setup_environment.js"
+	},
+	"dependencies": {
+		"antlr4": "^4.13.2",
+		"biesc": "file:",
+		"commander": "^10.0.0",
+		"readline-sync": "^1.4.10"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"jsdoc": "^4.0.3",
+		"prettier": "^3.3.3"
+	}
 }

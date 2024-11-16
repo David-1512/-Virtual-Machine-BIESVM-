@@ -1,21 +1,21 @@
 /**
  * @file cli.js
- * @description CLI para ejecutar archivos .basm utilizando la máquina virtual BiesVM.
- * @module BiesVM_CLI
+ * @description CLI para ejecutar archivos .bies utilizando el compilador BiesC.
+ * @module BiesC
  *
- * @project biesVM
- * Proyecto académico para implementar una máquina virtual basada en pila para el lenguaje funcional bies.
+ * @project biesC
+ * Proyecto académico para implementar un compilador para el lenguaje funcional bies.
  *
  * @version 1.0.0
  *
- * @since 15-10-2024
+ * @since 15-11-2024
  */
 
 import { Command } from 'commander';
 import fs from 'fs';
 import { promises as fsPromises } from 'fs';
-import Loader from '../virtual_machine_core/loader/loader.js';
-import Runner from '../virtual_machine_core/runner.js';
+import SemanticAnalyzer from './../loader/semantic_analyzer.js';
+import Generator from './../code_generator/generator.js'; // Asegúrate de que la ruta sea correcta
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -33,28 +33,26 @@ const LOGS_DIR = path.join(__dirnamePath, '..', '..', 'logs');
 fsPromises.mkdir(LOGS_DIR, { recursive: true }).catch(console.error);
 
 /**
- * Ejecuta la interfaz de línea de comandos (CLI) para la BiesVM.
+ * Ejecuta la interfaz de línea de comandos (CLI) para la BiesC.
  * Maneja los comandos y opciones de configuración.
  */
 export const runCLI = () => {
     program
-		.version('1.2.0')
-        .name('biesvm')
-        .description('CLI para ejecutar archivos .basm utilizando la máquina virtual BiesVM.')
-        .usage('[options] <file.basm>')
-        .argument('<file>', 'archivo .basm a ejecutar') // Definir <file> como argumento posicional obligatorio
+        .version('1.0.0')
+        .name('biesc')
+        .description('CLI para ejecutar archivos .bies utilizando el compilador BiesC.')
+        .usage('[options] <file.bies>')
+        .argument('<file>', 'archivo .bies a ejecutar') // Definir <file> como argumento posicional obligatorio
         .option('--o <outfile>', 'archivo de salida para prints (por defecto: configurado o salida.txt)')
         .option('--e <errfile>', 'archivo de salida para errores (por defecto: configurado o errores.txt)')
         .option('--trace <level>', 'nivel de traza (0-1) (por defecto: 0)', '0')
         .option('--use-config <file>', 'archivo de configuración (por defecto: .config_biesm.json)', DEFAULT_CONFIG_FILE)
         .action(async (file, options) => {
             try {
-                // Validar que el archivo tenga la extensión .basm
+                // Validar que el archivo tenga la extensión .bies
                 validateFilename(file);
 
-                //console.log(`Ruta del archivo de configuración: ${options.useConfig}`);
                 const configOptions = await loadConfig(options.useConfig);
-                //console.log(`Opciones de configuración cargadas: ${JSON.stringify(configOptions)}`);
 
                 // Resolver ruta para archivo de salida
                 const outputPath = (options.o && options.o.trim())
@@ -71,7 +69,6 @@ export const runCLI = () => {
                     error: errorPath,
                     trace: options.trace || configOptions.trace || '0',
                 };
-                //console.log(`Opciones finales: ${JSON.stringify(finalOptions)}`);
 
                 await executeFile(file, finalOptions);
             } catch (error) {
@@ -101,23 +98,23 @@ const loadConfig = async (configFilePath) => {
 };
 
 /**
- * Ejecuta el código leído desde el archivo `.basm` en la máquina virtual.
- * @param {string} filename - Nombre del archivo `.basm` a ejecutar.
+ * Ejecuta el código leído desde el archivo `.bies` en el compilador.
+ * @param {string} filename - Nombre del archivo `.bies` a ejecutar.
  * @param {Object} options - Opciones de configuración para la ejecución.
  */
 const executeFile = async (filename, options) => {
     const fileContent = await readFileAsync(filename);
-    executeCode(fileContent, options);
+    await executeCode(fileContent, filename, options);
 };
 
 /**
- * Valida que el archivo tenga la extensión .basm.
+ * Valida que el archivo tenga la extensión .bies.
  * @param {string} filename - Nombre del archivo a validar.
- * @throws {Error} - Si el archivo no tiene la extensión .basm.
+ * @throws {Error} - Si el archivo no tiene la extensión .bies.
  */
 const validateFilename = (filename) => {
-    if (!filename.endsWith('.basm')) {
-        throw new Error('El archivo debe tener la extensión .basm');
+    if (!filename.endsWith('.bies')) {
+        throw new Error('El archivo debe tener la extensión .bies');
     }
 };
 
@@ -137,11 +134,12 @@ const readFileAsync = async (filename) => {
 };
 
 /**
- * Ejecuta el código ensamblador en la máquina virtual BiesVM.
+ * Procesa el Código en el compilador BiesC.
  * @param {string} data - Código ensamblador a ejecutar.
+ * @param {string} filename - Nombre del archivo de entrada.
  * @param {Object} options - Opciones de configuración para la ejecución.
  */
-const executeCode = (data, options) => {
+const executeCode = async (data, filename, options) => {
     const outputStream = options.output ? fs.createWriteStream(options.output, { flags: 'a' }) : process.stdout;
     const errorStream = options.error ? fs.createWriteStream(options.error, { flags: 'a' }) : process.stderr;
 
@@ -162,15 +160,26 @@ const executeCode = (data, options) => {
         errorStream.write('----------------------------------------------------------\n');
         errorStream.write(`Fecha: ${timestamp}\n\n`);
     }
+    
+    const semanticAnalyzer = new SemanticAnalyzer();
+    
+    //const compiler = new CodeGenerator(outputStream, errorStream, traceLevel); // Asegúrate de importar y definir correctamente CodeGenerator
 
-    const loader = new Loader();
-    const code = loader.load(data, outputStream);
-    const runner = new Runner(outputStream, errorStream, traceLevel);
-
+    let byteCode;
     try {
-        runner.execute(code);
+		byteCode = semanticAnalyzer.load(data);
+        //byteCode = await compiler.proccesCode(code); // Asegúrate de que proccesCode sea asíncrono
     } finally {
         if (options.output) outputStream.end();
         if (options.error) errorStream.end();
     }
+
+    // Generar el archivo .basm en la misma ruta del archivo de entrada
+    const inputDir = path.dirname(path.resolve(filename));
+    const inputBaseName = path.basename(filename, '.bies');
+    const basmFilename = `${inputBaseName}.basm`;
+    const basmOutputPath = path.join(inputDir, basmFilename);
+
+    const generator = new Generator();
+    await generator.generateBasm(byteCode, basmOutputPath);
 };

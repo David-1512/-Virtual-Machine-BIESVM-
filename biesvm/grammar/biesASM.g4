@@ -28,7 +28,7 @@ mnemonico:
     | 'PRN' | 'INP'                                     // IO Consola
     | 'LIN' | 'LTK' | 'LRK' | 'LNT' | 'TOL'             // Operaciones con listas
     | 'INI' | 'HLT'                                     // Inicialización y finalización
-    | 'POW' | 'LEN'                                     // Potencia y longitud
+    | 'POW' | 'LEN' | 'NEQ'                             // Potencia, longitud y desigualdad
 ;
 
 // Programa
