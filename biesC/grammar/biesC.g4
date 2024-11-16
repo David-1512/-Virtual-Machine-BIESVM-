@@ -89,9 +89,13 @@ literal
     ;
 
 functionCallChain
-    : ID '(' argumentList? ')' ( '(' argumentList? ')' )*
+    : ID funtionArgs ( funtionArgs )*
     ;
 
+funtionArgs
+    : '(' argumentList? ')'
+    ;
+    
 argumentList
     : expression (',' expression)*
     ;
