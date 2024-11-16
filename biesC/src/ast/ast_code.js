@@ -134,7 +134,14 @@ class ASTCode extends biesCVisitor {
 		}
 	}
 
-	visitList() {} //Preguntar el tema de las listas
+	visitList(ctx) {
+    this.block.addInstruccion(new Instruccion(MNEMONICS.LDV,['[]']));
+    for (let i = ctx.getChildCount() - 2; i >= 1; i-=2) {
+      this.visit(ctx.getChild(i));
+      this.block.addInstruccion(new Instruccion(MNEMONICS.LIN));
+    }
+  } 
+
 
 	visitIfExpression(ctx) {
 		this.visit(ctx.expression());
@@ -145,14 +152,14 @@ class ASTCode extends biesCVisitor {
 	visitThenExpr(ctx) {
 		let thenAST = new ASTIfElse();
 		let thenPart = thenAST.visitIE(ctx);
-		this.block.addInstruccion(new Instruccion(MNEMONICS.BF, [thenPart.getCantInstruccions() + 1]));
+		this.block.addInstruccion(new Instruccion(MNEMONICS.BF, [thenPart.getCantInstruccions() + 2]));
 		this.thenElseInstruccions(thenPart.getInstruccions());
 	}
 
 	visitElseExpr(ctx) {
 		let elseAST = new ASTIfElse();
 		let elsePart = elseAST.visitIE(ctx);
-		this.block.addInstruccion(new Instruccion(MNEMONICS.BR, [elsePart.getCantInstruccions()]));
+		this.block.addInstruccion(new Instruccion(MNEMONICS.BR, [elsePart.getCantInstruccions()+1]));
 		this.thenElseInstruccions(elsePart.getInstruccions());
 	}
 
@@ -183,7 +190,7 @@ class ASTCode extends biesCVisitor {
     if(ctx.getChildCount() == 2){ return 0;}
     else{return this.visit(ctx.argumentList());}
   }
-  
+
 	visitArgumentList(ctx) {
 		let args = 0;
 		for (let i = 0; i < ctx.getChildCount(); i += 2) {
