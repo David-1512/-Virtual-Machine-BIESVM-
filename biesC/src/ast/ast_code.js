@@ -106,7 +106,10 @@ class ASTCode extends biesCVisitor{
     if (ctx.expression()) {this.visit(ctx.expression());}
     if (ctx.functionCallChain()) {this.visit(ctx.functionCallChain());}
     if (ctx.ifExpression()) {this.visit(ctx.ifExpression());}
+    if (ctx.list()) {this.visit(ctx.list());}
   }
+
+  visitList(){ } //Preguntar el tema de las listas
 
   visitIfExpression(ctx){  
     this.visit(ctx.expression());
