@@ -6,7 +6,7 @@ import SymbolTable from '../semantic/symbol_table.js';
 import { MNEMONICS } from '../code_generator/mnemonics.js';
 
 class ASTCode extends biesCVisitor {
-	constructor(id, argument, parent) {
+	constructor(argument, parent) {
 		super();
 		this.block = new Block(SymbolTable.getCurrentScopeId(), argument, parent);
 	}
@@ -180,14 +180,13 @@ class ASTCode extends biesCVisitor {
 	visitFunctionCallChain(ctx) {
 		let args = [];
 		let linea = ctx.ID().getSymbol().line;
-		console.log(linea);
 		for (let i = ctx.getChildCount() - 1; i >= 1; i--) {
 			args.push(this.visit(ctx.getChild(i)));
 		}
 		for (let i = 1; i < ctx.getChildCount(); i++) {
 			if (i == 1) {
-				let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), linea);
-				this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
+          let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), linea);
+          this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 			}
 			this.block.addInstruccion(new Instruccion(MNEMONICS.APP, [args.pop()]));
 		}
@@ -239,10 +238,17 @@ class ASTCode extends biesCVisitor {
 
 	//Declaration
 	visitDeclaration(ctx) {
-		if (ctx.letDeclaration()) {
-			this.visit(ctx.letDeclaration());
-		}
+		if (ctx.letDeclaration()) {this.visit(ctx.letDeclaration());}
+
+    if(ctx.funDeclaration()) {this.visit(ctx.funDeclaration());}
 	}
+
+  visitFunDeclaration(ctx){
+    let params = SymbolTable.addIdentifier(ctx.ID().getText(), 'const', null, ctx.start.line);
+    this.visit(ctx.lambda()); //Aqui esta el detalle
+		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
+  }
+
 
 	visitConstDeclaration(ctx) {
 		//Ver como quitar esta repeticion
@@ -317,8 +323,8 @@ class ASTCode extends biesCVisitor {
 }
 
 class ASTLambda extends ASTCode {
-	constructor(id, argument, parent) {
-		super(id, argument, parent);
+	constructor(argument, parent) {
+		super(argument, parent);
 	}
 
 	visitL(ctx) {
@@ -330,8 +336,8 @@ class ASTLambda extends ASTCode {
 }
 
 class ASTLetIn extends ASTCode {
-	constructor(id, argument, parent) {
-		super(id, argument, parent);
+	constructor(argument, parent) {
+		super(argument, parent);
 	}
 
 	visitLI(ctx) {
@@ -344,8 +350,8 @@ class ASTLetIn extends ASTCode {
 }
 
 class ASTIfElse extends ASTCode {
-	constructor(id = 0, argument = 0, parent = 0) {
-		super(id, argument, parent);
+	constructor(argument = 0, parent = 0) {
+		super(argument, parent);
 	}
 
 	visitIE(ctx) {

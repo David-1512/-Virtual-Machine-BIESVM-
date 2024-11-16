@@ -169,6 +169,7 @@ class SymbolTable {
             throw new Error('No se puede salir del alcance global.');
         }
     }
+   
 }
 
 export default SymbolTable;

@@ -1,4 +1,4 @@
-let sumList = (a, from, to, s) => if (from == to) then s else sumList(a, from + 1, to, a[from] + s)
+fun sumList = (a, from, to, s) => if (from == to) then s else sumList(a, from + 1, to, a[from] + s)
 let sumListShort = (a, n) => sumList(a, 0, n, 0)
 let {const a = [1, 2, 3, 4, 5]
 	 const from = 0

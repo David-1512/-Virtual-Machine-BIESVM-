@@ -29,8 +29,9 @@ letDeclaration
     ;
 
 funDeclaration
-    : FUN ID '(' (ID (',' ID)*)? ')' ARROW letInDeclaration
+    : FUN ID '=' lambda
     ;
+
 
 expression
     : logicalOrExpression

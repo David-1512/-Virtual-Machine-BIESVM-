@@ -13,7 +13,7 @@ class SemanticAnalyzer {
 
 		const tree = parser.program();
 
-		const astCode = new ASTCode(0, 0, '$0');
+		const astCode = new ASTCode(0, '$0');
 		const code = astCode.visit(tree);		
 		
 		// new Generator().generateBasm(code);
