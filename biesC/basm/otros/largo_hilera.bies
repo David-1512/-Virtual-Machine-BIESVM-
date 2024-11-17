@@ -1,0 +1,3 @@
+let largo_hilera = (h) => len(h)
+
+print(largo_hilera("Hola"))

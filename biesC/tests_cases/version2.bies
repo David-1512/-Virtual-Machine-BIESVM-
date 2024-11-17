@@ -1,0 +1,33 @@
+let splash = (msg) => print(msg)
+let version = 666 - 664
+splash("Testing helloworld Version " + version + "***")  //Aqui preguntar
+print("Hello World!") 
+
+
+/*
+$Fun $1 args:1 parent:0 
+BLD 0 0
+PRN
+RET
+$END $1
+
+$Fun $0 args:0 parent:0
+LDF $1
+BST 0 0
+LDV 666
+LDV 664
+SUB
+BST 0 1
+LDV "Testing helloworld Version "
+BLD 0 1
+ADD
+LDV "***"
+ADD
+BLD 0 0
+APP 1
+LDV "Hello World!"
+PRN
+HLT
+$END $0
+INI $0
+*/

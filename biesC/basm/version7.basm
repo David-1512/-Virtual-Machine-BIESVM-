@@ -1,0 +1,48 @@
+$FUN $2 args:1 parent:$1 
+BLD 1 0
+BLD 0 0
+GT
+BF 3
+BLD 1 0
+BR 2
+BLD 0 0
+RET
+$END $2
+
+$FUN $1 args:1 parent:$1 
+LDF $2
+RET
+$END $1
+
+$FUN $3 args:2 parent:$0 
+LDV 10
+BST 0 0
+LDV 20
+BST 0 1
+LDV "*** Testing max("
+BLD 0 0
+ADD
+LDV " ,"
+ADD
+BLD 0 1
+ADD
+LDV ") ***"
+ADD
+PRN
+BLD 0 1
+BLD 0 0
+BLD 1 0
+APP 1
+APP 1
+PRN
+RET
+$END $3
+
+$FUN $0 args:0 parent:$0 
+LDF $1
+BST 0 0
+LDF $3
+APP 0
+HLT
+$END $0
+INI $0

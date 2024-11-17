@@ -1,3 +1,5 @@
+import { Errors, Logs } from './control.js';
+
 class Identifier {
     constructor(name, type, value, line) {
         this.name = name;
@@ -21,6 +23,7 @@ class Scope {
     static instances = [];
 
     constructor(parent = null, id = 0, funName = 'main') {
+        Logs.addLog(`Creando scope ${funName} con id ${id}`);
         this.funName = funName;
         this.id = id;
         this.parent = parent;
@@ -32,7 +35,8 @@ class Scope {
 
     addIdentifier(name, type, value, line, currentLine = line) {
         if (name in this.bindings) {
-            throw new Error(`Identifier '${name}' ya está definido en este alcance. Línea: ${currentLine}.`);
+            Errors.addError(`Identificador '${name}' ya está definido en este alcance. Línea: ${currentLine}.`);
+            //throw new Error(`Identifier '${name}' ya está definido en este alcance. Línea: ${currentLine}.`);
         }
         const identifier = new Identifier(name, type, value, line);
         if (type === 'function') {
@@ -46,10 +50,12 @@ class Scope {
     reassignIdentifier(name, newValue, currentLine = null) {
         const identifier = Scope.getIdentifier(this, name);
         if (!identifier) {
-            throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            //throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
         }
-        if (identifier.type === 'const' || identifier.type === 'function') {
-            throw new Error(`No se puede reasignar ${identifier.type} identificador '${name}'. Línea: ${currentLine || identifier.line}.`);
+        if (identifier.type === 'const') {
+            Errors.addError(`No se puede reasignar ${identifier.type} identificador '${name}'. Línea: ${currentLine || identifier.line}.`);
+            //throw new Error(`No se puede reasignar ${identifier.type} identificador '${name}'. Línea: ${currentLine || identifier.line}.`);
         }
         identifier.value = newValue;
         return [1, identifier.id];
@@ -59,13 +65,14 @@ class Scope {
 		return this.bindings[name] !== undefined;
 	}
 
-    static getEnvAndLocal(scope, name, currentLine, env = 0) {
+    static getEnvAndLocal(scope, name, currentLine = null, env = 0) {
         if (scope.bindings[name] !== undefined) {
             return [env, scope.bindings[name].id];
         } else if (scope.parent) {
-            return Scope.getEnvAndLocal(scope.parent, name, env + 1);
+            return Scope.getEnvAndLocal(scope.parent, name, currentLine, env + 1);
         } else {
-            throw new Error(`Identifier '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            //throw new Error(`Identifier '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
         }
     }
 
@@ -123,7 +130,8 @@ class SymbolTable {
 	static setIdentifierFunction(name, value = true, currentLine = null) {
 		const identifier = SymbolTable.getIdentifier(name, currentLine);
 		if (!identifier) {
-			throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+			//throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
 		}
 		identifier.setIsFunction(value);
 	}
@@ -143,7 +151,8 @@ class SymbolTable {
             }
             scope = scope.children[0];
         }
-        throw new Error(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
+        Errors.addError(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
+        //throw new Error(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
     }
 
     static setScope(scope) {
@@ -166,13 +175,38 @@ class SymbolTable {
         if (SymbolTable.currentScope.parent) {
             SymbolTable.currentScope = SymbolTable.currentScope.parent;
         } else {
-            throw new Error('No se puede salir del alcance global.');
+            Errors.addError('No se puede salir del alcance global.');
+            //throw new Error('No se puede salir del alcance global.');
         }
     }
-   
+
+    static getParentCurrentScopeID() {
+        let parentScope = SymbolTable.currentScope.parent;
+        if (!parentScope) {
+            return 0;
+        }
+        return parentScope.id;
+    }
+
+    static toString() {
+        let str = '';
+        for (const scope of Scope.instances) {
+            str += `Scope: ${scope.id} ${scope.funName}\n`;
+            for (const key in scope.bindings) {
+                if (scope.bindings.hasOwnProperty(key)) {
+                    const identifier = scope.bindings[key];
+                    str += `  ${identifier.name} ${identifier.type} ${identifier.value} ${identifier.line}\n`;
+                }
+            }
+        }
+        return str;
+    }
 }
 
 export default SymbolTable;
+
+
+
 
 
 

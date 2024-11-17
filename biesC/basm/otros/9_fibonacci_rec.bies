@@ -1,0 +1,6 @@
+let fibonacciRecur = (n) =>
+    if (n <= 1) then n
+    else fibonacciRecur(n - 1) + fibonacciRecur(n - 2)
+
+// Ejemplo:
+print(fibonacciRecur(7)) // Retorna 13
