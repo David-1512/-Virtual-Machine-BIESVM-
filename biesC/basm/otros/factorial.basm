@@ -1,0 +1,41 @@
+$FUN $1 args:1 parent:$1 
+BLD 0 0
+LDV 0
+EQ
+BF 3
+LDV 1
+BR 8
+BLD 0 0
+BLD 0 0
+LDV 1
+SUB
+BLD 1 0
+APP 1
+MUL
+RET
+$END $1
+
+$FUN $2 args:2 parent:$0 
+LDV 5
+BST 0 0
+LDV "*** Testing factorial("
+BLD 0 0
+ADD
+LDV ") ***"
+ADD
+PRN
+BLD 0 0
+BLD 1 0
+APP 1
+PRN
+RET
+$END $2
+
+$FUN $0 args:0 parent:$0 
+LDF $1
+BST 0 0
+LDF $2
+APP 0
+HLT
+$END $0
+INI $0

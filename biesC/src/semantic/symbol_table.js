@@ -59,11 +59,11 @@ class Scope {
 		return this.bindings[name] !== undefined;
 	}
 
-    static getEnvAndLocal(scope, name, currentLine, env = 0) {
+    static getEnvAndLocal(scope, name, currentLine = null, env = 0) {
         if (scope.bindings[name] !== undefined) {
             return [env, scope.bindings[name].id];
         } else if (scope.parent) {
-            return Scope.getEnvAndLocal(scope.parent, name, env + 1);
+            return Scope.getEnvAndLocal(scope.parent, name, currentLine, env + 1);
         } else {
             throw new Error(`Identifier '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
         }
@@ -169,10 +169,34 @@ class SymbolTable {
             throw new Error('No se puede salir del alcance global.');
         }
     }
-   
+
+    static getParentCurrentScopeID() {
+        let parentScope = SymbolTable.currentScope.parent;
+        if (!parentScope) {
+            return 0;
+        }
+        return parentScope.id;
+    }
+
+    static toString() {
+        let str = '';
+        for (const scope of Scope.instances) {
+            str += `Scope: ${scope.id} ${scope.funName}\n`;
+            for (const key in scope.bindings) {
+                if (scope.bindings.hasOwnProperty(key)) {
+                    const identifier = scope.bindings[key];
+                    str += `  ${identifier.name} ${identifier.type} ${identifier.value} ${identifier.line}\n`;
+                }
+            }
+        }
+        return str;
+    }
 }
 
 export default SymbolTable;
+
+
+
 
 
 

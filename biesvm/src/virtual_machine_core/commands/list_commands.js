@@ -45,10 +45,9 @@ class LinCommand extends Command {
 	 * @param {Object} runner - Instancia que maneja el estado de la máquina virtual.
 	 * @param {WritableStream} outputStream - Flujo de salida para escribir los resultados.
 	 */
-	execute(runner, outputStream) {
-		let l = runner.stack.pop();
+	execute(runner, outputStream) {		
 		let v = runner.stack.pop();
-		console.log(l);
+		let l = runner.stack.pop();
 		outputStream.write(`Insertando ${v}  al inicio de ${l} : ${l.unshift(v)} \n`);
 		runner.stack.push(l);
 	}
@@ -65,8 +64,8 @@ class LtkCommand extends Command {
 	 * @param {WritableStream} outputStream - Flujo de salida para escribir los resultados.
 	 */
 	execute(runner, outputStream) {
-		let l = runner.stack.pop();
 		let k = runner.stack.pop();
+		let l = runner.stack.pop();		
 		outputStream.write(`v: ${l}, k: ${k}, v[k]: ${l[k]}`);
 		runner.stack.push(l[k]);
 	}

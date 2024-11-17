@@ -1,0 +1,10 @@
+let isPalindromeIter = (lst) =>
+    let {
+        const loop = (i, j) =>
+            if (i >= j) then 1
+            else if (lst[i] != lst[j]) then 0
+            else loop(i + 1, j - 1)
+    } in loop(0, len(lst) - 1)
+
+// Ejemplo:
+print(isPalindromeIter([1, 2, 3, 2, 1])) // Retorna true
