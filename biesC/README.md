@@ -43,6 +43,20 @@ Java 8 o superior (para ejecutar ANTLR4)
 
     npx biesvm --o salida.txt --e errores.txt --trace 1 ./nombre_archivo.basm
 
+## Jest
+
+1. Instalar Jest
+   npm install --save-dev jest
+
+2. Actualizar npm a la versión más reciente
+   npm install -g npm@10.9.0
+
+3. Configurar Babel para Jest
+   npm install --save-dev @babel/core @babel/preset-env babel-jest
+
+4. Ejecutar test (debe de estar en /biesC para poder ejecutarlo)
+   npm test
+
 ## Licencia
 
 Este proyecto está licenciado bajo los términos de la licencia MIT. Consulta el archivo `LICENSE` para más detalles.
