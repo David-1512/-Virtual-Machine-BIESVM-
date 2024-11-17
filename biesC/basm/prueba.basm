@@ -1,0 +1,47 @@
+$FUN $1 args:1 parent:$0 
+BLD 1 0
+LDV 1
+ADD
+RET
+$END $1
+
+$FUN $3 args:1 parent:$0 
+BLD 1 0
+LDV 2
+MUL
+RET
+$END $3
+
+$FUN $6 args:1 parent:$5 
+BLD 0 0
+BLD 1 1
+APP 1
+BLD 1 0
+APP 1
+RET
+$END $6
+
+$FUN $5 args:2 parent:$0 
+LDF $6
+RET
+$END $5
+
+$FUN $0 args:0 parent:$0 
+LDF $1
+BST 0 0
+LDF $3
+BST 0 1
+LDF $5
+BST 0 2
+BLD 0 1
+BLD 0 0
+BLD 0 2
+APP 2
+BST 0 3
+LDV 3
+BLD 0 3
+APP 1
+PRN
+HLT
+$END $0
+INI $0

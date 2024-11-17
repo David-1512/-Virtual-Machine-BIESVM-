@@ -40,7 +40,12 @@ letDeclaration
     ;
 
 funDeclaration
-    : FUN ID '=' lambda
+    : FUN ID paramsFun ARROW letInDeclaration
+    | FUN ID paramsFun ARROW blockExpression
+    ;
+    
+    paramsFun
+    : '(' (ID (',' ID)*)? ')'
     ;
 
 

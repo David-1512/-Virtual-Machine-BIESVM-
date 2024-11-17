@@ -56,7 +56,7 @@ class Loader {
 		if(trace == 1){			
 			console.log(code.toString());
 		}	
-
+        console.log(code.toString());
 		return code;
 	}
 }
