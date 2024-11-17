@@ -1,0 +1,9 @@
+let reverseString = (text) =>
+    let {
+        const loop = (acc, i) =>
+            if (i < 0) then acc
+            else loop(acc + text[i], i - 1)
+    } in loop("", len(text) - 1)
+
+// Ejemplo:
+print(reverseString("hello")) // Retorna "olleh"

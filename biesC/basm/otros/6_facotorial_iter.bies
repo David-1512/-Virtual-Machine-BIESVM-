@@ -1,0 +1,9 @@
+let factorialIter = (n) =>
+    let {
+        const loop = (acc, i) =>
+            if (i > n) then acc
+            else loop(acc * i, i + 1)
+    } in loop(1, 1)
+
+// Ejemplo:
+print(factorialIter(5)) // Retorna 120

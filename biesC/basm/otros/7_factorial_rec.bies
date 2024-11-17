@@ -1,0 +1,6 @@
+let factorialRecur = (n) =>
+    if (n <= 1) then 1
+    else n * factorialRecur(n - 1)
+
+// Ejemplo:
+print(factorialRecur(5)) // Retorna 120

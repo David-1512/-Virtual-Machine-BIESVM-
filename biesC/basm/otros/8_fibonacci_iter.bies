@@ -1,0 +1,9 @@
+let fibonacciIter = (n) =>
+    let {
+        const loop = (a, b, i) =>
+            if (i == n) then a
+            else loop(b, a + b, i + 1)
+    } in loop(0, 1, 0)
+
+// Ejemplo:
+print(fibonacciIter(7)) // Retorna 13
