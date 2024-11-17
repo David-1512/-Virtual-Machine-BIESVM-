@@ -14,6 +14,17 @@ declaration
     | varDeclaration
     | letDeclaration
     | funDeclaration
+    | nullInitDeclaration
+    | reasignation
+    ;
+
+reasignation
+    : ID '=' expression
+    ;
+
+nullInitDeclaration
+    : VAR ID
+    | LET ID
     ;
 
 constDeclaration
@@ -85,7 +96,8 @@ literal
     : STRING
     | ID
     | NUMBER
-    | BOOLEAN
+    | TRUE
+    | FALSE
     | NULL
     ;
 
@@ -131,9 +143,9 @@ letInDeclaration
     ;
 
 blockDeclaration
-    : '{' (constDeclaration | varDeclaration | letInDeclaration)* '}'
+    : '{' (constDeclaration)* '}'
     ;
-
+    
 blockExpression
     : '{' statement* '}'
     | expression
@@ -184,11 +196,6 @@ NUMBER
     : INTEGER
     | FLOAT
     | SCI
-    ;
-
-BOOLEAN
-    : TRUE
-    | FALSE
     ;
 
 INTEGER
