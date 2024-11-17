@@ -19,7 +19,7 @@ describe('CLI BiesC Tests - Validaciones de Archivos', () => {
    */
   test('Ejecutar version0.bies', (done) => {
     const testFilePath = path.join(__dirname, '../basm/version0.bies');
-    exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+    exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
       expect(stdout).toContain('Testing helloworld Version 0 ***');
@@ -38,7 +38,7 @@ describe('CLI BiesC Tests - Validaciones de Archivos', () => {
     const testFilePath = path.join(__dirname, '../basm/version1.bies');
     const cliPath = path.join(__dirname, '../bin/biesc.js');
 
-    exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+    exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
         expect(error).toBeNull();
         expect(stderr).toBe(''); // No debería haber errores.
 
@@ -62,7 +62,7 @@ test('Ejecutar version2.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version2.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js'); 
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe(''); 
 
@@ -91,7 +91,7 @@ test('Ejecutar version3.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version3.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js'); 
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe(''); 
 
@@ -118,7 +118,7 @@ test('Ejecutar version4.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version4.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js'); 
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe(''); 
 
@@ -146,7 +146,7 @@ test('Ejecutar version5.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version5.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js');
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
@@ -171,7 +171,7 @@ test('Ejecutar version6.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version6.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js');
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
@@ -196,7 +196,7 @@ test('Ejecutar version7.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version7.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js');
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
@@ -223,7 +223,7 @@ test('Ejecutar version8.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version8.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js');
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
@@ -248,7 +248,7 @@ test('Ejecutar version9.bies', (done) => {
   const testFilePath = path.join(__dirname, '../basm/version9.bies');
   const cliPath = path.join(__dirname, '../bin/biesc.js');
 
-  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
+  exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt" --trace 1`, (error, stdout, stderr) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 

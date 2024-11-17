@@ -74,6 +74,9 @@ const installDependencies = async (destination) => {
     console.log(`Instalando dependencias en ${destination}...`);
     await execPromise(`npm install`, { cwd: destination, stdio: 'inherit' });
     await execPromise(`npm run antlr4`, { cwd: destination, stdio: 'inherit' });
+    await execPromise(`npm install --save-dev jest`, { cwd: destination, stdio: 'inherit' });
+    await execPromise(`npm install -g npm@10.9.0`, { cwd: destination, stdio: 'inherit' });
+    await execPromise(`npm install --save-dev @babel/core @babel/preset-env babel-jest`, { cwd: destination, stdio: 'inherit' });
     console.log('Dependencias instaladas.');
 };
 

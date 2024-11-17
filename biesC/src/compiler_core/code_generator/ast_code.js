@@ -1,3 +1,25 @@
+/**
+ * @file ast_code.js
+ * @description Este archivo define clases para representar el Árbol de Sintaxis Abstracta (AST) y su generación de código para el compilador BiesC.
+ * Proporciona un conjunto de visitantes basados en ANTLR que generan instrucciones para la máquina virtual BiesVM.
+ *
+ * @module ast_code
+ *
+ * @project biesC
+ * Proyecto académico para implementar un compilador para un lenguaje funcional basado en pila (BiesVM).
+ *
+ * @author David Serrano Medrano
+ * @author Leandro Mora Corrales
+ * @author Xiara Suarez Alpizar
+ *
+ * @version 1.0.0
+ * @since 17-11-2024
+ *
+ */
+
+
+
+
 import biesCVisitor from '../../../parser/grammar/biesCVisitor.js';
 import biesCLexer from '../../../parser/grammar/biesCLexer.js';
 import Block from '../code/block.js';
@@ -5,7 +27,16 @@ import Instruccion from '../code/instruccion.js';
 import SymbolTable from '../semantic/symbol_table.js';
 import { MNEMONICS } from '../../constants/mnemonics.js';
 
+/**
+ * Clase principal que extiende el visitante de ANTLR para generar el código de la máquina virtual.
+ * @class
+ */
 class ASTCode extends biesCVisitor {
+
+	/**
+     * Constructor de la clase ASTCode.
+     * @param {string} argument - Argumento utilizado para crear el bloque de código.
+     */
 	constructor(argument) {
 		super();
 		this.block = new Block(SymbolTable.getCurrentScopeId(), 
@@ -13,6 +44,11 @@ class ASTCode extends biesCVisitor {
 			`$${SymbolTable.getParentCurrentScopeID()}`);
 	}
 
+	/**
+     * Visita el nodo raíz del programa y genera las instrucciones correspondientes.
+     * @param {Object} ctx - Contexto del nodo del programa.
+     * @returns {Block} Bloque de código generado.
+     */
 	visitProgram(ctx) {
 		ctx.statement().forEach(this.visit.bind(this));
 		this.block.addInstruccion(new Instruccion(MNEMONICS.HLT));
@@ -21,11 +57,19 @@ class ASTCode extends biesCVisitor {
 		return this.block;
 	}
 
+	/**
+     * Visita los nodos de declaración y expresión dentro de una sentencia.
+     * @param {Object} ctx - Contexto de la sentencia.
+     */
 	visitStatement(ctx) {
 		if (ctx.expression()) {	this.visit(ctx.expression()); }
 		if (ctx.declaration()) { this.visit(ctx.declaration());	}
 	}
 
+	/**
+     * Genera las instrucciones para una expresión genérica.
+     * @param {Object} ctx - Contexto de la expresión genérica.
+     */
 	visitGenericExpression(ctx) {
         const childCount = ctx.getChildCount();
         if (childCount > 1) {
@@ -41,6 +85,11 @@ class ASTCode extends biesCVisitor {
         }
     }
 
+	/**
+     * Mapea un operador a un mnemónico de la máquina virtual.
+     * @param {string} operator - Operador de la expresión.
+     * @returns {string} El mnemónico correspondiente.
+     */
     getMnemonic(operator) {
         const mapping = {
             '||': MNEMONICS.OR,
@@ -60,6 +109,10 @@ class ASTCode extends biesCVisitor {
         return mapping[operator];
     }
 
+	 /**
+     * Visita las expresiones lógicas OR y AND.
+     * @param {Object} ctx - Contexto de la expresión.
+     */
 	visitExpression(ctx) {this.visitGenericExpression(ctx.logicalOrExpression());	}
 	visitLogicalOrExpression(ctx) { this.visitGenericExpression(ctx); }
 	visitLogicalAndExpression(ctx) { this.visitGenericExpression(ctx); }
@@ -69,6 +122,10 @@ class ASTCode extends biesCVisitor {
 	visitMultiplicativeExpression(ctx) { this.visitGenericExpression(ctx); }
 	visitExponentialExpression(ctx) { this.visit(ctx.unaryExpression()); }
 
+	/**
+     * Visita la expresión unaria y genera las instrucciones correspondientes.
+     * @param {Object} ctx - Contexto de la expresión unaria.
+     */
 	visitUnaryExpression(ctx) {
     if (ctx.getChildCount() === 2) {
 				const operator = ctx.getChild(0).getText();
@@ -79,6 +136,10 @@ class ASTCode extends biesCVisitor {
     else {this.visit(ctx.primaryExpression());}
 	}
 
+	/**
+     * Visita las expresiones primarias y genera las instrucciones correspondientes.
+     * @param {Object} ctx - Contexto de la expresión primaria.
+     */
 	visitPrimaryExpression(ctx) {
         ctx.builtinFunction() && this.visit(ctx.builtinFunction());
         ctx.literal() && this.visit(ctx.literal());
@@ -90,6 +151,10 @@ class ASTCode extends biesCVisitor {
         ctx.listAccess() && this.visit(ctx.listAccess());
     }
 
+	 /**
+     * Genera las instrucciones para acceder a un elemento de una lista.
+     * @param {Object} ctx - Contexto de acceso a lista.
+     */
 	visitListAccess(ctx){
 		let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.start.line);
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
@@ -97,6 +162,10 @@ class ASTCode extends biesCVisitor {
 		this.block.addInstruccion(new Instruccion(MNEMONICS.LTK));
 	}
 
+	/**
+     * Genera las instrucciones para crear una lista.
+     * @param {Object} ctx - Contexto de la lista.
+     */
 	visitList(ctx) {
 		this.block.addInstruccion(new Instruccion(MNEMONICS.LDV,['[]']));
 		for (let i = ctx.getChildCount() - 2; i >= 1; i-=2) {
@@ -105,12 +174,20 @@ class ASTCode extends biesCVisitor {
 		}
 	}
 
+	/**
+     * Genera las instrucciones para una expresión condicional if-else.
+     * @param {Object} ctx - Contexto de la expresión if.
+     */
 	visitIfExpression(ctx) {
 		this.visit(ctx.expression());
 		this.visit(ctx.thenExpr());
 		this.visit(ctx.elseExpr());
 	}
 
+	/**
+     * Genera las instrucciones para la parte "then" de una expresión if.
+     * @param {Object} ctx - Contexto de la parte "then".
+     */
 	visitThenExpr(ctx) {
 		let thenAST = new ASTIfElse();
 		let thenPart = thenAST.visitIE(ctx);
@@ -118,6 +195,10 @@ class ASTCode extends biesCVisitor {
 		this.thenElseInstruccions(thenPart.getInstruccions());
 	}
 
+	/**
+     * Genera las instrucciones para la parte "else" de una expresión if.
+     * @param {Object} ctx - Contexto de la parte "else".
+     */
 	visitElseExpr(ctx) {
 		let elseAST = new ASTIfElse();
 		let elsePart = elseAST.visitIE(ctx);
@@ -125,12 +206,20 @@ class ASTCode extends biesCVisitor {
 		this.thenElseInstruccions(elsePart.getInstruccions());
 	}
 
+	 /**
+     * Agrega las instrucciones del bloque if-else al bloque de código.
+     * @param {Array} instruccions - Instrucciones a agregar.
+     */
 	thenElseInstruccions(instruccions) {
         instruccions.forEach((instruccion) => {
             this.block.addInstruccion(instruccion);
         });
     }
 
+	 /**
+     * Genera las instrucciones para una llamada a una función.
+     * @param {Object} ctx - Contexto de la llamada a función.
+     */
 	visitFunctionCallChain(ctx) {
 		let args = [];
 		for (let i = ctx.getChildCount() - 1; i >= 1; i--) {
@@ -145,10 +234,20 @@ class ASTCode extends biesCVisitor {
 		}
 	}
 
+	/**
+	 * Visita los argumentos de una función y determina si es un único argumento o una lista de argumentos.
+	 * @param {Object} ctx - El contexto para visitar los argumentos de la función.
+	 * @returns {number} El número de argumentos, 0 si no hay, de lo contrario, devuelve el número de argumentos.
+	 */
 	visitFuntionArgs(ctx) {
         return ctx.getChildCount() === 2 ? 0 : this.visit(ctx.argumentList());
     }
 
+	/**
+	 * Visita y cuenta los argumentos en una lista de argumentos de una función.
+	 * @param {Object} ctx - El contexto para visitar la lista de argumentos.
+	 * @returns {number} El número de argumentos.
+	 */
 	visitArgumentList(ctx) {
 		let args = 0;
 		for (let i = 0; i < ctx.getChildCount(); i += 2) {
@@ -168,6 +267,11 @@ class ASTCode extends biesCVisitor {
 	// 	if (ctx.BOOL()) {this.block.addInstruccion(new Instruccion(MNEMONICS.CST,['bool']));}
 	// 	if (ctx.LIST()) {this.block.addInstruccion(new Instruccion(MNEMONICS.CST,['list']));}
 	// }
+
+	/**
+	 * Visita y procesa las funciones integradas (como PRINT, INPUT, etc.) y agrega las instrucciones correspondientes.
+	 * @param {Object} ctx - El contexto para visitar una función integrada.
+	 */
 	visitBuiltinFunction(ctx) {
         this.visit(ctx.expression());
         
@@ -191,7 +295,10 @@ class ASTCode extends biesCVisitor {
     }
 
 
-
+	/**
+	 * Visita y procesa los valores literales como cadenas, números, booleanos o null.
+	 * @param {Object} ctx - El contexto para visitar un literal.
+	 */
 	visitLiteral(ctx) {
 		if (ctx.STRING()) {this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, [ctx.STRING().getText()]));}
 		if (ctx.ID()) {		
@@ -204,6 +311,10 @@ class ASTCode extends biesCVisitor {
 		if(ctx.TRUE()){ this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, ['true']));}
 	}
 
+	/**
+	 * Visita y procesa las declaraciones en el código, como let, const, var, funciones y reasignaciones.
+	 * @param {Object} ctx - El contexto para visitar las declaraciones.
+	 */
 	visitDeclaration(ctx) {
         ctx.letDeclaration() && this.visit(ctx.letDeclaration());
         ctx.constDeclaration() && this.visit(ctx.constDeclaration());
@@ -213,16 +324,38 @@ class ASTCode extends biesCVisitor {
         ctx.reasignation() && this.visit(ctx.reasignation());
     }
 
+	/**
+	 * Visita la declaración de una constante y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar la declaración de la constante.
+	 */
 	visitConstDeclaration(ctx) { this.visitAnyDeclaration(ctx, 'const'); }
+	/**
+	 * Visita la declaración de una variable let y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar la declaración de la variable let.
+	 */
     visitLetDeclaration(ctx) { this.visitAnyDeclaration(ctx, 'let'); }
+
+	/**
+	 * Visita la declaración de una variable var y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar la declaración de la variable var.
+	 */
     visitVarDeclaration(ctx) { this.visitAnyDeclaration(ctx, 'var'); }
 
+	/**
+	 * Visita cualquier tipo de declaración y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto de la declaración.
+	 * @param {string} declaration - El tipo de declaración (let, var, const).
+	 */
     visitAnyDeclaration(ctx,declaration){
 		let params = SymbolTable.addIdentifier(ctx.ID().getText(),declaration, null, ctx.start.line);
 		this.visit(ctx.expression());		
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
 	}
     
+	/**
+	 * Visita la declaración de inicialización nula y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar la declaración de inicialización nula.
+	 */
     visitNullInitDeclaration(ctx){
 		let type = (ctx.LET())?'let':'var';
 		let params = SymbolTable.addIdentifier(ctx.ID().getText(),type, null, ctx.start.line);
@@ -230,12 +363,21 @@ class ASTCode extends biesCVisitor {
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
 	}
 
+	/**
+	 * Visita una reasignación de variable y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar la reasignación.
+	 */
 	visitReasignation(ctx){
 		let params = SymbolTable.reassignIdentifier(ctx.ID().getText(),null, ctx.start.line);
 		this.visit(ctx.expression());		
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
 	}
 
+	
+	/**
+	 * Visita la declaración de una función y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar la declaración de la función.
+	 */
 	visitFunDeclaration(ctx){ 
 		let params = SymbolTable.addIdentifier(ctx.ID().getText(),'function', null, ctx.start.line);
 		SymbolTable.addScope('');
@@ -266,6 +408,10 @@ class ASTCode extends biesCVisitor {
 		SymbolTable.exitScope();
 	}
 	
+	/**
+	 * Visita una lambda y agrega la instrucción correspondiente.
+	 * @param {Object} ctx - El contexto para visitar una lambda.
+	 */
 	visitLambda(ctx) {
 		SymbolTable.addScope('');			
 		if (ctx.letInDeclaration()) {
@@ -290,6 +436,11 @@ class ASTCode extends biesCVisitor {
 		SymbolTable.exitScope();
 	}
 
+	/**
+	 * Visita la declaración de un bloque "Let In", que involucra una declaración dentro de un bloque
+	 * con variables que tienen un alcance local al bloque.
+	 * @param {Object} ctx - El contexto de la declaración "Let In".
+	 */
 	visitLetInDeclaration(ctx) {
 		let letIn = new ASTLetIn(0);
 		this.block.addBlock(letIn.visitLI(ctx));
@@ -297,11 +448,20 @@ class ASTCode extends biesCVisitor {
 		this.block.addInstruccion(new Instruccion(MNEMONICS.APP, [0]));
 	}
 
+	/**
+	 * Visita una expresión dentro de un bloque. La expresión puede ser una expresión o una declaración.
+	 * @param {Object} ctx - El contexto de la expresión dentro del bloque.
+	 */
 	visitBlockExpression(ctx) {
 		if (ctx.expression()) {this.visit(ctx.expression());}
 		if (ctx.statement()) {this.visit(ctx.statement());}
 	}
 
+	/**
+	 * Visita las declaraciones dentro de un bloque de código. Recorre los hijos de un bloque y
+	 * visita cada uno de ellos.
+	 * @param {Object} ctx - El contexto de las declaraciones dentro de un bloque.
+	 */
 	visitBlockDeclaration(ctx) {
 		for (let i = 1; i < ctx.getChildCount() - 1; i++) {
 			this.visit(ctx.getChild(i));
@@ -309,11 +469,20 @@ class ASTCode extends biesCVisitor {
     }
 }
 
+/**
+ * Clase que representa una expresión de función lambda.
+ * @class
+ */
 class ASTLambda extends ASTCode {
 	constructor(argument) {
 		super(argument);
 	}
 
+	/**
+     * Visita la expresión de una función lambda, ejecutando las instrucciones correspondientes.
+     * @param {Object} ctx - El contexto de la función lambda.
+     * @returns {Object} El bloque de instrucciones generado.
+     */
 	visitL(ctx) {
 		this.visit(ctx.blockExpression());
 		this.block.addInstruccion(new Instruccion(MNEMONICS.RET));
@@ -322,11 +491,21 @@ class ASTLambda extends ASTCode {
 	}
 }
 
+/**
+ * Clase que representa una declaración "Let In", en la que las declaraciones y expresiones
+ * ocurren dentro de un bloque específico.
+ * @class
+ */
 class ASTLetIn extends ASTCode {
 	constructor(argument) {
 		super(argument);
 	}
 
+	/**
+     * Visita una declaración "Let In" y sus correspondientes expresiones.
+     * @param {Object} ctx - El contexto de la declaración "Let In".
+     * @returns {Object} El bloque de instrucciones generado.
+     */
 	visitLI(ctx) {
 		this.visit(ctx.blockDeclaration());
 		this.visit(ctx.blockExpression());
@@ -336,11 +515,20 @@ class ASTLetIn extends ASTCode {
 	}
 }
 
+/**
+ * Clase que representa una expresión de control de flujo "If-Else".
+ * @class
+ */
 class ASTIfElse extends ASTCode {
 	constructor(argument = 0) {
 		super(argument);
 	}
 
+	 /**
+     * Visita una expresión "If-Else" y procesa la ejecución de las instrucciones correspondientes.
+     * @param {Object} ctx - El contexto de la expresión "If-Else".
+     * @returns {Object} El bloque de instrucciones generado.
+     */
 	visitIE(ctx) {
 		this.visit(ctx.blockExpression());
 		return this.block;
@@ -348,11 +536,20 @@ class ASTIfElse extends ASTCode {
 }
 
 
+/**
+ * Clase que representa una declaración de función.
+ * @class
+ */
 class ASTFun extends ASTCode {
 	constructor(argument = 0) {
 		super(argument);
 	}
 
+	 /**
+     * Visita una declaración de función y genera las instrucciones correspondientes.
+     * @param {Object} ctx - El contexto de la declaración de la función.
+     * @returns {Object} El bloque de instrucciones generado.
+     */
 	visitFUN(ctx) {
 		if(ctx.letInDeclaration()){this.visit(ctx.letInDeclaration());}
 		this.block.addInstruccion(new Instruccion(MNEMONICS.RET));
