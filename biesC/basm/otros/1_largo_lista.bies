@@ -1,9 +1,9 @@
 let length = (lst) =>
     let {
-        const loop = (acc, i) =>
+        //const loop = (acc, i) =>
             if (i == len(lst)) then acc
             else loop(acc + 1, i + 1)
     } in loop(0, 0)
 
 // Ejemplo:
-print(length([1, 2, 3, 4])) // Retorna 4
+print(lenhgth([1, 2, 3, 4])) // Retorna 4
