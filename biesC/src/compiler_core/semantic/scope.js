@@ -5,7 +5,7 @@ export default class Scope {
     static instances = [];
 
     constructor(parent = null, id = 0, funName = 'main') {
-        Logs.addLog(`Creando scope ${funName} con id ${id}`);
+        Logs.addLog(`4Creando scope ${funName} con id ${id}`);
         this.funName = funName;
         this.id = id;
         this.parent = parent;
@@ -17,7 +17,7 @@ export default class Scope {
 
     addIdentifier(name, type, value, line, currentLine = line) {
         if (name in this.bindings) {
-            Errors.addError(`Identificador '${name}' ya está definido en este alcance. Línea: ${currentLine}.`);
+            Errors.addError(`5Identificador '${name}' ya está definido en este alcance. Línea: ${currentLine}.`);
             //throw new Error(`Identifier '${name}' ya está definido en este alcance. Línea: ${currentLine}.`);
         }
         const identifier = new Identifier(name, type, value, line);
@@ -32,15 +32,14 @@ export default class Scope {
     reassignIdentifier(name, newValue, currentLine = null) {
         const identifier = Scope.getIdentifier(this, name);
         if (!identifier) {
-            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
-            //throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`6Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            return false;
         }
-        if (identifier.type === 'const') {
-            Errors.addError(`No se puede reasignar ${identifier.type} identificador '${name}'. Línea: ${currentLine || identifier.line}.`);
-            //throw new Error(`No se puede reasignar ${identifier.type} identificador '${name}'. Línea: ${currentLine || identifier.line}.`);
-        }
-        identifier.value = newValue;
-        return [1, identifier.id];
+        if (identifier && identifier.type === 'const') {
+            Errors.addError(`7No se puede reasignar ${identifier.type} identificador '${name}'. Línea: ${currentLine || identifier.line}.`);
+            return false;
+        }        
+        return true;
     }
 
 	identifierExists(name) {
@@ -53,7 +52,7 @@ export default class Scope {
         } else if (scope.parent) {
             return Scope.getEnvAndLocal(scope.parent, name, currentLine, env + 1);
         } else {
-            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`8Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
             //throw new Error(`Identifier '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
         }
     }

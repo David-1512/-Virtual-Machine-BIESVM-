@@ -144,7 +144,7 @@ const executeCode = async (data, filename, options) => {
     let byteCode;
 
     try {
-        byteCode = loader.load(data);
+        byteCode = loader.load(data, traceLevel);
     } catch (loadError) {
         await handleErrors(loadError, errorStream, outputStream);
     }
@@ -182,7 +182,7 @@ const executeCode = async (data, filename, options) => {
     }
     
     if (options.output) {
-        await writeStream(outputStream, `Archivo .basm generado en: ${basmOutputPath}\n Logs:\n${Logs.toString()}\n`);        
+        await writeStream(outputStream, `Archivo .basm generado en: ${basmOutputPath}\n Logs:\n${Logs.toString()}\n\n ByteCode Generado: \n${byteCode.toString()}\n`);        
         await endStream(outputStream);
     }
     if (options.error) {

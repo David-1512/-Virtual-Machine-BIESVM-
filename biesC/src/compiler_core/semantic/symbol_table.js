@@ -10,8 +10,9 @@ class SymbolTable {
     }
 
     static reassignIdentifier(name, newValue, line) {
-        SymbolTable.currentScope.reassignIdentifier(name, newValue, line);
-        return Scope.getEnvAndLocal(SymbolTable.currentScope, name, line);
+        if (SymbolTable.currentScope.reassignIdentifier(name, newValue, line)) {
+            return Scope.getEnvAndLocal(SymbolTable.currentScope, name, line);
+        }
     }
 
     static getEnvAndLocal(name, currentLine ) {
@@ -25,7 +26,7 @@ class SymbolTable {
 	static setIdentifierFunction(name, value = true, currentLine = null) {
 		const identifier = SymbolTable.getIdentifier(name, currentLine);
 		if (!identifier) {
-            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`1Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
 			//throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
 		}
 		identifier.setIsFunction(value);
@@ -46,7 +47,7 @@ class SymbolTable {
             }
             scope = scope.children[0];
         }
-        Errors.addError(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
+        Errors.addError(`2Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
         //throw new Error(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
     }
 
@@ -70,7 +71,7 @@ class SymbolTable {
         if (SymbolTable.currentScope.parent) {
             SymbolTable.currentScope = SymbolTable.currentScope.parent;
         } else {
-            Errors.addError('No se puede salir del alcance global.');
+            Errors.addError('3No se puede salir del alcance global.');
             //throw new Error('No se puede salir del alcance global.');
         }
     }

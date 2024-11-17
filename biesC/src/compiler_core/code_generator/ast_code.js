@@ -81,7 +81,7 @@ class ASTCode extends biesCVisitor {
 	}
 
 	visitListAccess(ctx){
-		let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.ID().getSymbol().line);
+		let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.start.line);
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 		this.visit(ctx.expression());
 		this.block.addInstruccion(new Instruccion(MNEMONICS.LTK));
@@ -128,7 +128,7 @@ class ASTCode extends biesCVisitor {
 		}
 		for (let i = 1; i < ctx.getChildCount(); i++) {
 			if (i == 1) {
-				let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.ID().getSymbol().line);
+				let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.start.line);
 				this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 			}
 			this.block.addInstruccion(new Instruccion(MNEMONICS.APP, [args.pop()]));
@@ -162,11 +162,11 @@ class ASTCode extends biesCVisitor {
 
 	visitLiteral(ctx) {
 		if (ctx.STRING()) {this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, [ctx.STRING().getText()]));}
-		if (ctx.ID()) {
-			let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(),ctx.line);
+		if (ctx.ID()) {		
+			let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(),ctx.start.line);
 			this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 		}
-		if (ctx.NUMBER()) {this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, [parseInt(ctx.NUMBER().getText(), 10)]));}
+		if (ctx.NUMBER()) {this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, [parseInt(ctx.NUMBER().getText())]));}
 		if(ctx.NULL()){this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, ['null']));}
 	    if(ctx.FALSE()){this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, ['false']));}
 		if(ctx.TRUE()){ this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, ['true']));}
