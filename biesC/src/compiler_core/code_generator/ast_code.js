@@ -1,9 +1,9 @@
-import biesCVisitor from '../../parser/grammar/biesCVisitor.js';
-import biesCLexer from '../../parser/grammar/biesCLexer.js';
+import biesCVisitor from '../../../parser/grammar/biesCVisitor.js';
+import biesCLexer from '../../../parser/grammar/biesCLexer.js';
 import Block from '../code/block.js';
-import Instruccion from '../code/Instruccion.js';
+import Instruccion from '../code/instruccion.js';
 import SymbolTable from '../semantic/symbol_table.js';
-import { MNEMONICS } from '../code_generator/mnemonics.js';
+import { MNEMONICS } from '../../constants/mnemonics.js';
 
 class ASTCode extends biesCVisitor {
 	constructor(argument) {
@@ -150,7 +150,7 @@ class ASTCode extends biesCVisitor {
 			this.block.addInstruccion(new Instruccion(MNEMONICS.APP, [args.pop()]));
 		}
 	}
-  
+
 	visitFuntionArgs(ctx){
 		if(ctx.getChildCount() == 2){ return 0;}
 		else{return this.visit(ctx.argumentList());}

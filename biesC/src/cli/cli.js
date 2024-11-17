@@ -1,12 +1,12 @@
 import { Command } from 'commander';
 import fs from 'fs';
 import { promises as fsPromises } from 'fs';
-import SemanticAnalyzer from './../loader/semantic_analyzer.js';
-import Generator from './../code_generator/generator.js';
+import Loader from './../compiler_core/loader/loader.js';
+import Generator from './../compiler_core/code_generator/generator.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { Errors, Logs } from './../semantic/control.js';
+import { Errors, Logs } from './../compiler_core/semantic/control.js';
 
 const program = new Command();
 
@@ -140,13 +140,13 @@ const executeCode = async (data, filename, options) => {
         await writeStream(errorStream, `Fecha: ${timestamp}\n\n`);
     }
 
-    const semanticAnalyzer = new SemanticAnalyzer();
+    const loader = new Loader();
     let byteCode;
 
     try {
-        byteCode = semanticAnalyzer.load(data);
-    } catch (semanticError) {
-        await handleErrors(semanticError, errorStream, outputStream);
+        byteCode = loader.load(data);
+    } catch (loadError) {
+        await handleErrors(loadError, errorStream, outputStream);
     }
 
     if (Errors.getErrors().length > 0) {
@@ -176,8 +176,11 @@ const executeCode = async (data, filename, options) => {
     const basmOutputPath = path.join(inputDir, basmFilename);
 
     const generator = new Generator();
-    await generator.generateBasm(byteCode, basmOutputPath);
 
+    if(Errors.getErrors().length == 0) {
+        await generator.generateBasm(byteCode, basmOutputPath);
+    }
+    
     if (options.output) {
         await writeStream(outputStream, `Archivo .basm generado en: ${basmOutputPath}\n Logs:\n${Logs.toString()}\n`);        
         await endStream(outputStream);
