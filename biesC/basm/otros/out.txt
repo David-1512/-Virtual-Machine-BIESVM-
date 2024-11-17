@@ -1,8 +1,8 @@
 ----------------------------------------------------------
-Fecha: 17/11/2024, 12:50:39 a. m.
+Fecha: 17/11/2024, 1:37:45 a. m.
 
 Ejecución completada sin errores.
-Archivo .basm generado en: C:\Users\leand\Desktop\IIS2024\_Paradigmas_de _programacion\Proyectos\PROYECTO_BIES_C\principal\-Virtual-Machine-BIESVM-\biesC\basm\otros\2_Inverir_hilera_iter.basm
+Archivo .basm generado en: C:\Users\leand\Desktop\IIS2024\_Paradigmas_de _programacion\Proyectos\PROYECTO_BIES_C\principal\-Virtual-Machine-BIESVM-\biesC\basm\otros\1_largo_lista.basm
  Logs:
 Creando scope global con id 0
 Creando scope  con id 1

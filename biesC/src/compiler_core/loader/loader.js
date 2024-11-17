@@ -1,9 +1,9 @@
 import antlr4 from 'antlr4';
-import biesCParser from '../../parser/grammar/biesCParser.js';
-import biesCLexer from '../../parser/grammar/biesCLexer.js';
-import ASTCode from '../ast/ast_code.js';
+import biesCParser from '../../../parser/grammar/biesCParser.js';
+import biesCLexer from '../../../parser/grammar/biesCLexer.js';
+import ASTCode from '../code_generator/ast_code.js';
 
-class SemanticAnalyzer {
+class Loader {
 	load(fileContent) {
 		const lexer = new biesCLexer(new antlr4.InputStream(fileContent));
 		const tokens = new antlr4.CommonTokenStream(lexer);
@@ -17,4 +17,4 @@ class SemanticAnalyzer {
 	}
 }
 
-export default SemanticAnalyzer;
+export default Loader;
