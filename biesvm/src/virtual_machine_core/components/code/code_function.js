@@ -23,11 +23,12 @@ class CodeFunction {
 	 * @param {Array} code - Conjunto de instrucciones que componen la función.
 	 * @param {CodeFunction|null} parent - Referencia a la función padre, si existe.
 	 */
-	constructor(id, code, parent) {
+	constructor(id, code, parent, args) {
 		this.id = id;
 		this.instructions = code;
 		this.parent = parent;
 		this.locals = 0;
+		this.args = args;
 	}
 
 	/**
@@ -84,6 +85,15 @@ class CodeFunction {
 	 */
 	incrementLocals() {
 		this.locals++;
+	}
+
+	/**
+	 * Obtiene los argumentos de la función.
+	 * @returns {Number} Los argumentos de la
+	 * función.
+	 */
+	getCantParams() {
+		return this.args;
 	}
 
 	/**

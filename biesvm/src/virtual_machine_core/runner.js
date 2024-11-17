@@ -46,8 +46,8 @@ class Runner {
 	 * Ejecuta el código en la máquina virtual.
 	 * @param {Code} code - El código que contiene las funciones a ejecutar.
 	 */
-	execute(code) {
-		this.currentFunc = code.getFunction(code.getInit().getParams()[0]);
+	execute(code) {			
+		this.currentFunc = code.getFunction(code.getInit().getParams()[0]);		
 
 		while (true) {
 			const { mnemonic, params } = this._getInstruction();

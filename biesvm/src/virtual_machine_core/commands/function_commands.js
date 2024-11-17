@@ -61,6 +61,11 @@ class AppCommand extends Command {
 		const closure = runner.popFromStack();
 		let k = params[0] || 1;
 		params[0] == 0 ? (k = 0) : params[0] > 0 ? (k = params[0]) : (k = 1);
+		
+		if(k !== code.getFunction(closure.fn).getCantParams()) {
+			errorStream.write(`Error: La función ${closure.fn} espera ${code.getFunction(closure.fn).getCantParams()} argumentos, pero se recibieron ${k}\n`);
+			throw new Error(`Error: La función ${closure.fn} espera ${code.getFunction(closure.fn).getCantParams()} argumentos, pero se recibieron ${k}`);
+		}
 
 		const args = Array.from({ length: k }, () => runner.stack.pop()).reverse();
 

@@ -1,6 +1,10 @@
 print("Testing helloworld Version 0 ***")
 print("Hello World!") 
 
+let suma = (a, b) => a + b	
+
+print(suma(1)) // 3
+
 
 /*$FUN $0 args:0 parent:0 
 LDV "Testing helloworld Version 0 ***"

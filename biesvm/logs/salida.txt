@@ -81100,3 +81100,62 @@ Ejecutando: PRN
 Imprimiendo en consola: 5
 Ejecutando: HLT 
 Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 17/11/2024, 2:38:29 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [32]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 4 -> [11]
+  LDV 5 -> [12]
+  LDF $1 -> [13]
+  BST 0 0 -> [14]
+  BLD 0 0 -> [15]
+  APP 2 -> [16]
+  PRN  -> [17]
+  HLT  -> [18]
+Función $1:
+Locales: 0
+Padre: $0
+  BLD 0 0 -> [22]
+  BLD 0 1 -> [23]
+  GT  -> [24]
+  BF 3 -> [25]
+  BLD 0 0 -> [26]
+  RET  -> [27]
+  BLD 0 1 -> [28]
+  RET  -> [29]
+
+Ejecutando: LDV 4
+Cargando valor 4 en la pila. Ejecutando: LDV 5
+Cargando valor 5 en la pila. Ejecutando: LDF $1
+Cargando clausura de la función $1 en la pila.
+Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: BLD 0 0
+Cargando variable 0 del entorno 0
+Ejecutando: APP 2
+Aplicando la función $1 con 2 argumentos: 4,5
+Llamando a función $1 con argumentos 4, 5
+Argumentos de la función:
+  0: 4
+1: 5
+0: [object Object]
+Ejecutando: BLD 0 0
+Cargando variable 0 del entorno 0
+Ejecutando: BLD 0 1
+Cargando variable 1 del entorno 0
+Ejecutando: GT 
+Comparando 4 y 5 = false
+Ejecutando: BF 3
+Ejecutando: BLD 0 1
+Cargando variable 1 del entorno 0
+Ejecutando: RET 
+Retornando de la función con valor 5
+Ejecutando: PRN 
+Imprimiendo en consola: 5
+Ejecutando: HLT 
+Ejecucion finalizada

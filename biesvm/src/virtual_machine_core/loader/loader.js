@@ -40,10 +40,12 @@ class Loader {
 		parser.buildParseTrees = true;
 
 		const tree = parser.program();
+		
 		const visitor = new CodeVisitor();
 		const code = visitor.visit(tree);
 
 		outputStream.write(`Código generado:\n ${code.toString()}\n`);
+		
 		return code;
 	}
 }
