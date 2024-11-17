@@ -1,3 +1,23 @@
+/**
+ * @file setup_environment.js
+ * @description Configura el entorno necesario para ejecutar el proyecto BiesC en diferentes sistemas operativos.
+ * Realiza tareas como copiar el proyecto, instalar dependencias y configurar comandos globales.
+ * 
+ * @module setup_environment
+ * 
+ * @project biesC
+ * Proyecto académico para implementar un compilador para un lenguaje funcional basado en pila (BiesVM).
+ * 
+ * @author David Serrano Medrano
+ * @author Leandro Mora Corrales
+ * @author Xiara Suarez Alpizar
+ * 
+ * @version 1.0.0
+ * @since 17-11-2024
+ * 
+ * 
+ */
+
 import { existsSync, mkdirSync, readdirSync, lstatSync, copyFileSync, writeFileSync, unlinkSync, symlinkSync } from 'fs';
 import { join } from 'path';
 import { platform } from 'os';
@@ -20,7 +40,12 @@ const windowsBatFilePath = `C:\\Windows\\${appName}.bat`;
 const unixDestinationPath = `/usr/local/${appName}`;
 const unixSymlinkPath = `/usr/local/bin/${appName}`;
 
-// Función para copiar recursivamente la carpeta de forma declarativa
+/**
+ * Copia recursivamente una carpeta, excluyendo `node_modules`.
+ * @param {string} source - Ruta de origen.
+ * @param {string} destination - Ruta de destino.
+ * @returns {Promise<void>} Promesa resuelta al completar la copia.
+ */
 const copyFolder = async (source, destination) => {
     if (!existsSync(destination)) mkdirSync(destination, { recursive: true });
 
@@ -40,7 +65,11 @@ const copyFolder = async (source, destination) => {
     );
 };
 
-// Función para instalar dependencias en el destino
+/**
+ * Instala las dependencias del proyecto en la carpeta destino.
+ * @param {string} destination - Ruta donde se instalarán las dependencias.
+ * @returns {Promise<void>} Promesa resuelta al completar la instalación.
+ */
 const installDependencies = async (destination) => {
     console.log(`Instalando dependencias en ${destination}...`);
     await execPromise(`npm install`, { cwd: destination, stdio: 'inherit' });
@@ -48,7 +77,10 @@ const installDependencies = async (destination) => {
     console.log('Dependencias instaladas.');
 };
 
-// Crear archivo .bat en Windows
+/**
+ * Configura el entorno en Windows.
+ * @returns {Promise<void>} Promesa resuelta al completar la configuración.
+ */
 const setupWindows = async () => {
     console.log('Configurando en Windows...');
     console.log(`Copiando proyecto a ${windowsDestinationPath}...`);
@@ -77,7 +109,10 @@ const setupWindows = async () => {
     console.log(`Archivo ${appName}.bat creado en ${windowsBatFilePath}.`);
 };
 
-// Configuración en Linux/macOS
+/**
+ * Configura el entorno en Linux o macOS.
+ * @returns {Promise<void>} Promesa resuelta al completar la configuración.
+ */
 const setupUnix = async () => {
     console.log('Configurando en Linux o macOS...');
     console.log(`Copiando proyecto a ${unixDestinationPath}...`);
@@ -113,7 +148,10 @@ const setupUnix = async () => {
     }
 };
 
-// Función principal para configurar el entorno
+/**
+ * Configura el entorno según el sistema operativo detectado.
+ * @returns {Promise<void>} Promesa resuelta al completar la configuración.
+ */
 const setupEnvironment = async () => {
     try {  
         if (isWindows) {
@@ -131,15 +169,24 @@ const setupEnvironment = async () => {
     }
 };
 
-// Ejecutar configuración
 setupEnvironment();
 
-// Agregar al package.json el siguiente script:
-// "configure": "node config/setup_environment.js"
-
-// ... Código existente para biesc o biesvm
-
-// Configurar el comando 'bies'
+/**
+ * Configura el comando global `bies` para facilitar la ejecución de scripts en el proyecto.
+ * 
+ * - En **Windows**, crea un archivo `.bat` en `C:\Windows` para ejecutar el script `bies.js`.
+ * - En **Linux/macOS**, copia el script `bies.js` a `/usr/local` y crea un enlace simbólico en `/usr/local/bin/bies`.
+ * 
+ * @async
+ * @function setupBies
+ * @returns {Promise<void>} Promesa resuelta al completar la configuración.
+ * 
+ * @example
+ * // Configurar el comando `bies` globalmente
+ * await setupBies();
+ * 
+ * @throws {Error} - Si ocurre un problema al crear enlaces simbólicos o configurar el entorno.
+ */
 const setupBies = async () => {
     const appName = 'bies'; // Nombre del comando
 

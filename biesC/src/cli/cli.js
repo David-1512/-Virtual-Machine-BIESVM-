@@ -1,3 +1,21 @@
+/**
+ * @file cli.js
+ * @description Este archivo define la interfaz de línea de comandos (CLI) para el compilador BiesC. Configura las opciones, valida los argumentos y ejecuta los archivos `.bies`.
+ * 
+ * @module cli
+ * 
+ * @project biesC
+ * Proyecto académico para implementar un compilador para un lenguaje funcional basado en pila (BiesVM).
+ * 
+ * @author David Serrano Medrano
+ * @author Leandro Mora Corrales
+ * @author Xiara Suarez Alpizar
+ * 
+ * @version 1.0.0
+ * @since 17-11-2024
+ * 
+ */
+
 import { Command } from 'commander';
 import fs from 'fs';
 import { promises as fsPromises } from 'fs';
@@ -16,6 +34,12 @@ const __dirnamePath = dirname(__filename);
 const DEFAULT_CONFIG_FILE = path.join(__dirnamePath, '..', '..', '.config_biesm.json');
 const LOGS_DIR = path.join(__dirnamePath, '..', '..', 'logs');
 
+/**
+ * Garantiza la existencia de un directorio, creándolo si no existe.
+ * @async
+ * @param {string} dir - Ruta del directorio a garantizar.
+ * @throws {Error} Lanza un error si ocurre un problema al crear el directorio.
+ */
 const ensureDir = async (dir) => {
     try {
         await fsPromises.mkdir(dir, { recursive: true });
@@ -25,6 +49,11 @@ const ensureDir = async (dir) => {
     }
 };
 
+/**
+ * Finaliza un flujo de forma segura.
+ * @param {WritableStream} stream - Flujo de salida a cerrar.
+ * @returns {Promise<void>} Promesa que se resuelve al cerrar el flujo.
+ */
 const endStream = (stream) => {
     return new Promise((resolve, reject) => {
         if (stream === process.stdout || stream === process.stderr) {
@@ -36,6 +65,13 @@ const endStream = (stream) => {
     });
 };
 
+/**
+ * Escribe datos en un stream y espera a que termine.
+ * @async
+ * @param {Writable} stream - Stream de escritura (salida o error).
+ * @param {string} data - Datos a escribir.
+ * @returns {Promise<void>} Promesa que se resuelve cuando se completa la escritura.
+ */
 const writeStream = async (stream, data) => {
     return new Promise((resolve, reject) => {
         if (!stream.write(data)) {
@@ -47,6 +83,12 @@ const writeStream = async (stream, data) => {
     });
 };
 
+
+/**
+ * Ejecuta la interfaz de línea de comandos (CLI) para el compilador BiesC.
+ * Configura las opciones, valida los argumentos y ejecuta los archivos `.bies`.
+ * @async
+ */
 export const runCLI = async () => {
     await ensureDir(LOGS_DIR);
 
@@ -98,6 +140,11 @@ export const runCLI = async () => {
     program.parse(process.argv);
 };
 
+/**
+ * Carga configuraciones desde un archivo JSON.
+ * @param {string} configFilePath - Ruta del archivo de configuración.
+ * @returns {Promise<Object>} Objeto de configuración.
+ */
 const loadConfig = async (configFilePath) => {
     try {
         const configContent = await fsPromises.readFile(configFilePath, 'utf8');
@@ -107,6 +154,12 @@ const loadConfig = async (configFilePath) => {
     }
 };
 
+/**
+ * Lee un archivo de forma asíncrona.
+ * @param {string} filename - Ruta del archivo a leer.
+ * @returns {Promise<string>} Contenido del archivo.
+ * @throws {Error} Si ocurre un error al leer el archivo.
+ */
 const readFileAsync = async (filename) => {
     try {
         const data = await fsPromises.readFile(filename, 'utf8');
@@ -116,11 +169,29 @@ const readFileAsync = async (filename) => {
     }
 };
 
+
+/**
+ * Lee el contenido de un archivo `.bies` y lo procesa.
+ * @async
+ * @param {string} filename - Ruta del archivo `.bies` a procesar.
+ * @param {Object} options - Opciones de ejecución, incluyendo salida y errores.
+ * @throws {Error} Lanza un error si no se puede leer el archivo.
+ */
 const executeFile = async (filename, options) => {
     const fileContent = await readFileAsync(filename);
     await executeCode(fileContent, filename, options);
 };
 
+/**
+ * Ejecuta el proceso de generación de bytecode y archivo .basm.
+ * @param {string} data - Contenido del archivo fuente.
+ * @param {string} filename - Nombre del archivo de entrada.
+ * @param {Object} options - Opciones de configuración.
+ * @param {string} [options.output] - Ruta del archivo de salida.
+ * @param {string} [options.error] - Ruta del archivo de errores.
+ * @param {number} options.trace - Nivel de trazabilidad (0 o 1).
+ * @returns {Promise<void>} Promesa que se resuelve al completar el proceso.
+ */
 const executeCode = async (data, filename, options) => {
     const outputStream = options.output ? fs.createWriteStream(options.output, { flags: 'w' }) : process.stdout;
     const errorStream = options.error ? fs.createWriteStream(options.error, { flags: 'w' }) : process.stderr;

@@ -1,5 +1,25 @@
 #!/usr/bin/env node
 
+/**
+ * @file bies.js
+ * @description Módulo para compilar y ejecutar archivos `.bies` utilizando BiesC y BiesVM.
+ * Proporciona funcionalidades para manejar la compilación y ejecución de archivos `.bies` individuales 
+ * y múltiples archivos de prueba en un directorio.
+ * 
+ * @module bies
+ * 
+ * @project biesC
+ * Proyecto académico para implementar un compilador para un lenguaje funcional basado en pila (BiesVM).
+ * 
+ * @author David Serrano Medrano
+ * @author Leandro Mora Corrales
+ * @author Xiara Suarez Alpizar
+ * 
+ * @version 1.0.0
+ * @since 17-11-2024
+ * 
+ */
+
 import { promises as fs } from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
@@ -13,7 +33,10 @@ const __dirname = path.dirname(__filename);
 
 const execPromise = promisify(exec);
 
-// Función para pausar hasta que el usuario presione Enter
+/**
+ * Pausa la ejecución hasta que el usuario presione Enter.
+ * @returns {Promise<void>} Promesa resuelta al presionar Enter.
+ */
 const pause = () => {
     const rl = readline.createInterface({
         input: process.stdin,
@@ -28,7 +51,14 @@ const pause = () => {
     });
 };
 
-// Función para ejecutar un comando con opciones
+/**
+ * Ejecuta un comando de shell con argumentos.
+ * @param {string} command - El comando a ejecutar (e.g., `biesc` o `biesvm`).
+ * @param {string} args - Argumentos para el comando.
+ * @param {string} cwd - Directorio de trabajo para ejecutar el comando.
+ * @throws {Error} Si ocurre un error durante la ejecución del comando.
+ * @returns {Promise<void>} Promesa resuelta si el comando se ejecuta correctamente.
+ */
 const runCommand = async (command, args, cwd) => {
     try {
         const { stdout, stderr } = await execPromise(`${command} ${args}`, { cwd });
@@ -40,7 +70,15 @@ const runCommand = async (command, args, cwd) => {
     }
 };
 
-// Función para compilar un archivo .bies
+/**
+ * Compila un archivo `.bies` en un archivo `.basm`.
+ * @param {string} biesPath - Ruta al archivo `.bies` a compilar.
+ * @param {Object} options - Opciones de compilación.
+ * @param {string} [options.o] - Archivo de salida para el resultado de ejecución.
+ * @param {string} [options.e] - Archivo de salida para errores.
+ * @param {number} [options.trace] - Nivel de traza (0 o 1).
+ * @returns {Promise<string>} Ruta del archivo `.basm` generado.
+ */
 const compileBies = async (biesPath, options) => {
     const { o, e, trace } = options;
     const args = [
@@ -57,7 +95,16 @@ const compileBies = async (biesPath, options) => {
     return basmPath;
 };
 
-// Función para ejecutar un archivo .basm
+
+/**
+ * Ejecuta un archivo `.basm` generado previamente.
+ * @param {string} basmPath - Ruta del archivo `.basm` a ejecutar.
+ * @param {Object} options - Opciones de ejecución.
+ * @param {string} [options.o] - Archivo de salida para el resultado de ejecución.
+ * @param {string} [options.e] - Archivo de salida para errores.
+ * @param {number} [options.trace] - Nivel de traza (0 o 1).
+ * @returns {Promise<void>} Promesa resuelta si la ejecución es exitosa.
+ */
 const executeBasm = async (basmPath, options) => {
     const { o, e, trace } = options;
     const args = [
@@ -70,7 +117,12 @@ const executeBasm = async (basmPath, options) => {
     await runCommand('biesvm', args, process.cwd());
 };
 
-// Función para manejar la compilación y ejecución de un solo archivo
+/**
+ * Compila y ejecuta un único archivo `.bies`.
+ * @param {string} biesPath - Ruta del archivo `.bies` a compilar y ejecutar.
+ * @param {Object} options - Opciones de compilación y ejecución.
+ * @returns {Promise<void>} Promesa resuelta si todo el proceso se completa exitosamente.
+ */
 const handleSingleFile = async (biesPath, options) => {
     console.error(`\n=== Compilando: ${biesPath} ===`);
     try {
@@ -84,7 +136,12 @@ const handleSingleFile = async (biesPath, options) => {
     }
 };
 
-// Función para manejar la opción --tests
+/**
+ * Compila y ejecuta múltiples archivos `.bies` en un directorio.
+ * @param {string} testsDir - Directorio que contiene los archivos `.bies`.
+ * @param {Object} options - Opciones de compilación y ejecución.
+ * @returns {Promise<void>} Promesa resuelta cuando todos los archivos son procesados.
+ */
 const handleTests = async (testsDir, options) => {
     try {
         const testFiles = await fs.readdir(testsDir);
@@ -106,7 +163,31 @@ const handleTests = async (testsDir, options) => {
     }
 };
 
-// Función principal
+/**
+ * Función principal del compilador BiesC.
+ * Maneja argumentos de línea de comandos para compilar y ejecutar archivos `.bies`.
+ * 
+ * - Si no se pasan argumentos, intenta ejecutar un script auxiliar en Python.
+ * - Si se pasa un archivo `.bies`, lo compila y ejecuta.
+ * - Si se utiliza la opción `--tests`, compila y ejecuta múltiples archivos en un directorio.
+ * 
+ * @function main
+ * @returns {Promise<void>} - Promesa resuelta al completar la ejecución.
+ * 
+ * @example
+ * // Compilar y ejecutar un archivo `.bies`
+ * node bies.js archivo.bies
+ * 
+ * @example
+ * // Especificar archivos de salida para resultados y errores
+ * node bies.js archivo.bies --o salida.txt --e errores.txt
+ * 
+ * @example
+ * // Ejecutar todos los tests en un directorio
+ * node bies.js --tests /ruta/a/carpeta_tests
+ * 
+ * @throws {Error} - Si no se pueden manejar los argumentos o fallan las compilaciones/ejecuciones.
+ */
 const main = async () => {
     const args = process.argv.slice(2);
     const options = {

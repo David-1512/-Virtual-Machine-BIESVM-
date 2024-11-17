@@ -1,14 +1,17 @@
 grammar biesC;
 
+// Definición del programa principal
 program
     : statement* EOF
     ;
 
+// Definición de una declaración o expresión
 statement
     : declaration
     | expression
     ;
 
+// Definición de diferentes tipos de declaraciones
 declaration
     : constDeclaration
     | varDeclaration
@@ -18,27 +21,33 @@ declaration
     | reasignation
     ;
 
+// Reasignación de un identificador
 reasignation
     : ID '=' expression
     ;
 
+// Declaración de inicialización nula
 nullInitDeclaration
     : VAR ID
     | LET ID
     ;
 
+// Declaración de constante
 constDeclaration
     : CONST ID '=' expression
     ;
 
+// Declaración de variable
 varDeclaration
     : VAR ID '=' expression
     ;
 
+// Declaración de let
 letDeclaration
     : LET ID '=' expression
     ;
 
+// Declaración de función
 funDeclaration
     : FUN ID paramsFun ARROW letInDeclaration
     | FUN ID paramsFun ARROW blockExpression
@@ -127,6 +136,7 @@ list
     : '[' (expression (',' expression)*)? ']'
     ;
 
+// Acceso a un elemento de una lista
 listAccess
     : ID '[' expression ']'
     ;
@@ -143,19 +153,23 @@ elseExpr
     : blockExpression
     ;
 
+// Declaración let-in
 letInDeclaration
     : LET blockDeclaration IN blockExpression
     ;
 
+// Bloque de declaraciones
 blockDeclaration
     : '{' (constDeclaration)* '}'
     ;
     
+// Bloque de expresiones    
 blockExpression
     : '{' statement* '}'
     | expression
     ;
 
+// Expresión lambda
 lambda
     : params ARROW blockExpression
     | letInDeclaration

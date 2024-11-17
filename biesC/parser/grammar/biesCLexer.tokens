@@ -1,3 +1,7 @@
+// Este archivo `biesCLexer.tokens` es generado automáticamente por ANTLR.
+// Contiene la lista de tokens utilizados en la gramática `biesC`.
+// No es necesario modificar este archivo manualmente.
+
 T__0=1
 T__1=2
 T__2=3
