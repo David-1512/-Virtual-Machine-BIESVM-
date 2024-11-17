@@ -71,19 +71,21 @@ class ASTCode extends biesCVisitor {
      * @param {Object} ctx - Contexto de la expresión genérica.
      */
 	visitGenericExpression(ctx) {
-        const childCount = ctx.getChildCount();
-        if (childCount > 1) {
-            this.visit(ctx.getChild(0));
-            for (let i = 1; i < childCount; i++) {
-                const operator = ctx.getChild(i - 1).getText();
-                this.visit(ctx.getChild(i));
-                const mnemonic = this.getMnemonic(operator);
-                if (mnemonic) this.block.addInstruccion(new Instruccion(mnemonic));
-            }
-        } else {
-            this.visit(ctx.getChild(0));
-        }
-    }
+		const childCount = ctx.getChildCount();
+		if (childCount > 1) {
+			this.visit(ctx.getChild(0));
+			for (let i = 1; i < childCount; i++) {		
+				console.log(`Hijo: ${ctx.getChild(i).getText()}`); // Verifica el hijo		
+				const operator = ctx.getChild(i - 1).getText();
+				console.log(`Operador: ${operator}`); // Verifica el operador
+				this.visit(ctx.getChild(i));
+				const mnemonic = this.getMnemonic(operator);
+				if (mnemonic) this.block.addInstruccion(new Instruccion(mnemonic));
+			}
+		} else {
+			this.visit(ctx.getChild(0));
+		}
+	}
 
 	/**
      * Mapea un operador a un mnemónico de la máquina virtual.
@@ -102,9 +104,10 @@ class ASTCode extends biesCVisitor {
             '<=': MNEMONICS.LTE,
             '+': MNEMONICS.ADD,
             '-': MNEMONICS.SUB,
+			'**': MNEMONICS.POW,
             '*': MNEMONICS.MUL,
             '/': MNEMONICS.DIV,
-            '**': MNEMONICS.POW,
+            
         };
         return mapping[operator];
     }
@@ -120,7 +123,7 @@ class ASTCode extends biesCVisitor {
 	visitRelationalExpression(ctx) { this.visitGenericExpression(ctx); }
 	visitAdditiveExpression(ctx) { this.visitGenericExpression(ctx); }
 	visitMultiplicativeExpression(ctx) { this.visitGenericExpression(ctx); }
-	visitExponentialExpression(ctx) { this.visit(ctx.unaryExpression()); }
+	visitExponentialExpression(ctx) { this.visitGenericExpression(ctx); }  //EL ERROR DE POW ESTA ACÁ
 
 	/**
      * Visita la expresión unaria y genera las instrucciones correspondientes.

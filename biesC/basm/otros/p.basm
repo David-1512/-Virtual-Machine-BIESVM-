@@ -1,0 +1,8 @@
+$FUN $0 args:0 parent:$0 
+LDV 2
+LDV 3
+POW
+PRN
+HLT
+$END $0
+INI $0
