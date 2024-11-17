@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-
+import { exec, spawn } from 'child_process';
 import { promises as fs } from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
 import { promisify } from 'util';
 import readline from 'readline';
 import { fileURLToPath } from 'url';
@@ -10,6 +9,7 @@ import { fileURLToPath } from 'url';
 // Obtener __dirname en ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 const execPromise = promisify(exec);
 
@@ -50,7 +50,7 @@ const compileBies = async (biesPath, options) => {
         ...(trace !== undefined ? [`--trace ${trace}`] : [])
     ].join(' ');
 
-    await runCommand('biesc', args, process.cwd());
+    await runCommand('biesc', args, path.dirname(biesPath));
 
     // Generar la ruta del archivo .basm
     const basmPath = path.join(path.dirname(biesPath), `${path.basename(biesPath, '.bies')}.basm`);
@@ -67,7 +67,7 @@ const executeBasm = async (basmPath, options) => {
         ...(trace !== undefined ? [`--trace ${trace}`] : [])
     ].join(' ');
 
-    await runCommand('biesvm', args, process.cwd());
+    await runCommand('biesvm', args, path.dirname(basmPath));
 };
 
 // Función para manejar la compilación y ejecución de un solo archivo
@@ -119,13 +119,26 @@ const main = async () => {
     };
 
     if (args.length === 0) {
-        try {
-            const terminalPath = path.join(__dirname, '..', 'byte_code', 'terminal.py');
-            const terminalDir = path.dirname(terminalPath);
-            await runCommand('python', terminalPath, terminalDir);
-        } catch {
-            console.error(`Error al ejecutar el script Python.`);
-        }
+        const terminalPath = path.join(__dirname, '..', 'byte_code', 'terminal.py'); // Asegúrate de que esta ruta sea correcta
+        const terminalDir = path.dirname(terminalPath);
+    
+        // Iniciar el proceso interactivo usando spawn
+        const child = spawn('python', [terminalPath], {
+            cwd: terminalDir,
+            stdio: 'inherit' // Esto asegura que la entrada y salida se conecten al terminal principal
+        });
+    
+        child.on('error', (error) => {
+            console.error(`Error al iniciar el script Python: ${error.message}`);
+        });
+    
+        child.on('close', (code) => {
+            if (code !== 0) {
+                console.error(`El script Python terminó con el código ${code}`);
+            }
+            process.exit(code);
+        });
+    
         return;
     }
 
@@ -165,12 +178,13 @@ const main = async () => {
             testsDir = path.isAbsolute(options.testsDir) ? options.testsDir : path.resolve(process.cwd(), options.testsDir);
         } else {
             // Ruta predeterminada en la raíz del proyecto
-            testsDir = path.join(__dirname,'..', 'tests_cases');
+            testsDir = path.join(__dirname, '../tests_cases');
         }
 
         await handleTests(testsDir, options);
     } else if (options.file) {
-        await handleSingleFile(options.file, options);
+        const biesPath = path.isAbsolute(options.file) ? options.file : path.resolve(process.cwd(), options.file);
+        await handleSingleFile(biesPath, options);
     } else {
         console.error('Uso incorrecto. Debes proporcionar un archivo .bies o usar --tests.');
         console.error('Ejemplos:');

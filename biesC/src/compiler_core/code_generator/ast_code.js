@@ -221,12 +221,15 @@ class ASTCode extends biesCVisitor {
 				for (let i = 1; i < ctx.paramsFun().getChildCount(); i += 2) {cantParams += 1;}
 			}
 		if(ctx.letInDeclaration()){
-		let fun = new ASTFun(cantParams);
-		SymbolTable.addScope('');
-		this.block.addBlock(fun.visitFUN(ctx));
-		SymbolTable.exitScope();
+			let fun = new ASTFun(cantParams);
+			SymbolTable.addScope('');
+			this.block.addBlock(fun.visitFUN(ctx));
+			SymbolTable.exitScope();
 		}
-		if(ctx.blockExpression()){this.visit(ctx.blockExpression());}
+		if(ctx.blockExpression()){
+			let lambda = new ASTLambda(cantParams);
+			this.block.addBlock(lambda.visitL(ctx));		
+		}
 		this.block.addInstruccion(new Instruccion(MNEMONICS.LDF, [`$${SymbolTable.getCurrentScopeId()}`]));
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
 		SymbolTable.exitScope();
