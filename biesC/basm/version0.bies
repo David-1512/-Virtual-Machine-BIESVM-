@@ -2,7 +2,7 @@ print("Testing helloworld Version 0 ***")
 print("Hello World!") 
 
 
-/*$Fun $0 args:0 parent:0 
+/*$FUN $0 args:0 parent:0 
 LDV "Testing helloworld Version 0 ***"
 PRN
 LDV "Hello World!"
