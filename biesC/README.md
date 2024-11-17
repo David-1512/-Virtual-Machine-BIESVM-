@@ -9,7 +9,6 @@
 - **David Serrano Medrano**
 - **Leandro Mora Corrales**
 - **Xiara Suarez Alpizar**
-- **Bryan Hernandez Hernández**
 
 ## Requisitos del sistema
 
@@ -81,15 +80,42 @@ biesc  --o <ARCHIVO.basm> --e <ERRORES.txt> --trace <NIVEL> <ARCHIVO.bies>
 - --e: Especifica el nombre del archivo de errores.
 - --trace: Activa (1) o desactiva (0) el trace de ejecución.
 
-y posee dos comandos adicionales para generar la documentación del proyecto y para ejecutar los test_cases:
-```bash
-biesc --jsdoc <CARPETA> (carpeta donde se generará la documentación)
-```
+y posee un comando adicional para ejecutar los test_cases:
 
+tambien cuenta con tests
 ```bash
 biesc --tests 
 ```
 El cual ejecutará todos los jtets del proyecto y mostrará el resultado de cada uno de ellos.
+
+## Instalar jsdoc
+- npm install --save-dev jsdoc
+
+### Crear Documentacion
+- npm run jsdoc
+
+
+## Jest
+### Instalar Jest
+- npm install --save-dev jest
+
+### Actualizar npm a la versión más reciente
+- npm install -g npm@10.9.0
+
+### Configurar Babel para Jest
+- npm install --save-dev @babel/core @babel/preset-env babel-jest
+
+Ejecutar test (debe de estar en /biesC para poder ejecutarlo)
+npm test
+
+## Extra consola para ejecucioón de bies
+se incluyo un prototipo de consola similar a la de otros lenguajes para interactuar con bies en la terminal.
+Es un script de python por lo que es requisito tener una versión 11 o superior
+para ejecutarlo se debe de correr el siguiente comando:
+```bash
+bies
+```
+
 
 ## Licencia
 
