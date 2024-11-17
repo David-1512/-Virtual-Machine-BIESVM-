@@ -8,7 +8,7 @@ import { MNEMONICS } from '../../constants/mnemonics.js';
 class ASTCode extends biesCVisitor {
 	constructor(argument) {
 		super();
-		this.block = new Block(SymbolTable.getCurrentScopeId(), argument,  `$${SymbolTable.getParentCurrentScopeID()}`);
+		this.block = new Block(SymbolTable.getCurrentScopeId(), argument, `$${SymbolTable.getParentCurrentScopeID()}`);
 	}
 
 	visitProgram(ctx) {
@@ -81,8 +81,7 @@ class ASTCode extends biesCVisitor {
 	}
 
 	visitListAccess(ctx){
-		let linea = ctx.ID().getSymbol().line;
-		let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), linea);
+		let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.ID().getSymbol().line);
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 		this.visit(ctx.expression());
 		this.block.addInstruccion(new Instruccion(MNEMONICS.LTK));
@@ -124,13 +123,12 @@ class ASTCode extends biesCVisitor {
 
 	visitFunctionCallChain(ctx) {
 		let args = [];
-		let linea = ctx.ID().getSymbol().line;
 		for (let i = ctx.getChildCount() - 1; i >= 1; i--) {
 			args.push(this.visit(ctx.getChild(i)));
 		}
 		for (let i = 1; i < ctx.getChildCount(); i++) {
 			if (i == 1) {
-				let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), linea);
+				let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(), ctx.ID().getSymbol().line);
 				this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 			}
 			this.block.addInstruccion(new Instruccion(MNEMONICS.APP, [args.pop()]));
@@ -165,7 +163,7 @@ class ASTCode extends biesCVisitor {
 	visitLiteral(ctx) {
 		if (ctx.STRING()) {this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, [ctx.STRING().getText()]));}
 		if (ctx.ID()) {
-			let params = SymbolTable.getEnvAndLocal(ctx.ID().getText());
+			let params = SymbolTable.getEnvAndLocal(ctx.ID().getText(),ctx.line);
 			this.block.addInstruccion(new Instruccion(MNEMONICS.BLD, params));
 		}
 		if (ctx.NUMBER()) {this.block.addInstruccion(new Instruccion(MNEMONICS.LDV, [parseInt(ctx.NUMBER().getText(), 10)]));}
