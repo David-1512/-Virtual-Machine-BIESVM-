@@ -15,14 +15,17 @@ class ErrorListener {
 
 	reportAmbiguity(recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs) {
         // Optionally handle ambiguity errors
+        // Mantener aunque no se usen para que los reconoszca
     }
 
     reportAttemptingFullContext(recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs) {
         // Optionally handle attempting full context
+        // Mantener aunque no se usen para que los reconoszca
     }
 
     reportContextSensitivity(recognizer, dfa, startIndex, stopIndex, prediction, configs) {
         // Optionally handle context sensitivity
+        // Mantener aunque no se usen para que los reconoszca
     }
 }
 
@@ -56,7 +59,7 @@ class Loader {
 		if(trace == 1){			
 			console.log(code.toString());
 		}	
-        console.log(code.toString());
+        
 		return code;
 	}
 }
