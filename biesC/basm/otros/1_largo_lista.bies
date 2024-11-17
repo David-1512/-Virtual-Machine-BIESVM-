@@ -1,3 +1,6 @@
+let hola = "hola"
+hola = "chao"
+
 let length = (lst) =>
     let {
         const loop = (acc, i) =>

@@ -61,6 +61,8 @@ class CstCommand extends Command {
 				return typeof value === 'string';
 			case 'list':
 				return Array.isArray(value);
+			case 'bool':
+				return typeof value === 'boolean';
 			default:
 				return false;
 		}
@@ -84,7 +86,7 @@ class InoCommand extends Command {
 		const value = runner.popFromStack(); // Valor de la pila
 		const isValid = this._validateType(value, type);
 
-		runner.pushToStack(isValid ? 1 : 0);
+		runner.pushToStack(isValid);
 		outputStream.write(`Verificación de tipo: ${value} es de tipo ${type}: ${isValid}\n`);
 	}
 

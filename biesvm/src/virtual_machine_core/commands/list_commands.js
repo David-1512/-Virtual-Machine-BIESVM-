@@ -30,8 +30,8 @@ class LntCommand extends Command {
 	 */
 	execute(runner, outputStream) {
 		let value = runner.stack.pop();
-		outputStream.write(`Verificando Nulidad de ${value}: ${value.length === 0 ? 1 : 0}\n`);
-		runner.stack.push(value.length === 0 ? 1 : 0);
+		outputStream.write(`Verificando Nulidad de ${value}: ${value.length === 0}\n`);
+		runner.stack.push(value.length === 0);
 	}
 }
 

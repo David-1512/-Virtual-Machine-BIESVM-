@@ -43,7 +43,7 @@ class ComparisonCommand extends Command {
 		const m = Number(runner.stack.pop());
 		const n = Number(runner.stack.pop());
 		outputStream.write(`Comparando ${n} y ${m} = ${this.comparator(n, m)}\n`);
-		runner.stack.push(this.comparator(n, m) ? 1 : 0);
+		runner.stack.push(this.comparator(n, m));
 	}
 }
 
@@ -73,7 +73,7 @@ class EQCommand extends ComparisonCommand {
 		const n = runner.stack.pop();
 		const m = runner.stack.pop();
 		outputStream.write(`Comparando ${n} y ${m} = ${this.comparator(n, m)}`);
-		runner.stack.push(this.comparator(n, m) ? 1 : 0);
+		runner.stack.push(this.comparator(n, m));
 	}
 }
 

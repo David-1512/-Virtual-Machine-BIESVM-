@@ -34,8 +34,12 @@ RET
 $END $1
 
 $FUN $0 args:0 parent:$0 
-LDF $1
+LDV "hola"
 BST 0 0
+BLD 0 0
+LDV "chao"
+LDF $1
+BST 0 1
 LDV []
 LDV 4
 LIN
@@ -45,7 +49,7 @@ LDV 2
 LIN
 LDV 1
 LIN
-BLD 0 0
+BLD 0 1
 APP 1
 PRN
 HLT

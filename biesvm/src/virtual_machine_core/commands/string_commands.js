@@ -30,8 +30,8 @@ class SntCommand extends Command {
 	 */
 	execute(runner, outputStream) {
 		const value = runner.stack.pop();
-		outputStream.write(`Verificando nulidad de ${value} :  ${value === '' ? 1 : 0} \n`);
-		runner.stack.push(value === '' ? 1 : 0);
+		outputStream.write(`Verificando nulidad de ${value} :  ${value === ''} \n`);
+		runner.stack.push(value === '');
 	}
 }
 

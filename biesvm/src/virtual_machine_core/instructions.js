@@ -84,7 +84,7 @@ export default class Instructions {
 		this.#registerInstruction(MNEMONICS.DIV, new Commands.OperationCommand((n, m) => n / m));
 
 		this.#registerInstruction(MNEMONICS.NEG, new Commands.UnaryOperationCommand((n) => -n));
-		this.#registerInstruction(MNEMONICS.SGN, new Commands.UnaryOperationCommand((n) => (n > 0 ? 1 : 0)));
+		this.#registerInstruction(MNEMONICS.SGN, new Commands.UnaryOperationCommand((n) => n > 0));
 
 		// Comandos de comparación y lógica
 		this.#registerInstruction(MNEMONICS.EQ, new Commands.EQCommand((n, m) => n === m));
@@ -99,12 +99,12 @@ export default class Instructions {
 		this.#registerInstruction(
 			MNEMONICS.NOT,
 			new Commands.UnaryOperationCommand((n1) =>
-				n1 === 0 || n1 === '' || (Array.isArray(n1) && n1.length === 0) ? 1 : 0,
+				n1 === 0 || n1 === '' || (Array.isArray(n1) && n1.length === 0) || n1 === false ? true : false,
 			),
 		);
 
 		// Comandos relacionados con strings
-		this.#registerInstruction(MNEMONICS.SNT, new Commands.UnaryOperationCommand((s) => (s === '' ? 1 : 0)));
+		this.#registerInstruction(MNEMONICS.SNT, new Commands.UnaryOperationCommand((s) => (s === '')));
 		this.#registerInstruction(MNEMONICS.CAT, new Commands.OperationCommand((s1, s2) => s1 + s2));
 		this.#registerInstruction(MNEMONICS.TOS, new Commands.UnaryOperationCommand((s) => s.toString()));
 		this.#registerInstruction(MNEMONICS.STK, new Commands.UnaryOperationCommand((s) => s.slice(0, -1)));

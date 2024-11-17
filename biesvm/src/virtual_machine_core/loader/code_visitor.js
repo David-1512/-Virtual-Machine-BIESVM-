@@ -101,7 +101,11 @@ class CodeVisitor extends biesASMVisitor {
 	 */
 	visitArgument(ctx) {
 		if (ctx.list()) return this._visitList(ctx.list());
-
+	
+		if (ctx.NULL()) return null;
+		if (ctx.TRUE()) return true;
+		if (ctx.FALSE()) return false;
+	
 		const text = ctx.getText();
 		return text.startsWith('"') && text.endsWith('"')
 			? text.length > 2

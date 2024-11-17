@@ -10,8 +10,11 @@ STRING: '"' ( '\\"' | ~[\r\n"] )* '"';     // Cadenas de texto entre comillas
 ID: '$' [0-9]+;                            // Identificadores con prefijo '$'
 WS: [ \t\r\n]+ -> skip;                    // Omitir espacios en blanco
 SC: ';' ~[\r\n]* -> skip;                  // Comentarios iniciados por ';'
-TYPE: 'number' | 'string' | 'list';        // Tipos de datos soportados
+TYPE: 'number' | 'string' | 'list' | 'bool';        // Tipos de datos soportados
 
+TRUE: 'true';                              // Valor booleano verdadero
+FALSE: 'false';                            // Valor booleano falso
+NULL: 'null';                              // Valor nulo
 // Reglas del parser
 
 // Mnemónicos permitidos
@@ -58,6 +61,9 @@ argument:
   | STRING    // Cadena de texto
   | ID        // Identificador
   | list      // Lista
+  | TRUE      // Valor booleano verdadero
+  | FALSE     // Valor booleano falso
+  | NULL      // Valor nulo
 ;
 
 // Definición de listas
