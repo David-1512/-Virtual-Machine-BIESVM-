@@ -49,16 +49,28 @@ def append_multiple_to_current(lines):
 
 def backup_current():
     """Backup current.bies to backup.bies."""
-    shutil.copyfile(CURRENT_FILE, BACKUP_FILE)
+    shutil.copyfile(CURRENT_FILE, BACKUP_FILE)    
 
 def restore_backup():
-    """Restore current.bies from backup.bies and inform the user about the last valid line."""
+    """Restore current.bies from backup.bies and inform the user about the last valid line excluding 'input' and 'print'."""
     shutil.copyfile(BACKUP_FILE, CURRENT_FILE)
+    print("Restaurando desde backup...")
     with open(CURRENT_FILE, 'r') as f:
         lines = f.readlines()
         if lines:
-            last_valid = lines[-1].strip()
-            print(f"Última línea válida: {last_valid}")
+            # Iterar en reversa para encontrar la última línea válida que no comience con 'input' o 'print'
+            last_valid = None
+            for line in reversed(lines):
+                stripped_line = line.strip()
+                # Convertir a minúsculas para comparación insensible a mayúsculas
+                stripped_line_lower = stripped_line.lower()
+                if not any(stripped_line_lower.startswith(cmd) for cmd in COMMANDS_TO_REMOVE):
+                    last_valid = stripped_line
+                    break
+            if last_valid:
+                print(f"Última línea válida: {last_valid}")
+            else:
+                print("No hay líneas válidas que no sean 'input' o 'print'.")
         else:
             print("No hay líneas válidas.")
 
@@ -68,14 +80,15 @@ def remove_commands(commands):
         with open(CURRENT_FILE, 'r') as f:
             lines = f.readlines()
         
-        # Filter out lines that start with any of the specified commands
+        # Filtrar líneas que no comienzan con ningún comando especificado (insensible a mayúsculas)
         filtered_lines = [
             line for line in lines
-            if not any(line.lstrip().startswith(cmd) for cmd in commands)
+            if not any(line.lstrip().lower().startswith(cmd) for cmd in commands)
         ]
         
         with open(CURRENT_FILE, 'w') as f:
-            f.writelines(filtered_lines)
+            f.writelines(filtered_lines)        
+        
     except Exception as e:
         print(f"Error al eliminar comandos: {e}")
 
@@ -90,7 +103,7 @@ def compile_bies():
             stderr=subprocess.PIPE,
             shell=is_windows()
         )
-        basm_path = CURRENT_FILE.replace('.bies', '.basm')
+        basm_path = CURRENT_FILE.replace('.bies', '.basm')        
         return basm_path
     except subprocess.CalledProcessError as e:
         error_msg = e.stderr.decode().strip()
@@ -115,6 +128,9 @@ def execute_basm(basm_path):
         output = result.stdout.decode().strip()
         if output:
             print(output)
+        # Primero eliminar comandos antes de hacer backup
+        remove_commands(COMMANDS_TO_REMOVE)
+        # Luego realizar backup con current.bies limpio
         backup_current()
     except subprocess.CalledProcessError as e:
         error_msg = e.stderr.decode().strip()
@@ -129,7 +145,7 @@ def execute_basm(basm_path):
 def repl():
     """Read-Eval-Print Loop for the Bies language with multi-line support."""
     initialize_files()
-    print("Bies REPL. Escribe 'b halt' para salir.")
+    print("Bies REPL. Escribe 'hlt' para salir.")
     print("Para escribir múltiples líneas, escribe ':start'. Finaliza con ':end'.")
     
     multi_line_mode = False
@@ -145,7 +161,7 @@ def repl():
             source = input(prompt)
             
             if not multi_line_mode:
-                if source.strip().lower() == "b halt":
+                if source.strip().lower() == "hlt":
                     print("\nSaliendo de la REPL.")
                     # Reset files for next session
                     with open(CURRENT_FILE, 'w') as f:
@@ -165,8 +181,6 @@ def repl():
                     basm = compile_bies()
                     if basm:
                         execute_basm(basm)
-                        # Remove specified commands after successful execution
-                        remove_commands(COMMANDS_TO_REMOVE)
             else:
                 if source.strip().lower() == ":end":
                     multi_line_mode = False
@@ -177,8 +191,6 @@ def repl():
                         basm = compile_bies()
                         if basm:
                             execute_basm(basm)
-                            # Remove specified commands after successful execution
-                            remove_commands(COMMANDS_TO_REMOVE)
                     else:
                         print("No se ingresaron líneas para ejecutar.")
                     continue

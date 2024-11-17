@@ -192,7 +192,7 @@ const setupBies = async () => {
 
     if (isWindows) {
         const windowsBiesBatPath = `C:\\Windows\\${appName}.bat`;
-        const scriptPath = path.join(process.cwd(),'config', 'bies.js');
+        const scriptPath = windowsDestinationPath + "\\config\\bies.js"//path.join(process.cwd(), 'config', 'bies.js');
 
         const batContent = `
             @echo off
@@ -200,28 +200,23 @@ const setupBies = async () => {
         `;
         writeFileSync(windowsBiesBatPath, batContent.trim(), 'utf8');
         console.log(`Archivo ${appName}.bat creado en ${windowsBiesBatPath}.`);
+
     } else if (isLinux || isMac) {
-        const unixSymlinkPath = `/usr/local/bin/${appName}`;
-        const scriptPath = path.join(process.cwd(), 'bies.js');
+        const destinationScriptPath = `/usr/local/bin/${appName}`;
+        const scriptPath = unixDestinationPath + "/config/bies.js"//path.join(process.cwd(), 'bies.js');
 
-        // Copiar el script a una ubicación accesible
-        const destinationScriptPath = `/usr/local/${appName}.js`;
-        copyFileSync(scriptPath, destinationScriptPath);
-
-        // Crear enlace simbólico
         try {
-            if (existsSync(unixSymlinkPath)) unlinkSync(unixSymlinkPath);
-            symlinkSync(destinationScriptPath, unixSymlinkPath, 'file');
+            // Copiar el script a /usr/local/bin/bies
+            copyFileSync(scriptPath, destinationScriptPath);
 
             // Hacer el script ejecutable
             await execPromise(`chmod +x ${destinationScriptPath}`);
 
-            console.log(`Enlace simbólico creado en ${unixSymlinkPath}.`);
+            console.log(`Archivo copiado a ${destinationScriptPath} y hecho ejecutable.`);
         } catch (error) {
-            console.error('Error al crear el enlace simbólico para bies:', error);
+            console.error('Error al copiar el script para bies:', error);
         }
     }
 };
 
-// Llamar a la función para configurar 'bies'
 await setupBies();
