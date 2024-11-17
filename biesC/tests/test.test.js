@@ -1,3 +1,10 @@
+/**
+ * Autores: 
+ *      David Serrano Medrano, 
+ *      Leandro Mora Corrales, 
+ *      Xiara Suarez Alpizar
+ */
+
 import { exec } from 'child_process';
 import path from 'path';
 import fs from 'fs';
@@ -7,6 +14,9 @@ describe('CLI BiesC Tests - Validaciones de Archivos', () => {
 
 
   // --------------------------------------------TEST PASAR A .BASM--------------------------------------------
+  /**
+   * Prueba para ejecutar el archivo version0.bies y verificar la salida esperada.
+   */
   test('Ejecutar version0.bies', (done) => {
     const testFilePath = path.join(__dirname, '../basm/version0.bies');
     exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
@@ -18,17 +28,20 @@ describe('CLI BiesC Tests - Validaciones de Archivos', () => {
     });
   });
 
+
+   /**
+   * Prueba para ejecutar el archivo version1.bies y verificar la salida esperada.
+   */
   test('Ejecutar version1.bies', (done) => {
     jest.setTimeout(10000);
 
     const testFilePath = path.join(__dirname, '../basm/version1.bies');
-    const cliPath = path.join(__dirname, '../bin/biesc.js'); // Ajusta la ruta según tu estructura.
+    const cliPath = path.join(__dirname, '../bin/biesc.js');
 
     exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
         expect(error).toBeNull();
         expect(stderr).toBe(''); // No debería haber errores.
 
-        // Verificar las partes clave de la salida esperada en el archivo de ensamblador
         expect(stdout).toContain('$FUN $1 args:0 parent:$0');
         expect(stdout).toContain('LDV "Testing helloworld Version 1 ***"');
         expect(stdout).toContain('PRN');
@@ -40,17 +53,20 @@ describe('CLI BiesC Tests - Validaciones de Archivos', () => {
     });
 });
 
+/**
+ * Prueba para ejecutar el archivo version2.bies y verificar la salida esperada.
+*/
 test('Ejecutar version2.bies', (done) => {
   jest.setTimeout(10000);
 
   const testFilePath = path.join(__dirname, '../basm/version2.bies');
-  const cliPath = path.join(__dirname, '../bin/biesc.js'); // Ajusta la ruta según tu estructura.
+  const cliPath = path.join(__dirname, '../bin/biesc.js'); 
 
   exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
       expect(error).toBeNull();
-      expect(stderr).toBe(''); // No debería haber errores.
+      expect(stderr).toBe(''); 
 
-      // Verificar las partes clave de la salida esperada en el archivo ensamblador
+
       expect(stdout).toContain('$FUN $1 args:1 parent:$0');
       expect(stdout).toContain('BLD 0 0');
       expect(stdout).toContain('PRN');
@@ -66,18 +82,19 @@ test('Ejecutar version2.bies', (done) => {
   });
 });
 
-
+  /**
+   * Prueba para ejecutar el archivo version3.bies y verificar la salida esperada.
+   */
 test('Ejecutar version3.bies', (done) => {
   jest.setTimeout(10000);
 
   const testFilePath = path.join(__dirname, '../basm/version3.bies');
-  const cliPath = path.join(__dirname, '../bin/biesc.js'); // Ajusta la ruta según tu estructura.
+  const cliPath = path.join(__dirname, '../bin/biesc.js'); 
 
   exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
       expect(error).toBeNull();
-      expect(stderr).toBe(''); // No debería haber errores.
+      expect(stderr).toBe(''); 
 
-      // Verificar las partes clave de la salida esperada en el archivo ensamblador
       expect(stdout).toContain('$FUN $1 args:1 parent:$0 ');
       expect(stdout).toContain('BLD 0 0');
       expect(stdout).toContain('PRN');
@@ -92,18 +109,19 @@ test('Ejecutar version3.bies', (done) => {
   });
 });
 
-
+  /**
+   * Prueba para ejecutar el archivo version4.bies y verificar la salida esperada.
+   */
 test('Ejecutar version4.bies', (done) => {
   jest.setTimeout(10000);
 
   const testFilePath = path.join(__dirname, '../basm/version4.bies');
-  const cliPath = path.join(__dirname, '../bin/biesc.js'); // Ajusta la ruta según tu estructura.
+  const cliPath = path.join(__dirname, '../bin/biesc.js'); 
 
   exec(`node "${cliPath}" "${testFilePath}" --o "salida.txt" --e "errores.txt"`, (error, stdout, stderr) => {
       expect(error).toBeNull();
-      expect(stderr).toBe(''); // No debería haber errores.
+      expect(stderr).toBe(''); 
 
-      // Verificar las partes clave de la salida esperada en el archivo ensamblador
       expect(stdout).toContain('$FUN $2 args:1 parent:$1');
       expect(stdout).toContain('BLD 0 0');
       expect(stdout).toContain('PRN');
@@ -119,7 +137,9 @@ test('Ejecutar version4.bies', (done) => {
   });
 });
 
-
+  /**
+   * Prueba para ejecutar el archivo version5.bies y verificar la salida esperada.
+   */
 test('Ejecutar version5.bies', (done) => {
   jest.setTimeout(10000);
 
@@ -130,7 +150,6 @@ test('Ejecutar version5.bies', (done) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
-      // Verificar las partes clave del ensamblador esperado
       expect(stdout).toContain('$FUN $2 args:1 parent:$1');
       expect(stdout).toContain('$FUN $4 args:0 parent:$3');
       expect(stdout).toContain('LDV "Enter greeting>"');
@@ -143,6 +162,9 @@ test('Ejecutar version5.bies', (done) => {
   });
 });
 
+  /**
+   * Prueba para ejecutar el archivo version6.bies y verificar la salida esperada.
+   */
 test('Ejecutar version6.bies', (done) => {
   jest.setTimeout(10000);
 
@@ -153,7 +175,6 @@ test('Ejecutar version6.bies', (done) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
-      // Verificar las partes clave del ensamblador esperado
       expect(stdout).toContain('$FUN $1 args:2 parent:$0');
       expect(stdout).toContain('GT');
       expect(stdout).toContain('BF');
@@ -166,6 +187,9 @@ test('Ejecutar version6.bies', (done) => {
   });
 });
 
+  /**
+   * Prueba para ejecutar el archivo version7.bies y verificar la salida esperada.
+   */
 test('Ejecutar version7.bies', (done) => {
   jest.setTimeout(10000);
 
@@ -176,7 +200,6 @@ test('Ejecutar version7.bies', (done) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
-      // Verificar las partes clave del ensamblador esperado
       expect(stdout).toContain('$FUN $2 args:1 parent:$1 ');
       expect(stdout).toContain('GT');
       expect(stdout).toContain('BF');
@@ -191,7 +214,9 @@ test('Ejecutar version7.bies', (done) => {
   });
 });
 
-
+  /**
+   * Prueba para ejecutar el archivo version8.bies y verificar la salida esperada.
+   */
 test('Ejecutar version8.bies', (done) => {
   jest.setTimeout(10000);
 
@@ -202,7 +227,6 @@ test('Ejecutar version8.bies', (done) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
-      // Verificar las partes clave del ensamblador esperado
       expect(stdout).toContain('$FUN $1 args:0 parent:$0');
       expect(stdout).toContain('LDV []');
       expect(stdout).toContain('LIN');
@@ -215,7 +239,9 @@ test('Ejecutar version8.bies', (done) => {
   });
 });
 
-
+/**
+ * Prueba para ejecutar el archivo version9.bies y verificar la salida esperada.
+ */
 test('Ejecutar version9.bies', (done) => {
   jest.setTimeout(10000);
 
@@ -226,7 +252,6 @@ test('Ejecutar version9.bies', (done) => {
       expect(error).toBeNull();
       expect(stderr).toBe('');
 
-      // Verificar las partes clave del ensamblador esperado
       expect(stdout).toContain('$FUN $1 args:4 parent:$0 ');
       expect(stdout).toContain('EQ');
       expect(stdout).toContain('BF');
@@ -244,6 +269,10 @@ test('Ejecutar version9.bies', (done) => {
 
 //-------------------------------------------------------------------------------------------------------
 
+/**
+ * Prueba para manejar un archivo con extensión incorrecta.
+ * Verifica que se lance un error y se muestre el mensaje adecuado.
+ */
 test('Archivo con extensión incorrecta', (done) => {
     const invalidFilePath = path.join(__dirname, '../basm/version0.txt');
     exec(`node "${cliPath}" "${invalidFilePath}"`, (error, stdout, stderr) => {
@@ -253,6 +282,10 @@ test('Archivo con extensión incorrecta', (done) => {
     });
   });
 
+  /**
+ * Prueba para manejar un archivo inexistente.
+ * Verifica que se lance un error y se muestre el mensaje adecuado.
+ */
   test('Archivo inexistente', (done) => {
     const missingFilePath = path.join(__dirname, '../basm/missing.bies');
     exec(`node "${cliPath}" "${missingFilePath}"`, (error, stdout, stderr) => {
@@ -262,6 +295,10 @@ test('Archivo con extensión incorrecta', (done) => {
     });
   });
 
+  /**
+ * Prueba para generar un archivo .basm a partir de un archivo .bies.
+ * Verifica que el archivo .basm se genere correctamente y contenga la estructura esperada.
+ */
   test('Generar archivo .basm', (done) => {
     const testFilePath = path.join(__dirname, '../basm/version0.bies');
     const basmFilePath = path.join(__dirname, '../basm/version0.basm');

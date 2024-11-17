@@ -263,6 +263,13 @@ const executeCode = async (data, filename, options) => {
     console.log(`Archivo .basm generado en: ${basmOutputPath}`);
 };
 
+/**
+ * Maneja errores ocurridos durante el proceso.
+ * @param {Error} error - Error a manejar.
+ * @param {WritableStream} errorStream - Flujo para registrar errores.
+ * @param {WritableStream} outputStream - Flujo de salida estándar.
+ * @returns {Promise<void>} Promesa que se resuelve tras manejar el error.
+ */
 const handleErrors = async (error, errorStream, outputStream) => {
     if (errorStream) {
         await writeStream(errorStream, `Error: ${error.message}\n`);
@@ -277,6 +284,11 @@ const handleErrors = async (error, errorStream, outputStream) => {
     await handleProcessExit(1);
 };
 
+/**
+ * Finaliza el proceso de forma segura con un código de salida.
+ * @param {number} code - Código de salida del proceso.
+ * @returns {Promise<void>} Promesa que se resuelve tras finalizar el proceso.
+ */
 const handleProcessExit = async (code) => {
     setImmediate(() => process.exit(code));
 };
