@@ -36,15 +36,15 @@ class CstCommand extends Command {
 		const expectedType = params[0]; // Tipo esperado (number, list, string)
 		const value = runner.popFromStack(); // Valor que será casteado
 
-		const isValidType = this._checkType(value, expectedType);
-		if (isValidType) {
-			runner.pushToStack(value);
+		const newValue = this._casting(value, expectedType);
+		// if (isValidType) {
+			runner.pushToStack(newValue);
 			outputStream.write(`Cast exitoso: ${value} es de tipo ${expectedType}\n`);
-		} else {
-			const errorMessage = `Error de casteo: ${value} no es de tipo ${expectedType}`;
-			errorStream.write(errorMessage + '\n');
-			throw new Error(errorMessage);
-		}
+		// } else {
+		// 	const errorMessage = `Error de casteo: ${value} no permite tipo ${expectedType}`;
+		// 	errorStream.write(errorMessage + '\n');
+		// 	throw new Error(errorMessage);
+		// }
 	}
 
 	/**
@@ -53,16 +53,16 @@ class CstCommand extends Command {
 	 * @param {string} type - Tipo esperado (number, string, list).
 	 * @returns {boolean} Verdadero si el tipo coincide, falso en caso contrario.
 	 */
-	_checkType(value, type) {
+	_casting(value, type) {
 		switch (type) {
 			case 'number':
-				return typeof value === 'number';
+				return Number(value);				
 			case 'string':
-				return typeof value === 'string';
+				return String(value);
 			case 'list':
-				return Array.isArray(value);
+				return Array.isArray(value) ? value : [value];				
 			case 'bool':
-				return typeof value === 'boolean';
+				return Boolean(value);				
 			default:
 				return false;
 		}

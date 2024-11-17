@@ -2,42 +2,30 @@
 
 import { promises as fs } from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import readline from 'readline';
+import { spawn } from 'child_process';
 import { fileURLToPath } from 'url';
 
 // Obtener __dirname en ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const execPromise = promisify(exec);
+// Función para ejecutar un comando con opciones usando spawn
+const runCommand = (command, args, cwd) => {
+    return new Promise((resolve, reject) => {
+        const proc = spawn(command, args, { cwd, stdio: 'inherit', shell: true });
 
-// Función para pausar hasta que el usuario presione Enter
-const pause = () => {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+        proc.on('close', (code) => {
+            if (code !== 0) {
+                reject(new Error(`El proceso terminó con el código de salida ${code}`));
+            } else {
+                resolve();
+            }
+        });
 
-    return new Promise(resolve => {
-        rl.question('Presiona Enter para continuar al siguiente test...', () => {
-            rl.close();
-            resolve();
+        proc.on('error', (err) => {
+            reject(err);
         });
     });
-};
-
-// Función para ejecutar un comando con opciones
-const runCommand = async (command, args, cwd) => {
-    try {
-        const { stdout, stderr } = await execPromise(`${command} ${args}`, { cwd });
-        if (stdout) console.log(stdout);
-        if (stderr) console.error(stderr);
-    } catch (error) {
-        console.error(`Error al ejecutar ${command}:`, error.message);
-        throw error;
-    }
 };
 
 // Función para compilar un archivo .bies
@@ -144,6 +132,17 @@ const main = async () => {
                 }
                 break;
         }
+    }
+
+    if (args.length === 0) {
+        console.log("Ejecutando terminal.py...");
+        try {
+            await runCommand('python', ['../byte_code/terminal.py'], __dirname);
+        } catch (error) {
+            console.error("Error al ejecutar terminal.py:", error.message);
+            process.exit(1);
+        }
+        return;
     }
 
     if (options.tests) {
