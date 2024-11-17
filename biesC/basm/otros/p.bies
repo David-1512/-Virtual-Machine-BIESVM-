@@ -1,10 +1,12 @@
 let isPalindromeRecur = (lst) =>
     let {
         const check = (i, j) =>
-            if (i >= j) then 1
-            else if (lst[i] != lst[j]) then 0
+            if (i >= j) then true
+            else if (lst[i] != lst[j]) then false
             else check(i + 1, j - 1)
     } in check(0, len(lst) - 1)
 
 // Ejemplo:
-print(isPalindromeRecur([1, 2, 3, 12, 1])) // Retorna true
+let a = [1, 8, 3, 2, 1]
+print("isPalindromeRec ["+a+"] ?")
+print(isPalindromeRecur(a)) // Retorna true

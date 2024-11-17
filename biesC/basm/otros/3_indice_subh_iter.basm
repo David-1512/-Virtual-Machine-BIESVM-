@@ -4,7 +4,7 @@ BLD 4 1
 LEN
 EQ
 BF 3
-LDV 1
+LDV true
 BR 18
 BLD 4 0
 BLD 2 0
@@ -16,7 +16,7 @@ BLD 0 0
 LTK
 NEQ
 BF 3
-LDV 0
+LDV false
 BR 6
 BLD 0 0
 LDV 1
@@ -26,7 +26,7 @@ APP 1
 RET
 $END $5
 
-$FUN $4 args:1 parent:$3 
+$FUN $4 args:0 parent:$3 
 LDF $5
 BST 0 0
 LDV 0
@@ -41,7 +41,7 @@ APP 0
 RET
 $END $3
 
-$FUN $6 args:2 parent:$2 
+$FUN $6 args:1 parent:$2 
 BLD 0 0
 BLD 2 0
 LEN
@@ -67,7 +67,7 @@ APP 1
 RET
 $END $6
 
-$FUN $2 args:1 parent:$1 
+$FUN $2 args:0 parent:$1 
 LDF $3
 BST 0 0
 LDF $6
@@ -78,7 +78,7 @@ APP 1
 RET
 $END $2
 
-$FUN $1 args:1 parent:$0 
+$FUN $1 args:2 parent:$0 
 LDF $2
 APP 0
 RET

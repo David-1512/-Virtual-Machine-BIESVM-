@@ -4,12 +4,12 @@ PRN
 RET
 $END $2
 
-$FUN $3 args:2 parent:$1 
+$FUN $3 args:0 parent:$1 
 LDV "Hello World!"
 RET
 $END $3
 
-$FUN $1 args:1 parent:$0 
+$FUN $1 args:0 parent:$0 
 LDF $2
 BST 0 0
 LDF $3

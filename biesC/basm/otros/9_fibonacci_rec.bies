@@ -3,4 +3,5 @@ let fibonacciRecur = (n) =>
     else fibonacciRecur(n - 1) + fibonacciRecur(n - 2)
 
 // Ejemplo:
+print("fibonacciRecur(7) = 13") // Retorna 0
 print(fibonacciRecur(7)) // Retorna 13

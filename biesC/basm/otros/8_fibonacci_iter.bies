@@ -6,4 +6,5 @@ let fibonacciIter = (n) =>
     } in loop(0, 1, 0)
 
 // Ejemplo:
-print(fibonacciIter(7)) // Retorna 13
+print("fibonacciIter(7) == 13")
+print(fibonacciIter(7) == 13) // Retorna true

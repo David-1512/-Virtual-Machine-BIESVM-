@@ -1,9 +1,9 @@
-$FUN $3 args:1 parent:$2 
+$FUN $3 args:2 parent:$2 
 BLD 0 0
 BLD 0 1
 GTE
 BF 3
-LDV 1
+LDV true
 BR 19
 BLD 2 0
 BLD 0 0
@@ -13,7 +13,7 @@ BLD 0 1
 LTK
 NEQ
 BF 3
-LDV 0
+LDV false
 BR 9
 BLD 0 0
 LDV 1
@@ -26,7 +26,7 @@ APP 2
 RET
 $END $3
 
-$FUN $2 args:1 parent:$1 
+$FUN $2 args:0 parent:$1 
 LDF $3
 BST 0 0
 LDV 0

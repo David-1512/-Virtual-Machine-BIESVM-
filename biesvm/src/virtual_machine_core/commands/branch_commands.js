@@ -53,7 +53,7 @@ class BtCommand extends Command {
 		let offset = Number(params[0]);
 		offset > 0 ? (offset -= 1) : (offset += 1);
 		const value = runner.stack.pop();
-		if (value !== 0) {
+		if (value !== false) {
 			runner.pc += offset;
 		}
 	}
@@ -76,7 +76,7 @@ class BfCommand extends Command {
 		let offset = Number(params[0]);
 		offset > 0 ? (offset -= 1) : (offset += 1);
 		const value = runner.stack.pop();
-		if (value === 0) {
+		if (value === false) {
 			runner.pc += offset;
 		}
 	}
