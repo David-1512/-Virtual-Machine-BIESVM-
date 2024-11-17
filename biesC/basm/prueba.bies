@@ -1,0 +1,5 @@
+fun add1(x) => x + 1
+fun double(x) => x * 2
+let compose = (f, g) => (x) => f(g(x))
+let add1ThenDouble = compose(double, add1)
+print(add1ThenDouble(3))

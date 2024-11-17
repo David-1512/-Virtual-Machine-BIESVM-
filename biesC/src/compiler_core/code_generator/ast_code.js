@@ -205,10 +205,31 @@ class ASTCode extends biesCVisitor {
 		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
 	}
 
-	visitFunDeclaration(ctx){  //Esta falta
-		let params = SymbolTable.addIdentifier(ctx.ID().getText(), 'function', null, ctx.start.line);
-		this.visit(ctx.lambda()); //Aqui esta el detalle
-			this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
+	visitFunDeclaration(ctx){ 
+		let params = SymbolTable.addIdentifier(ctx.ID().getText(),'function', null, ctx.start.line);
+		SymbolTable.addScope('');
+		for (let i = 0; i < ctx.paramsFun().getChildCount(); i++) {
+			const paramNode = ctx.paramsFun().getChild(i);
+			if (paramNode.symbol && paramNode.symbol.type === biesCLexer.ID) {
+				SymbolTable.addIdentifier(paramNode.getText(), 'param', null, ctx.start.line);
+			}
+		}
+		let cantParams = 0;
+			if (ctx.paramsFun().getChildCount() == 1 || ctx.paramsFun().getChildCount() == 3) {cantParams = 1;}
+			if (ctx.paramsFun().getChildCount() == 2) {cantParams = 0;}
+			if (ctx.paramsFun().getChildCount() > 3) {
+				for (let i = 1; i < ctx.paramsFun().getChildCount(); i += 2) {cantParams += 1;}
+			}
+		if(ctx.letInDeclaration()){
+		let fun = new ASTFun(cantParams);
+		SymbolTable.addScope('');
+		this.block.addBlock(fun.visitFUN(ctx));
+		SymbolTable.exitScope();
+		}
+		if(ctx.blockExpression()){this.visit(ctx.blockExpression());}
+		this.block.addInstruccion(new Instruccion(MNEMONICS.LDF, [`$${SymbolTable.getCurrentScopeId()}`]));
+		this.block.addInstruccion(new Instruccion(MNEMONICS.BST, params));
+		SymbolTable.exitScope();
 	}
 	
 	visitLambda(ctx) {
@@ -290,5 +311,20 @@ class ASTIfElse extends ASTCode {
 	}
 }
 
+
+class ASTFun extends ASTCode {
+	constructor(argument = 0) {
+		super(argument);
+	}
+
+	visitFUN(ctx) {
+		if(ctx.letInDeclaration()){this.visit(ctx.letInDeclaration());}
+		//if(ctx.blockExpression()){this.visit(ctx.blockExpression());}
+		this.block.addInstruccion(new Instruccion(MNEMONICS.RET));
+		this.block.addInstruccion(new Instruccion(`$END $${this.block.getId()}`));
+		return this.block;
+	}
+}
+
 export default ASTCode;
-export { ASTLambda, ASTLetIn, ASTIfElse};
+export { ASTLambda, ASTLetIn, ASTIfElse, ASTFun};
