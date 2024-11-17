@@ -26,8 +26,7 @@ class SymbolTable {
 	static setIdentifierFunction(name, value = true, currentLine = null) {
 		const identifier = SymbolTable.getIdentifier(name, currentLine);
 		if (!identifier) {
-            Errors.addError(`1Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
-			//throw new Error(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
+            Errors.addError(`Identificador '${name}' no está definido en este alcance. Línea: ${currentLine || 'Desconocida'}.`);
 		}
 		identifier.setIsFunction(value);
 	}
@@ -47,8 +46,8 @@ class SymbolTable {
             }
             scope = scope.children[0];
         }
-        Errors.addError(`2Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
-        //throw new Error(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
+        Errors.addError(`Función '${funName}' no está definida. Línea: ${currentLine || 'Desconocida'}.`);
+        return null;
     }
 
     static setScope(scope) {
@@ -71,8 +70,7 @@ class SymbolTable {
         if (SymbolTable.currentScope.parent) {
             SymbolTable.currentScope = SymbolTable.currentScope.parent;
         } else {
-            Errors.addError('3No se puede salir del alcance global.');
-            //throw new Error('No se puede salir del alcance global.');
+            Errors.addError('No se puede salir del alcance global.');
         }
     }
 
@@ -97,6 +95,34 @@ class SymbolTable {
         }
         return str;
     }
+
+    static getCantParams() {
+        return Scope.getParams(SymbolTable.currentScope);
+    }
+
+    static setCantParams(params) {
+        SymbolTable.currentScope.params = params;
+    }
+
+    static checkCantArgs(cantArgs, funName, currentLine = null) {        
+        const funScope = SymbolTable.getScopeIdbyName(funName, currentLine);
+        console.log('funScope', funScope);
+        if(funScope === null) {
+            return;
+        }
+        const params = Scope.getParams(Scope.getScopeById(funScope));
+        if (params !== cantArgs) {
+            Errors.addError(`Cantidad de argumentos incorrecta para función '${funName}'. Línea: ${currentLine || 'Desconocida'}.`);
+        }
+    }
+
+    static checkIsFunction(name, currentLine = null) {
+        const identifier = SymbolTable.getIdentifier(name, currentLine);
+        if (identifier && !identifier.isFunction) {
+            Errors.addError(`Identificador '${name}' no es una función. Línea: ${currentLine || 'Desconocida'}.`);
+        }
+    }
+
 }
 
 export default SymbolTable;

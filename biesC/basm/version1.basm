@@ -1,0 +1,16 @@
+$FUN $1 args:0 parent:$0 
+LDV "Testing helloworld Version 1 ***"
+PRN
+RET
+$END $1
+
+$FUN $0 args:0 parent:$0 
+LDF $1
+BST 0 0
+BLD 0 0
+APP 0
+LDV "Hello World!"
+PRN
+HLT
+$END $0
+INI $0
