@@ -29,7 +29,7 @@ describe('CLI BiesC Tests - Validaciones de Archivos', () => {
         expect(stderr).toBe(''); // No debería haber errores.
 
         // Verificar las partes clave de la salida esperada en el archivo de ensamblador
-        expect(stdout).toContain('$FUN $1 args:1 parent:0');
+        expect(stdout).toContain('$FUN $1 args:0 parent:$0');
         expect(stdout).toContain('LDV "Testing helloworld Version 1 ***"');
         expect(stdout).toContain('PRN');
         expect(stdout).toContain('$END $1');
@@ -51,7 +51,7 @@ test('Ejecutar version2.bies', (done) => {
       expect(stderr).toBe(''); // No debería haber errores.
 
       // Verificar las partes clave de la salida esperada en el archivo ensamblador
-      expect(stdout).toContain('$FUN $1 args:1 parent:1');
+      expect(stdout).toContain('$FUN $1 args:1 parent:$0');
       expect(stdout).toContain('BLD 0 0');
       expect(stdout).toContain('PRN');
       expect(stdout).toContain('$END $1');
@@ -66,6 +66,7 @@ test('Ejecutar version2.bies', (done) => {
   });
 });
 
+
 test('Ejecutar version3.bies', (done) => {
   jest.setTimeout(10000);
 
@@ -77,11 +78,11 @@ test('Ejecutar version3.bies', (done) => {
       expect(stderr).toBe(''); // No debería haber errores.
 
       // Verificar las partes clave de la salida esperada en el archivo ensamblador
-      expect(stdout).toContain('$FUN $1 args:1 parent:1');
+      expect(stdout).toContain('$FUN $1 args:1 parent:$0 ');
       expect(stdout).toContain('BLD 0 0');
       expect(stdout).toContain('PRN');
       expect(stdout).toContain('$END $1');
-      expect(stdout).toContain('$FUN $2 args:2 parent:0');
+      expect(stdout).toContain('$FUN $2 args:0 parent:$0');
       expect(stdout).toContain('LDV "Hello World!"');
       expect(stdout).toContain('$END $2');
       expect(stdout).toContain('ADD');
@@ -103,11 +104,11 @@ test('Ejecutar version4.bies', (done) => {
       expect(stderr).toBe(''); // No debería haber errores.
 
       // Verificar las partes clave de la salida esperada en el archivo ensamblador
-      expect(stdout).toContain('$FUN $2 args:1 parent:1');
+      expect(stdout).toContain('$FUN $2 args:1 parent:$1');
       expect(stdout).toContain('BLD 0 0');
       expect(stdout).toContain('PRN');
       expect(stdout).toContain('$END $2');
-      expect(stdout).toContain('$FUN $3 args:2 parent:0');
+      expect(stdout).toContain('$FUN $3 args:0 parent:$1');
       expect(stdout).toContain('LDV "Hello World!"');
       expect(stdout).toContain('$END $3');
       expect(stdout).toContain('MUL');
@@ -117,6 +118,7 @@ test('Ejecutar version4.bies', (done) => {
       done();
   });
 });
+
 
 test('Ejecutar version5.bies', (done) => {
   jest.setTimeout(10000);
@@ -129,8 +131,8 @@ test('Ejecutar version5.bies', (done) => {
       expect(stderr).toBe('');
 
       // Verificar las partes clave del ensamblador esperado
-      expect(stdout).toContain('$FUN $2 args:1 parent:1');
-      expect(stdout).toContain('$FUN $4 args:1 parent:0');
+      expect(stdout).toContain('$FUN $2 args:1 parent:$1');
+      expect(stdout).toContain('$FUN $4 args:0 parent:$3');
       expect(stdout).toContain('LDV "Enter greeting>"');
       expect(stdout).toContain('INP');
       expect(stdout).toContain('LEN');
@@ -152,10 +154,10 @@ test('Ejecutar version6.bies', (done) => {
       expect(stderr).toBe('');
 
       // Verificar las partes clave del ensamblador esperado
-      expect(stdout).toContain('$FUN $1 args:1 parent:2');
+      expect(stdout).toContain('$FUN $1 args:2 parent:$0');
       expect(stdout).toContain('GT');
       expect(stdout).toContain('BF');
-      expect(stdout).toContain('$FUN $2 args:2 parent:0');
+      expect(stdout).toContain('$FUN $2 args:0 parent:$0');
       expect(stdout).toContain('LDV 10');
       expect(stdout).toContain('LDV 20');
       expect(stdout).toContain('PRN');
@@ -175,11 +177,11 @@ test('Ejecutar version7.bies', (done) => {
       expect(stderr).toBe('');
 
       // Verificar las partes clave del ensamblador esperado
-      expect(stdout).toContain('$FUN $2 args:1 parent:1');
+      expect(stdout).toContain('$FUN $2 args:1 parent:$1 ');
       expect(stdout).toContain('GT');
       expect(stdout).toContain('BF');
-      expect(stdout).toContain('$FUN $1 args:1 parent:1');
-      expect(stdout).toContain('$FUN $3 args:2 parent:0');
+      expect(stdout).toContain('$FUN $1 args:1 parent:$0');
+      expect(stdout).toContain('$FUN $3 args:0 parent:$0');
       expect(stdout).toContain('LDV 10');
       expect(stdout).toContain('LDV 20');
       expect(stdout).toContain('PRN');
@@ -188,6 +190,7 @@ test('Ejecutar version7.bies', (done) => {
       done();
   });
 });
+
 
 test('Ejecutar version8.bies', (done) => {
   jest.setTimeout(10000);
@@ -200,7 +203,7 @@ test('Ejecutar version8.bies', (done) => {
       expect(stderr).toBe('');
 
       // Verificar las partes clave del ensamblador esperado
-      expect(stdout).toContain('$FUN $1 args:1 parent:0');
+      expect(stdout).toContain('$FUN $1 args:0 parent:$0');
       expect(stdout).toContain('LDV []');
       expect(stdout).toContain('LIN');
       expect(stdout).toContain('LDV "*** Testing List Access ("');
@@ -224,12 +227,12 @@ test('Ejecutar version9.bies', (done) => {
       expect(stderr).toBe('');
 
       // Verificar las partes clave del ensamblador esperado
-      expect(stdout).toContain('$FUN $1 args:1 parent:4');
+      expect(stdout).toContain('$FUN $1 args:4 parent:$0 ');
       expect(stdout).toContain('EQ');
       expect(stdout).toContain('BF');
       expect(stdout).toContain('APP 4'); // Llamada recursiva para `sumList`
-      expect(stdout).toContain('$FUN $2 args:2 parent:2');
-      expect(stdout).toContain('$FUN $3 args:3 parent:0');
+      expect(stdout).toContain('$FUN $2 args:2 parent:$0');
+      expect(stdout).toContain('$FUN $3 args:0 parent:$0');
       expect(stdout).toContain('LDV []');
       expect(stdout).toContain('LIN'); // Para la construcción de la lista
       expect(stdout).toContain('PRN');
