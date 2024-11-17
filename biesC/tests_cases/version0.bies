@@ -1,0 +1,12 @@
+print("Testing helloworld Version 0 ***")
+print("Hello World!") 
+
+
+/*$FUN $0 args:0 parent:0 
+LDV "Testing helloworld Version 0 ***"
+PRN
+LDV "Hello World!"
+PRN
+HLT
+$END $0
+INI $0*/
