@@ -10,7 +10,8 @@ class SymbolTable {
     }
 
     static reassignIdentifier(name, newValue, line) {
-        return SymbolTable.currentScope.reassignIdentifier(name, newValue, line);
+        SymbolTable.currentScope.reassignIdentifier(name, newValue, line);
+        return Scope.getEnvAndLocal(SymbolTable.currentScope, name, line);
     }
 
     static getEnvAndLocal(name, currentLine ) {
