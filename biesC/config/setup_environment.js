@@ -68,7 +68,7 @@ const setupWindows = async () => {
     const batContent = `
         @echo off
         set "file=%~1"
-        if "%file%"=="-tests" (
+        if "%file%"=="--tests" (
             npm test --prefix "${windowsDestinationPath}"
         ) else (
             node "${windowsDestinationPath}\\bin\\biesc.js" %*
@@ -90,7 +90,7 @@ const setupUnix = async () => {
 
         const scriptContent = `
         #!/bin/bash
-        if [[ "$1" == "-tests" ]]; then
+        if [[ "$1" == "--tests" ]]; then
             npm test --prefix "${unixDestinationPath}"
         else
             node "${unixDestinationPath}/bin/biesc.js" "$@"
