@@ -11,6 +11,7 @@ export default class Scope {
         this.parent = parent;
         this.bindings = {}; // Bindings locales de este scope
         this.children = []; // Scopes hijos
+        this.params = 0; // Cantidad de parámetros de la función
         Scope.instances.push(this);
     }
 
@@ -85,4 +86,17 @@ export default class Scope {
     static getId(scope) {
         return scope.id;
     }
+
+    static getParams(scope) {
+        return scope.params;
+    }
+
+    static setParams(scope, params) {
+        scope.params = params;
+    }
+
+    static getScopeById(id) {
+        return Scope.instances.find(scope => scope.id === id);
+    }
+    
 }
