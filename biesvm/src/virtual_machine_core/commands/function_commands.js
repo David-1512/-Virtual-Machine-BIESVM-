@@ -71,6 +71,8 @@ class AppCommand extends Command {
 
 		outputStream.write(`Aplicando la función ${closure.fn} con ${k} argumentos: ${args}\n`);
 
+		runner.stack.push(undefined); // PRUEBAAAA
+
 		const newFrame = new Frame(closure.lexicalEnv);
 		args.forEach((arg, index) => newFrame.setVariable('0', index, arg));
 
@@ -101,7 +103,12 @@ class RetCommand extends Command {
 	 * @param {Object} code - Código fuente que contiene la función a ejecutar.
 	 */
 	execute(runner, outputStream, errorStream, params, code) {
-		const returnValue = runner.popFromStack(); // Sacar el valor de retorno de la pila
+		let returnValue = runner.popFromStack(); // Sacar el valor de retorno de la pila
+		if(returnValue === undefined){
+			returnValue = null;
+		}else{
+			runner.popFromStack();
+		}	
 		outputStream.write(`Retornando de la función con valor ${returnValue}\n`);
 		runner.popFrame(); // Restaurar el frame (entorno léxico) anterior
 		runner.restoreContext(code); // Restaurar el contexto de ejecución anterior

@@ -74,10 +74,8 @@ class ASTCode extends biesCVisitor {
 		const childCount = ctx.getChildCount();
 		if (childCount > 1) {
 			this.visit(ctx.getChild(0));
-			for (let i = 1; i < childCount; i++) {		
-				console.log(`Hijo: ${ctx.getChild(i).getText()}`); // Verifica el hijo		
-				const operator = ctx.getChild(i - 1).getText();
-				console.log(`Operador: ${operator}`); // Verifica el operador
+			for (let i = 1; i < childCount; i++) {						
+				const operator = ctx.getChild(i - 1).getText();				
 				this.visit(ctx.getChild(i));
 				const mnemonic = this.getMnemonic(operator);
 				if (mnemonic) this.block.addInstruccion(new Instruccion(mnemonic));
@@ -112,7 +110,7 @@ class ASTCode extends biesCVisitor {
         return mapping[operator];
     }
 
-	 /**
+	/**
      * Visita las expresiones lógicas OR y AND.
      * @param {Object} ctx - Contexto de la expresión.
      */
