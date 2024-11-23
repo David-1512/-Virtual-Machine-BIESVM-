@@ -1,223 +1,159 @@
 /**
  * @file setup_environment.js
- * @description Configura el entorno necesario para ejecutar el proyecto BiesC en diferentes sistemas operativos.
- * Realiza tareas como copiar el proyecto, instalar dependencias y configurar comandos globales.
+ * @description Configura el entorno necesario para ejecutar el proyecto BiesC en Windows.
+ * Realiza tareas como instalar dependencias y configurar comandos globales sin copiar el proyecto.
  * 
  * @module setup_environment
  * 
  * @project biesC
  * Proyecto académico para implementar un compilador para un lenguaje funcional basado en pila (BiesVM).
  * 
- * @author David Serrano Medrano
- * @author Leandro Mora Corrales
- * @author Xiara Suarez Alpizar
- * 
  * @version 1.0.0
  * @since 17-11-2024
- * 
- * 
  */
 
-import { existsSync, mkdirSync, readdirSync, lstatSync, copyFileSync, writeFileSync, unlinkSync, symlinkSync } from 'fs';
-import { join } from 'path';
+import { existsSync, writeFileSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 import { platform } from 'os';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { fileURLToPath } from 'url';
 
 const execPromise = promisify(exec);
 
-const appName = 'biesc';
+// Obtener __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+console.log("filename")
+console.warn(__filename)
 
-// Detectar sistema operativo
-const isWindows = platform() === 'win32';
-const isLinux = platform() === 'linux';
-const isMac = platform() === 'darwin';
+const __dirnamePath = dirname(__filename);
+console.log("dirname")
+console.warn(__dirnamePath)
 
-const windowsDestinationPath = `C:\\${appName}`;
-const windowsBatFilePath = `C:\\Windows\\${appName}.bat`;
-const unixDestinationPath = `/usr/local/${appName}`;
-const unixSymlinkPath = `/usr/local/bin/${appName}`;
+// Definir nombres de las aplicaciones
+const appNameBiesc = 'biesc';
+const appNameBies = 'bies';
 
-/**
- * Copia recursivamente una carpeta, excluyendo `node_modules`.
- * @param {string} source - Ruta de origen.
- * @param {string} destination - Ruta de destino.
- * @returns {Promise<void>} Promesa resuelta al completar la copia.
- */
-const copyFolder = async (source, destination) => {
-    if (!existsSync(destination)) mkdirSync(destination, { recursive: true });
+// Directorio raíz del proyecto (padre de 'config')
+const currentDir = join(__dirnamePath, '..');
 
-    const files = readdirSync(source);
-    await Promise.all(
-        files
-            .filter(file => file !== 'node_modules') // Excluir node_modules
-            .map(async (file) => {
-                const srcPath = join(source, file);
-                const destPath = join(destination, file);
-                if (lstatSync(srcPath).isDirectory()) {
-                    await copyFolder(srcPath, destPath);
-                } else {
-                    copyFileSync(srcPath, destPath);
-                }
-            })
-    );
-};
+// Directorio para los archivos .bat
+const binDir = join(currentDir, 'bin');
+
+// Rutas de los archivos .bat
+const batFileBiescPath = join(binDir, `${appNameBiesc}.bat`);
+const batFileBiesPath = join(binDir, `${appNameBies}.bat`);
 
 /**
- * Instala las dependencias del proyecto en la carpeta destino.
- * @param {string} destination - Ruta donde se instalarán las dependencias.
- * @returns {Promise<void>} Promesa resuelta al completar la instalación.
+ * Instala las dependencias del proyecto en el directorio actual.
+ * @returns {Promise<void>}
  */
-const installDependencies = async (destination) => {
-    console.log(`Instalando dependencias en ${destination}...`);
-    await execPromise(`npm install`, { cwd: destination, stdio: 'inherit' });
-    await execPromise(`npm run antlr4`, { cwd: destination, stdio: 'inherit' });
-    await execPromise(`npm install --save-dev jest`, { cwd: destination, stdio: 'inherit' });
-    await execPromise(`npm install -g npm@10.9.0`, { cwd: destination, stdio: 'inherit' });
-    await execPromise(`npm install --save-dev @babel/core @babel/preset-env babel-jest`, { cwd: destination, stdio: 'inherit' });
-    console.log('Dependencias instaladas.');
-};
-
-/**
- * Configura el entorno en Windows.
- * @returns {Promise<void>} Promesa resuelta al completar la configuración.
- */
-const setupWindows = async () => {
-    console.log('Configurando en Windows...');
-    console.log(`Copiando proyecto a ${windowsDestinationPath}...`);
-    await copyFolder(process.cwd(), windowsDestinationPath);
-    await installDependencies(windowsDestinationPath);
-
-    // Copiar .config_biesm.json al directorio destino
-    const sourceConfigPath = join(process.cwd(), '.config_biesm.json');
-    const destConfigPath = join(windowsDestinationPath, '.config_biesm.json');
-    if (existsSync(sourceConfigPath)) {
-        copyFileSync(sourceConfigPath, destConfigPath);
-        console.log(`Archivo .config_biesm.json copiado a ${destConfigPath}.`);
-    } else {
-        console.warn(`Archivo de configuración no encontrado en ${sourceConfigPath}.`);
+const installDependencies = async () => {
+    console.log(`Instalando dependencias en ${currentDir}...`);
+    try {
+        await execPromise(`npm install`, { cwd: currentDir, stdio: 'inherit' });
+        await execPromise(`npm run antlr4`, { cwd: currentDir, stdio: 'inherit' });
+        await execPromise(`npm install --save-dev jest @babel/core @babel/preset-env babel-jest`, { cwd: currentDir, stdio: 'inherit' });
+        console.log('Dependencias instaladas.');
+    } catch (error) {
+        console.error('Error al instalar dependencias:', error);
+        throw error;
     }
+};
 
+/**
+ * Crea el archivo .bat en el directorio bin.
+ * @param {string} appName - Nombre del comando (biesc o bies).
+ * @param {string} scriptPath - Ruta al script JS correspondiente.
+ */
+const createBatFile = (appName, scriptPath) => {
     const batContent = `
         @echo off
         set "file=%~1"
         if "%file%"=="--tests" (
-            npm test --prefix "${windowsDestinationPath}"
+            npm test
         ) else (
-            node "${windowsDestinationPath}\\bin\\biesc.js" %*
-        )`;
-    writeFileSync(windowsBatFilePath, batContent.trim(), 'utf8');
-    console.log(`Archivo ${appName}.bat creado en ${windowsBatFilePath}.`);
+            node "${scriptPath}" %*
+        )
+        `.trim();
+
+    const batFilePath = join(binDir, `${appName}.bat`);
+    writeFileSync(batFilePath, batContent, 'utf8');
+    console.log(`Archivo ${appName}.bat creado en ${batFilePath}.`);
 };
 
 /**
- * Configura el entorno en Linux o macOS.
- * @returns {Promise<void>} Promesa resuelta al completar la configuración.
+ * Agrega el directorio bin a las variables de entorno PATH del usuario.
  */
-const setupUnix = async () => {
-    console.log('Configurando en Linux o macOS...');
-    console.log(`Copiando proyecto a ${unixDestinationPath}...`);
-    await copyFolder(process.cwd(), unixDestinationPath);
-    await installDependencies(unixDestinationPath);
-
+const addToPath = async () => {
     try {
-        if (existsSync(unixSymlinkPath)) unlinkSync(unixSymlinkPath);
-        symlinkSync(`${unixDestinationPath}/bin/biesc.js`, unixSymlinkPath, 'file');
+        // Obtener el PATH actual del usuario
+        const { stdout } = await execPromise('echo %PATH%');
+        const currentPath = stdout.trim();          
+        
+        // Normalizar rutas para comparación
+        const normalizedPath = currentPath.split(';').map(p => p.trim().toLowerCase());
 
-        const scriptContent = `
-        #!/bin/bash
-        if [[ "$1" == "--tests" ]]; then
-            npm test --prefix "${unixDestinationPath}"
-        else
-            node "${unixDestinationPath}/bin/biesc.js" "$@"
-        fi
-        `;
-        writeFileSync(unixSymlinkPath, scriptContent.trim(), { mode: 0o755 });
-        console.log(`Enlace simbólico creado en ${unixSymlinkPath}.`);
+        //normalizedPath.forEach(p => console.warn(p));
 
-        // Copiar .config_biesm.json al directorio destino
-        const sourceConfigPath = join(process.cwd(), '.config_biesm.json');
-        const destConfigPath = join(unixDestinationPath, '.config_biesm.json');
-        if (existsSync(sourceConfigPath)) {
-            copyFileSync(sourceConfigPath, destConfigPath);
-            console.log(`Archivo .config_biesm.json copiado a ${destConfigPath}.`);
+        // Ruta a agregar
+        const binDirLower = binDir.toLowerCase();
+        //console.error(binDirLower);
+
+        // Verificar si binDir ya está en PATH
+        if (!normalizedPath.includes(binDirLower)) {
+            const pathCommand = `setx PATH "${currentPath};${__dirnamePath}"`;
+            console.error('Agregando al PATH:', pathCommand);
+            await execPromise(pathCommand);
+            console.log(`Directorio "${binDir}" agregado a la variable de entorno PATH.`);
         } else {
-            console.warn(`Archivo de configuración no encontrado en ${sourceConfigPath}.`);
+            console.log(`El directorio "${binDir}" ya está en la variable de entorno PATH.`);
         }
     } catch (error) {
-        console.error('Error al crear el enlace simbólico:', error);
+        console.error('Error al agregar al PATH:', error);
     }
+};
+
+/**
+ * Configura el entorno en Windows sin copiar el proyecto y añade comandos al PATH.
+ */
+const setupWindows = async () => {
+    console.log('Configurando en Windows...');
+
+    // Crear directorio bin si no existe
+    if (!existsSync(binDir)) {
+        mkdirSync(binDir, { recursive: true });
+        console.log(`Directorio bin creado en ${binDir}.`);
+    } else {
+        console.log(`El directorio bin ya existe en ${binDir}.`);
+    }
+
+    // Instalar dependencias
+    await installDependencies();
+
+    // Rutas a los scripts JS
+    const scriptPathBiesc = join(currentDir, 'bin', 'biesc.js');
+    const scriptPathBies = join(__dirnamePath, 'bies.js');
+
+    // Crear archivos .bat
+    createBatFile(appNameBiesc, scriptPathBiesc);
+    createBatFile(appNameBies, scriptPathBies);
+
+    // Agregar binDir a PATH
+    await addToPath();
+
+    console.log(`Configuración completa. Ahora puedes ejecutar "${appNameBiesc}" y "${appNameBies}" desde cualquier lugar.`);
 };
 
 /**
  * Configura el entorno según el sistema operativo detectado.
- * @returns {Promise<void>} Promesa resuelta al completar la configuración.
  */
 const setupEnvironment = async () => {
-    try {  
-        if (isWindows) {
-            await setupWindows();
-        } else if (isLinux || isMac) {
-            await setupUnix();
-        } else {
-            console.log('Sistema operativo no compatible.');
-            return;
-        }
-        console.log(`Configuración completa. Ahora puedes ejecutar "biesc" desde cualquier lugar con parámetros opcionales.`);
-        console.log(`Por ejemplo: "biesc -tests" para ejecutar los tests por default.`);
-    } catch (error) {
-        console.error('Error en la configuración:', error);
+    if (platform() === 'win32') {
+        await setupWindows();
+    } else {
+        console.log('Solo se soporta Windows en esta configuración.');
     }
 };
 
 setupEnvironment();
-
-/**
- * Configura el comando global `bies` para facilitar la ejecución de scripts en el proyecto.
- * 
- * - En **Windows**, crea un archivo `.bat` en `C:\Windows` para ejecutar el script `bies.js`.
- * - En **Linux/macOS**, copia el script `bies.js` a `/usr/local` y crea un enlace simbólico en `/usr/local/bin/bies`.
- * 
- * @async
- * @function setupBies
- * @returns {Promise<void>} Promesa resuelta al completar la configuración.
- * 
- * @example
- * // Configurar el comando `bies` globalmente
- * await setupBies();
- * 
- * @throws {Error} - Si ocurre un problema al crear enlaces simbólicos o configurar el entorno.
- */
-const setupBies = async () => {
-    const appName = 'bies'; // Nombre del comando
-
-    if (isWindows) {
-        const windowsBiesBatPath = `C:\\Windows\\${appName}.bat`;
-        const scriptPath = windowsDestinationPath + "\\config\\bies.js"//path.join(process.cwd(), 'config', 'bies.js');
-
-        const batContent = `
-            @echo off
-            node "${scriptPath}" %*
-        `;
-        writeFileSync(windowsBiesBatPath, batContent.trim(), 'utf8');
-        console.log(`Archivo ${appName}.bat creado en ${windowsBiesBatPath}.`);
-
-    } else if (isLinux || isMac) {
-        const destinationScriptPath = `/usr/local/bin/${appName}`;
-        const scriptPath = unixDestinationPath + "/config/bies.js"//path.join(process.cwd(), 'bies.js');
-
-        try {
-            // Copiar el script a /usr/local/bin/bies
-            copyFileSync(scriptPath, destinationScriptPath);
-
-            // Hacer el script ejecutable
-            await execPromise(`chmod +x ${destinationScriptPath}`);
-
-            console.log(`Archivo copiado a ${destinationScriptPath} y hecho ejecutable.`);
-        } catch (error) {
-            console.error('Error al copiar el script para bies:', error);
-        }
-    }
-};
-
-await setupBies();

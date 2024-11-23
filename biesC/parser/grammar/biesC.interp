@@ -1,7 +1,3 @@
-// Este archivo `biesC.interp` es generado automáticamente por ANTLR.
-// Contiene información sobre los tokens y literales utilizados en la gramática `biesC`.
-// No es necesario modificar este archivo manualmente.
-
 token literal names:
 null
 '='
