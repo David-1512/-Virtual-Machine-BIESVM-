@@ -23,8 +23,6 @@ import { join } from 'path';
 import { platform } from 'os';
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import path from 'path';
-
 
 const execPromise = promisify(exec);
 
