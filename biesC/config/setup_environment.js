@@ -23,12 +23,8 @@ const execPromise = promisify(exec);
 
 // Obtener __dirname en ES Modules
 const __filename = fileURLToPath(import.meta.url);
-console.log("filename")
-console.warn(__filename)
 
 const __dirnamePath = dirname(__filename);
-console.log("dirname")
-console.warn(__dirnamePath)
 
 // Definir nombres de las aplicaciones
 const appNameBiesc = 'biesc';
@@ -40,9 +36,8 @@ const currentDir = join(__dirnamePath, '..');
 // Directorio para los archivos .bat
 const binDir = join(currentDir, 'bin');
 
-// Rutas de los archivos .bat
-const batFileBiescPath = join(binDir, `${appNameBiesc}.bat`);
-const batFileBiesPath = join(binDir, `${appNameBies}.bat`);
+// Ruta del archivo add_to_path.cmd
+const addToPathCmd = join(binDir, 'add_to_path.cmd');
 
 /**
  * Instala las dependencias del proyecto en el directorio actual.
@@ -89,25 +84,25 @@ const addToPath = async () => {
     try {
         // Obtener el PATH actual del usuario
         const { stdout } = await execPromise('echo %PATH%');
-        const currentPath = stdout.trim();          
+        const currentPath = stdout.trim();
         
-        // Normalizar rutas para comparación
+        // Ruta absoluta y normalizada de binDir
+        const absoluteBinDir = join(binDir);
+        const normalizedBinDir = absoluteBinDir.toLowerCase();
+
+        console.log(`Bin Directory to Add: ${absoluteBinDir}`);
+
+        // Normalizar PATH
         const normalizedPath = currentPath.split(';').map(p => p.trim().toLowerCase());
 
-        //normalizedPath.forEach(p => console.warn(p));
-
-        // Ruta a agregar
-        const binDirLower = binDir.toLowerCase();
-        //console.error(binDirLower);
-
         // Verificar si binDir ya está en PATH
-        if (!normalizedPath.includes(binDirLower)) {
-            const pathCommand = `setx PATH "${currentPath};${__dirnamePath}"`;
-            console.error('Agregando al PATH:', pathCommand);
+        if (!normalizedPath.includes(normalizedBinDir)) {
+            const newPath = `${currentPath};${absoluteBinDir}`;
+            const pathCommand = `setx PATH "${newPath}"`;            
             await execPromise(pathCommand);
-            console.log(`Directorio "${binDir}" agregado a la variable de entorno PATH.`);
+            console.log(`Directorio "${absoluteBinDir}" agregado a la variable de entorno PATH.`);
         } else {
-            console.log(`El directorio "${binDir}" ya está en la variable de entorno PATH.`);
+            console.log(`El directorio "${absoluteBinDir}" ya está en la variable de entorno PATH.`);
         }
     } catch (error) {
         console.error('Error al agregar al PATH:', error);

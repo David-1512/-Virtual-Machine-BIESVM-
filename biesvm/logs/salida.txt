@@ -81159,3 +81159,138 @@ Ejecutando: PRN
 Imprimiendo en consola: 5
 Ejecutando: HLT 
 Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 23/11/2024, 2:19:50 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [6]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 10 -> [2]
+  BST 0 0 -> [3]
+  HLT  -> [4]
+
+Ejecutando: LDV 10
+Cargando valor 10 en la pila. Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: HLT 
+Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 23/11/2024, 2:20:02 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [8]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 10 -> [2]
+  BST 0 0 -> [3]
+  BLD 0 0 -> [4]
+  PRN  -> [5]
+  HLT  -> [6]
+
+Ejecutando: LDV 10
+Cargando valor 10 en la pila. Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: BLD 0 0
+Cargando variable 0 del entorno 0
+Ejecutando: PRN 
+Imprimiendo en consola: 10
+Ejecutando: HLT 
+Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 23/11/2024, 2:20:33 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [6]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 10 -> [2]
+  BST 0 0 -> [3]
+  HLT  -> [4]
+
+Ejecutando: LDV 10
+Cargando valor 10 en la pila. Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: HLT 
+Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 23/11/2024, 2:20:39 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [8]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 10 -> [2]
+  BST 0 0 -> [3]
+  LDV 20 -> [4]
+  BST 0 1 -> [5]
+  HLT  -> [6]
+
+Ejecutando: LDV 10
+Cargando valor 10 en la pila. Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: LDV 20
+Cargando valor 20 en la pila. Ejecutando: BST 0 1
+Almacenando variable en entorno 0, índice 1
+Ejecutando: HLT 
+Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 23/11/2024, 2:20:49 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [12]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 10 -> [2]
+  BST 0 0 -> [3]
+  LDV 20 -> [4]
+  BST 0 1 -> [5]
+  BLD 0 0 -> [6]
+  LDV 10 -> [7]
+  POW  -> [8]
+  PRN  -> [9]
+  HLT  -> [10]
+
+Ejecutando: LDV 10
+Cargando valor 10 en la pila. Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: LDV 20
+Cargando valor 20 en la pila. Ejecutando: BST 0 1
+Almacenando variable en entorno 0, índice 1
+Ejecutando: BLD 0 0
+Cargando variable 0 del entorno 0
+Ejecutando: LDV 10
+Cargando valor 10 en la pila. Ejecutando: POW 
+Operando 10 y 10 = 10000000000
+Ejecutando: PRN 
+Imprimiendo en consola: 10000000000
+Ejecutando: HLT 
+Ejecucion finalizada
+----------------------------------------------------------
+Fecha: 23/11/2024, 3:00:05 p. m.
+
+Código generado:
+ Instrucción de inicio:
+  INI $0 -> [6]
+Función $0:
+Locales: 0
+Padre: $0
+  LDV 4 -> [2]
+  BST 0 0 -> [3]
+  HLT  -> [4]
+
+Ejecutando: LDV 4
+Cargando valor 4 en la pila. Ejecutando: BST 0 0
+Almacenando variable en entorno 0, índice 0
+Ejecutando: HLT 
+Ejecucion finalizada

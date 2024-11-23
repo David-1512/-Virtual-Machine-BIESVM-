@@ -1,136 +1,151 @@
-import { existsSync, mkdirSync, readdirSync, lstatSync, copyFileSync, writeFileSync, unlinkSync, symlinkSync } from 'fs';
-import { join } from 'path';
+/**
+ * @file setup_environment.js
+ * @description Configura el entorno necesario para ejecutar el proyecto BiesVM en Windows.
+ * Realiza tareas como instalar dependencias y configurar comandos globales sin copiar el proyecto.
+ * 
+ * @module setup_environment
+ * 
+ * @project biesVM
+ * Proyecto académico para implementar un compilador para un lenguaje funcional basado en pila (BiesVM).
+ * 
+ * @version 1.0.0
+ * @since 17-11-2024
+ */
+
+import { existsSync, writeFileSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 import { platform } from 'os';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { fileURLToPath } from 'url';
 
 const execPromise = promisify(exec);
 
-const appName = 'biesvm';
+// Obtener __dirname en ES Modules
+const __filename = fileURLToPath(import.meta.url);
+console.log("filename");
+console.warn(__filename);
 
-// Detectar sistema operativo
-const isWindows = platform() === 'win32';
-const isLinux = platform() === 'linux';
-const isMac = platform() === 'darwin';
+const __dirnamePath = dirname(__filename);
+console.log("dirname");
+console.warn(__dirnamePath);
 
-const windowsDestinationPath = `C:\\${appName}`;
-const windowsBatFilePath = `C:\\Windows\\${appName}.bat`;
-const unixDestinationPath = `/usr/local/${appName}`;
-const unixSymlinkPath = `/usr/local/bin/${appName}`;
+// Definir nombre de la aplicación
+const appNameBiesvm = 'biesvm';
 
-// Función para copiar recursivamente la carpeta de forma declarativa
-const copyFolder = async (source, destination) => {
-    if (!existsSync(destination)) mkdirSync(destination, { recursive: true });
+// Directorio raíz del proyecto (padre de 'config')
+const currentDir = join(__dirnamePath, '..');
 
-    const files = readdirSync(source);
-    await Promise.all(
-        files
-            .filter(file => file !== 'node_modules') // Excluir node_modules
-            .map(async (file) => {
-                const srcPath = join(source, file);
-                const destPath = join(destination, file);
-                if (lstatSync(srcPath).isDirectory()) {
-                    await copyFolder(srcPath, destPath);
-                } else {
-                    copyFileSync(srcPath, destPath);
-                }
-            })
-    );
-};
+// Directorio para los archivos .bat
+const binDir = join(currentDir, 'bin');
 
-// Función para instalar dependencias en el destino
-const installDependencies = async (destination) => {
-    console.log(`Instalando dependencias en ${destination}...`);
-    await execPromise(`npm install`, { cwd: destination, stdio: 'inherit' });
-    await execPromise(`npm run antlr4`, { cwd: destination, stdio: 'inherit' });
-    console.log('Dependencias instaladas.');
-};
+// Ruta del archivo .bat
+const batFileBiesvmPath = join(binDir, `${appNameBiesvm}.bat`);
 
-// Crear archivo .bat en Windows
-const setupWindows = async () => {
-    console.log('Configurando en Windows...');
-    console.log(`Copiando proyecto a ${windowsDestinationPath}...`);
-    await copyFolder(process.cwd(), windowsDestinationPath);
-    await installDependencies(windowsDestinationPath);
-
-    // Copiar .config_biesm.json al directorio destino
-    const sourceConfigPath = join(process.cwd(), '.config_biesm.json');
-    const destConfigPath = join(windowsDestinationPath, '.config_biesm.json');
-    if (existsSync(sourceConfigPath)) {
-        copyFileSync(sourceConfigPath, destConfigPath);
-        console.log(`Archivo .config_biesm.json copiado a ${destConfigPath}.`);
-    } else {
-        console.warn(`Archivo de configuración no encontrado en ${sourceConfigPath}.`);
+/**
+ * Instala las dependencias del proyecto en el directorio actual.
+ * @returns {Promise<void>}
+ */
+const installDependencies = async () => {
+    console.log(`Instalando dependencias en ${currentDir}...`);
+    try {
+        await execPromise(`npm install`, { cwd: currentDir, stdio: 'inherit' });
+        await execPromise(`npm run antlr4`, { cwd: currentDir, stdio: 'inherit' });
+        await execPromise(`npm install --save-dev jest @babel/core @babel/preset-env babel-jest`, { cwd: currentDir, stdio: 'inherit' });
+        console.log('Dependencias instaladas.');
+    } catch (error) {
+        console.error('Error al instalar dependencias:', error);
+        throw error;
     }
+};
 
+/**
+ * Crea el archivo .bat en el directorio bin.
+ * @param {string} appName - Nombre del comando (biesvm).
+ * @param {string} scriptPath - Ruta al script JS correspondiente.
+ */
+const createBatFile = (appName, scriptPath) => {
     const batContent = `
         @echo off
         set "file=%~1"
-        if "%file%"=="-tests" (
-            npm test --prefix "${windowsDestinationPath}"
+        if "%file%"=="--tests" (
+            npm test
         ) else (
-            node "${windowsDestinationPath}\\bin\\biesvm.js" %*
-        )`;
-    writeFileSync(windowsBatFilePath, batContent.trim(), 'utf8');
-    console.log(`Archivo ${appName}.bat creado en ${windowsBatFilePath}.`);
+            node "${scriptPath}" %*
+        )
+        `.trim();
+
+    const batFilePath = join(binDir, `${appName}.bat`);
+    writeFileSync(batFilePath, batContent, 'utf8');
+    console.log(`Archivo ${appName}.bat creado en ${batFilePath}.`);
 };
 
-// Configuración en Linux/macOS
-const setupUnix = async () => {
-    console.log('Configurando en Linux o macOS...');
-    console.log(`Copiando proyecto a ${unixDestinationPath}...`);
-    await copyFolder(process.cwd(), unixDestinationPath);
-    await installDependencies(unixDestinationPath);
-
+/**
+ * Agrega el directorio bin a las variables de entorno PATH del usuario.
+ */
+const addToPath = async () => {
     try {
-        if (existsSync(unixSymlinkPath)) unlinkSync(unixSymlinkPath);
-        symlinkSync(`${unixDestinationPath}/biesvm.js`, unixSymlinkPath, 'file');
+        // Obtener el PATH actual del usuario
+        const { stdout } = await execPromise('echo %PATH%');
+        const currentPath = stdout.trim();          
+        
+        // Normalizar rutas para comparación
+        const normalizedPath = currentPath.split(';').map(p => p.trim().toLowerCase());
 
-        const scriptContent = `
-        #!/bin/bash
-        if [[ "$1" == "-tests" ]]; then
-            npm test --prefix "${unixDestinationPath}"
-        else
-            node "${unixDestinationPath}/biesvm.js" "$@"
-        fi
-        `;
-        writeFileSync(unixSymlinkPath, scriptContent.trim(), { mode: 0o755 });
-        console.log(`Enlace simbólico creado en ${unixSymlinkPath}.`);
+        // Ruta a agregar (usar binDir)
+        const binDirLower = binDir.toLowerCase();
 
-        // Copiar .config_biesm.json al directorio destino
-        const sourceConfigPath = join(process.cwd(), '.config_biesm.json');
-        const destConfigPath = join(unixDestinationPath, '.config_biesm.json');
-        if (existsSync(sourceConfigPath)) {
-            copyFileSync(sourceConfigPath, destConfigPath);
-            console.log(`Archivo .config_biesm.json copiado a ${destConfigPath}.`);
-        } else {
-            console.warn(`Archivo de configuración no encontrado en ${sourceConfigPath}.`);
-        }
+        // Verificar si binDir ya está en PATH
+        // if (!normalizedPath.includes(binDirLower)) {
+            const pathCommand = `setx PATH "${currentPath};${binDir}"`;
+            await execPromise(pathCommand);
+            console.log(`Directorio "${binDir}" agregado a la variable de entorno PATH.`);
+        // } else {
+            // console.log(`El directorio "${binDir}" ya está en la variable de entorno PATH.`);
+        // }
     } catch (error) {
-        console.error('Error al crear el enlace simbólico:', error);
+        console.error('Error al agregar al PATH:', error);
     }
 };
 
-// Función principal para configurar el entorno
+/**
+ * Configura el entorno en Windows sin copiar el proyecto y añade comandos al PATH.
+ */
+const setupWindows = async () => {
+    console.log('Configurando en Windows...');
+
+    // Crear directorio bin si no existe
+    if (!existsSync(binDir)) {
+        mkdirSync(binDir, { recursive: true });
+        console.log(`Directorio bin creado en ${binDir}.`);
+    } else {
+        console.log(`El directorio bin ya existe en ${binDir}.`);
+    }
+
+    // Instalar dependencias
+    await installDependencies();
+
+    // Ruta al script JS
+    const scriptPathBiesvm = join(currentDir, 'bin', 'biesvm.js');
+
+    // Crear archivo .bat
+    createBatFile(appNameBiesvm, scriptPathBiesvm);
+
+    // Agregar binDir a PATH
+    await addToPath();
+
+    console.log(`Configuración completa. Ahora puedes ejecutar "${appNameBiesvm}" desde cualquier lugar.`);
+};
+
+/**
+ * Configura el entorno según el sistema operativo detectado.
+ */
 const setupEnvironment = async () => {
-    try {  
-        if (isWindows) {
-            await setupWindows();
-        } else if (isLinux || isMac) {
-            await setupUnix();
-        } else {
-            console.log('Sistema operativo no compatible.');
-            return;
-        }
-        console.log(`Configuración completa. Ahora puedes ejecutar "biesvm" desde cualquier lugar con parámetros opcionales.`);
-        console.log(`Por ejemplo: "biesvm -tests" para ejecutar los tests por default.`);
-    } catch (error) {
-        console.error('Error en la configuración:', error);
+    if (platform() === 'win32') {
+        await setupWindows();
+    } else {
+        console.log('Solo se soporta Windows en esta configuración.');
     }
 };
 
-// Ejecutar configuración
 setupEnvironment();
-
-// Agregar al package.json el siguiente script:
-// "configure": "node config/setup_environment.js"

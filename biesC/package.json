@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"type": "module",
 	"bin": {
-		"biesc": "../bin/biesc.js"
+		"biesc": "../bin/biesc.js",
+		"bies": "../config/bies.js"
 	},
 	"scripts": {
 		"antlr4": "java -jar ./tools/antlr-4.13.2-complete.jar -no-listener -visitor -Dlanguage=JavaScript -o ./parser/grammar ./grammar/biesC.g4",

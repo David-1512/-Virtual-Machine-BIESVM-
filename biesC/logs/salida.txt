@@ -1,0 +1,17 @@
+----------------------------------------------------------
+Fecha: 23/11/2024, 3:00:05 p. m.
+
+Ejecución completada sin errores.
+Archivo .basm generado en: C:\Users\leand\Desktop\IIS2024\_Paradigmas_de_programacion\Proyectos\PROYECTO_BIES_C\principal\-Virtual-Machine-BIESVM-\biesC\byte_code\current.basm
+ Logs:
+4Creando scope global con id 0
+
+
+ ByteCode Generado: 
+$FUN $0 args:0 parent:$0 
+LDV 4
+BST 0 0
+HLT
+$END $0
+INI $0
+
